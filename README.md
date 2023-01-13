@@ -17,11 +17,13 @@ Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem
 
 ## Features
 
-
+- Lorem Ipsum is simply dummy text
+- Lorem Ipsum is simply dummy text
 
 ## Technologies Used
 
-
+- Lorem Ipsum is simply dummy text
+- Lorem Ipsum is simply dummy text
 
 ## Additional Details
 
@@ -36,3 +38,43 @@ Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem
 
 ## Testing It Locally
 
+- Clone this repo:
+
+    ```python
+    $ git clone git@github.com:GitauHarrison/sample-elearning-app.git
+    ```
+- Change directory into the clone repo:
+
+    ```python
+    $ cd sample-elearning-app
+    ```
+- Create and activate a virtual environment
+
+    ```python
+    # Using virtualenvwrapper
+    $ mkvirtualenv venv
+
+    # Normal way
+    $ python3 -m venv venv
+    $ source venv/bin/activate
+    ```
+
+- Install needed dependancies:
+
+    ```python
+    (venv)$ pip3 install -r requirements.txt
+    ```
+
+- Add and Update environment variables in a `.env` file as seen in `.env-template`:
+
+    ```python
+    (venv)$ cp .env-template .env
+    ```
+
+- Start the flask server:
+
+    ```python
+    (venv)$ flask run
+    ```
+
+- Check the application in your favourite browser by pasting http://127.0.0.1:5000.
