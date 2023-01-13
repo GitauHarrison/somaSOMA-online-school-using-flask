@@ -41,9 +41,9 @@ Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem
 - Clone this repo:
 
     ```python
-    $ git clone git@github.com:GitauHarrison/sample-elearning-app.git
+    $ git lfs clone git@github.com:GitauHarrison/sample-elearning-app.git
     ```
-- Change directory into the clone repo:
+- Change directory into the cloned repo:
 
     ```python
     $ cd sample-elearning-app
@@ -65,7 +65,7 @@ Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem
     (venv)$ pip3 install -r requirements.txt
     ```
 
-- Add and Update environment variables in a `.env` file as seen in `.env-template`:
+- Add and update environment variables in a `.env` file as seen in `.env-template`:
 
     ```python
     (venv)$ cp .env-template .env
