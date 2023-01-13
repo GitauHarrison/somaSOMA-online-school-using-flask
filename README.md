@@ -25,9 +25,9 @@ Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem
 
 ## Additional Details
 
-| Contributors | Design   | Deployment |
-| ------------ | ------   | ---------- |
-| [Link]()     | [Link]() | [Link]()   |
+| Database schema | Design   | Deployment | Contributors    |
+| --------------- | ------   | ---------- | --------------- |
+| [Link]()        | [Link]() | [Link]()   | [Link]()        |
 
 
 ## Application Details
