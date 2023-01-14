@@ -41,12 +41,12 @@ Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem
 - Clone this repo:
 
     ```python
-    $ git lfs clone git@github.com:GitauHarrison/sample-elearning-app.git
+    $ git@github.com:GitauHarrison/sample-elearning-app-flask.git
     ```
 - Change directory into the cloned repo:
 
     ```python
-    $ cd sample-elearning-app
+    $ cd sample-elearning-app-flask
     ```
 - Create and activate a virtual environment
 
