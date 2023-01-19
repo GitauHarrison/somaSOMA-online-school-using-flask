@@ -37,6 +37,22 @@ class TestElearningApp(unittest.TestCase):
         assert response.status_code == 200
         assert response_home.status_code == 200
 
+    def test_registration_form(self):
+        response = self.client.get('/register')
+        assert response.status_code == 200
+        html = response.get_data(as_text=True)
+
+        # All these fields must be included
+        assert 'name="first_name"' in html
+        assert 'name="last_name"' in html
+        assert 'name="username"' in html
+        assert 'name="email"' in html
+        assert 'name="password"' in html
+        assert 'name="confirm_password"' in html
+        assert 'name="phone_number"' in html
+        assert 'name="residence"' in html
+        assert 'name="register"' in html
+
 
 # Redirection
 
