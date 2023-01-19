@@ -7,26 +7,32 @@
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="robots" content="all,follow">
-    <!-- Swiper slider-->
-    <link rel="stylesheet" href="vendor/swiper/swiper-bundle.min.css">
     <!-- Modal Video-->
     <link rel="stylesheet" href="vendor/modal-video/css/modal-video.min.css">
     <!-- Google fonts-->
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:400,600,800&amp;display=swap">
-    <!-- Device Mockup-->
-    <link rel="stylesheet" href="css/device-mockups.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400&display=swap" rel="stylesheet">
     <!-- theme stylesheet-->
-    <link rel="stylesheet" href="css/style.violet.css" id="theme-stylesheet">
+    <link rel="stylesheet" href="css/main.css" id="theme-stylesheet">
     <!-- Custom stylesheet - for your changes-->
     <link rel="stylesheet" href="css/custom.css">
     <!-- Favicon-->
-    <link rel="shortcut icon" href="img/favicon.png">
+    <link rel="shortcut icon" href="img/weLEARN.png">
   </head>
   <body>
     <!-- navbar-->
     <header class="header">
       <nav class="navbar navbar-light navbar-expand-lg fixed-top" id="navbar">
-        <div class="container"><a class="navbar-brand logo" href="index.html">weLearn</a>
+        <div class="container"><a class="navbar-brand" href="index.html">
+          <ul class="navbar-nav ms-auto">
+            <li class="nav-item">
+              <strong>
+                <span class="logo">wL</span>we<span class="logo-name">Learn</span>
+              </strong>
+            </li>
+          </ul>
+        </a>
           <button class="navbar-toggler navbar-toggler-end" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><i class="fas fa-bars"></i></button>
           <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav ms-auto">
@@ -54,10 +60,8 @@
             </ul>
           </div>
           <div class="col-lg-6 ml-auto">
-            <div class="device-wrapper mx-auto">
-              <div class="device shadow" data-device="iPhoneX" data-orientation="portrait" data-color="black">
-                <div class="screen"><img class="img-fluid" src="img/mobile.png" alt=""></div>
-              </div>
+            <div class="mx-auto">
+              <img class="img-fluid" src="img/mindset.svg" alt="">
             </div>
           </div>
         </div>
@@ -124,9 +128,9 @@
       <section class="with-pattern-1 py-5" id="services">
         <div class="container py-5">
           <div class="row align-items-center mb-5 gy-5">
-            <div class="col-lg-6"><img class="img-fluid w-100 px-lg-5" src="img/objects.svg" alt=""></div>
+            <div class="col-lg-6"><img class="img-fluid w-100 px-lg-5" src="img/about.svg" alt=""></div>
             <div class="col-lg-6">
-              <h2>About weLearn</h2>
+              <h2>About we<span class="logo-name">Learn</span></h2>
               <p class="text-muted">
                 Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s
               </p>
@@ -200,6 +204,8 @@
         </div>
       </section>
     </section>
+
+    <!-- Programs -->
     <section class="p-0" id="testimonials" style="background: url(img/testimonials-bg.png) no-repeat; background-size: 40% 100%; background-position: left center">
       <div class="container text-center">
         <p class="h6 text-uppercase text-primary">What is Lorem Ipsum?</p>
@@ -209,7 +215,8 @@
             <div class="mx-3 mx-lg-5 my-5 pt-3">
               <div class="card shadow rounded-lg px-4 py-5 px-lg-5 with-pattern bg-white border-0">
                 <div class="card-body index-forward pt-5 rounded-lg">
-                  <div class="testimonial-img"><img class="rounded-circle" src="img/avatar-1.jpg" alt="" width="100"/></div>
+                  <div class="testimonial-img"><img class="rounded-circle" src="img/child.svg" alt="" width="100"/></div>
+                  <h5>Program 1</h5>
                   <p class="lead text-muted mb-1">
                     Lorem Ipsum is simply dummy text of the printing and typesetting industry.
                   </p>
@@ -221,7 +228,8 @@
             <div class="mx-3 mx-lg-5 my-5 pt-3">
               <div class="card shadow rounded-lg px-4 py-5 px-lg-5 with-pattern bg-white border-0">
                 <div class="card-body index-forward pt-5 rounded-lg">
-                  <div class="testimonial-img"><img class="rounded-circle" src="img/avatar-1.jpg" alt="" width="100"/></div>
+                  <div class="testimonial-img"><img class="rounded-circle" src="img/child2.svg" alt="" width="100"/></div>
+                  <h5>Program 2</h5>
                   <p class="lead text-muted mb-1">
                     Lorem Ipsum is simply dummy text of the printing and typesetting industry.
                   </p>
@@ -233,7 +241,8 @@
             <div class="mx-3 mx-lg-5 my-5 pt-3">
               <div class="card shadow rounded-lg px-4 py-5 px-lg-5 with-pattern bg-white border-0">
                 <div class="card-body index-forward pt-5 rounded-lg">
-                  <div class="testimonial-img"><img class="rounded-circle" src="img/avatar-1.jpg" alt="" width="100"/></div>
+                  <div class="testimonial-img"><img class="rounded-circle" src="img/teen.svg" alt="" width="100"/></div>
+                  <h5>Program 3</h5>
                   <p class="lead text-muted mb-1">
                     Lorem Ipsum is simply dummy text of the printing and typesetting industry.
                   </p>
@@ -247,7 +256,8 @@
             <div class="mx-3 mx-lg-5 my-5 pt-3">
               <div class="card shadow rounded-lg px-4 py-5 px-lg-5 with-pattern bg-white border-0">
                 <div class="card-body index-forward pt-5 rounded-lg">
-                  <div class="testimonial-img"><img class="rounded-circle" src="img/avatar-1.jpg" alt="" width="100"/></div>
+                  <div class="testimonial-img"><img class="rounded-circle" src="img/man.svg" alt="" width="100"/></div>
+                  <h5>Program 4</h5>
                   <p class="lead text-muted mb-1">
                     Lorem Ipsum is simply dummy text of the printing and typesetting industry.
                   </p>
@@ -259,7 +269,8 @@
             <div class="mx-3 mx-lg-5 my-5 pt-3">
               <div class="card shadow rounded-lg px-4 py-5 px-lg-5 with-pattern bg-white border-0">
                 <div class="card-body index-forward pt-5 rounded-lg">
-                  <div class="testimonial-img"><img class="rounded-circle" src="img/avatar-1.jpg" alt="" width="100"/></div>
+                  <div class="testimonial-img"><img class="rounded-circle" src="img/man2.svg" alt="" width="100"/></div>
+                  <h5>Program 5</h5>
                   <p class="lead text-muted mb-1">
                     Lorem Ipsum is simply dummy text of the printing and typesetting industry.
                   </p>
@@ -271,7 +282,8 @@
             <div class="mx-3 mx-lg-5 my-5 pt-3">
               <div class="card shadow rounded-lg px-4 py-5 px-lg-5 with-pattern bg-white border-0">
                 <div class="card-body index-forward pt-5 rounded-lg">
-                  <div class="testimonial-img"><img class="rounded-circle" src="img/avatar-1.jpg" alt="" width="100"/></div>
+                  <div class="testimonial-img"><img class="rounded-circle" src="img/girl.svg" alt="" width="100"/></div>
+                  <h5>Program 6</h5>
                   <p class="lead text-muted mb-1">
                     Lorem Ipsum is simply dummy text of the printing and typesetting industry.
                   </p>
@@ -293,67 +305,7 @@
           <div class="col-md-3">
             <!-- Empty col -->
           </div>
-        </div>
-
-        <!-- Slider -->
-
-        <!-- <div class="row">
-          <div class="col-lg-8 mx-auto">
-            <div class="swiper testimonials-slider">
-              <div class="swiper-wrapper">
-                <div class="swiper-slide h-auto">
-                  <div class="mx-3 mx-lg-5 my-5 pt-3">
-                    <div class="card shadow rounded-lg px-4 py-5 px-lg-5 with-pattern bg-white border-0">
-                      <div class="card-body index-forward pt-5 rounded-lg">
-                        <div class="testimonial-img"><img class="rounded-circle" src="img/avatar-1.jpg" alt="" width="100"/></div>
-                        <p class="lead text-muted mb-5">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.</p>
-                        <h5 class="mb-0">Sarah Hudson</h5>
-                        <p class="text-primary mb-0 text-sm">Tech Developer</p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="swiper-slide h-auto">
-                  <div class="mx-3 mx-lg-5 my-5 pt-3">
-                    <div class="card shadow rounded-lg px-4 py-5 px-lg-5 with-pattern bg-white border-0">
-                      <div class="card-body index-forward pt-5 rounded-lg">
-                        <div class="testimonial-img"><img class="rounded-circle" src="img/avatar-2.png" alt="" width="100"/></div>
-                        <p class="lead text-muted mb-5">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.</p>
-                        <h5 class="mb-0">Frank Smith</h5>
-                        <p class="text-primary mb-0 text-sm">Tech Developer</p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="swiper-slide h-auto">
-                  <div class="mx-3 mx-lg-5 my-5 pt-3">
-                    <div class="card shadow rounded-lg px-4 py-5 px-lg-5 with-pattern bg-white border-0">
-                      <div class="card-body index-forward pt-5 rounded-lg">
-                        <div class="testimonial-img"><img class="rounded-circle" src="img/avatar-1.jpg" alt="" width="100"/></div>
-                        <p class="lead text-muted mb-5">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.</p>
-                        <h5 class="mb-0">Sarah Hudson</h5>
-                        <p class="text-primary mb-0 text-sm">Tech Developer</p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="swiper-slide h-auto">
-                  <div class="mx-3 mx-lg-5 my-5 pt-3">
-                    <div class="card shadow rounded-lg px-4 py-5 px-lg-5 with-pattern bg-white border-0">
-                      <div class="card-body index-forward pt-5 rounded-lg">
-                        <div class="testimonial-img"><img class="rounded-circle" src="img/avatar-2.png" alt="" width="100"/></div>
-                        <p class="lead text-muted mb-5">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.</p>
-                        <h5 class="mb-0">Frank Smith</h5>
-                        <p class="text-primary mb-0 text-sm">Tech Developer</p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="swiper-pagination"></div>
-            </div>
-          </div>
-        </div> -->
+        </div>        
 
         <!-- Newsletter -->
         <div class="container py-5">
@@ -361,22 +313,20 @@
             <div class="col-lg-2">
               <!-- Empty col -->
             </div>
-            <div class="col-lg-8">
-              <h2>Stay Updated</h2>
+            <div class="col-lg-8 newsletter">
+              <h2>Newsletter</h2>
               <p class="text-muted">
                 Lorem Ipsum is simply dummy text of the printing and typesetting industry. 
                 Lorem Ipsum has been the industry's standard dummy text ever since the 1500s
               </p>
-              <p>
-                <form action="">
-                  <fieldset>
-                    <legend>Newsletter</legend>
-                    <label for="email">Email</label>
-                    <input type="email">
-                    <button>Subscribe</button>
-                  </fieldset>
-                </form>
-              </p>
+               <!-- Newsletter form-->
+               <form action="#" class="subscription-form mt-5">
+                <div class="form-group">
+                  <label>Email</label>
+                  <input type="email" name="email" placeholder="your@email.com" class="form-control">
+                  <button type="submit" class="btn btn-primary">Sign Up</button>
+                </div>
+              </form>
             </div>
             <div class="col-lg-2">
               <!-- Empty col -->
@@ -397,9 +347,17 @@
             <!-- empty col -->
           </div>
           <div class="col-lg-6">
-            <p class="navbar-brand">weLearn</p>
+            <div style="margin-bottom: 10px;">
+              <ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                  <strong>
+                    <span class="logo">wL</span>we<span class="logo-name">Learn</span>
+                  </strong>
+                </li>
+              </ul>
+            </div>
             <p class="text-muted">
-              Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+              Lorem Ipsum is simply dummy text of <br> the printing and typesetting industry.
             </p>
           </div>
           <div class="col-lg-4">
@@ -421,7 +379,6 @@
       <div class="copyrights">       
         <div class="container text-center py-4">
           <p class="mb-0 text-muted text-sm">&copy; 2023, weLearn.</p>
-          <!-- If you want to remove the backlink, please purchase the Attribution-Free License. See details in readme.txt or license.txt. Thanks!-->
         </div>
       </div>
     </footer>
@@ -429,32 +386,7 @@
     <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
     <script src="vendor/swiper/swiper-bundle.min.js"></script>
     <script src="vendor/modal-video/js/modal-video.js"></script>
-    <script src="js/front.js"></script>
-    <script>
-      // ------------------------------------------------------- //
-      //   Inject SVG Sprite - 
-      //   see more here 
-      //   https://css-tricks.com/ajaxing-svg-sprite/
-      // ------------------------------------------------------ //
-      function injectSvgSprite(path) {
-      
-          var ajax = new XMLHttpRequest();
-          ajax.open("GET", path, true);
-          ajax.send();
-          ajax.onload = function(e) {
-          var div = document.createElement("div");
-          div.className = 'd-none';
-          div.innerHTML = ajax.responseText;
-          document.body.insertBefore(div, document.body.childNodes[0]);
-          }
-      }
-      // this is set to BootstrapTemple website as you cannot 
-      // inject local SVG sprite (using only 'icons/orion-svg-sprite.svg' path)
-      // while using file:// protocol
-      // pls don't forget to change to your domain :)
-      injectSvgSprite('https://bootstraptemple.com/files/icons/orion-svg-sprite.svg'); 
-      
-    </script>
+    <script src="js/main.js"></script>
     <!-- FontAwesome CSS - loading as last, so it doesn't block rendering-->
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
   </body>
