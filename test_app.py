@@ -6,6 +6,7 @@ os.environ['DATABASE_URL'] = 'sqlite://'
 
 from app import app, db
 import unittest
+from app.models import Parent
 
 
 class TestElearningApp(unittest.TestCase):
@@ -22,6 +23,7 @@ class TestElearningApp(unittest.TestCase):
         self.appctx = self.app.app_context()
         self.appctx.push()
         db.create_all() # < --- create database during setup
+        self.add_parent_to_db() # < --- populate parent db
         self.client = self.app.test_client() # < --- test client
 
     def tearDown(self):
@@ -67,7 +69,7 @@ class TestElearningApp(unittest.TestCase):
             'password': 'testuser2023',
             'confirm_password': 'testuser2023',
             'phone_number': '+254700111222',
-            'residence': 'Nairobi'
+            'residence': 'Roselyn, Nairobi'
         })
         assert response.status_code == 200
         html = response.get_data(as_text=True)
@@ -96,3 +98,16 @@ class TestElearningApp(unittest.TestCase):
         assert response.request.path == '/profile'
         html = response.get_data(as_text=True)
         assert 'Hi, testuser!' in html
+
+    def add_parent_to_db(self):
+        parent = Parent(
+            first_name='Test',
+            last_name='User',
+            username='testuser',
+            email='testuser@email.com',
+            phone_number='+254700111222',
+            residence='Roselyn, Nairobi'
+        )
+        parent.set_password('testuser2023')
+        db.session.add(parent)
+        db.session.commit()
