@@ -29,7 +29,7 @@ Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem
 
 | Db Schema Design | UI Design   | Deployment | Contributors    | Tests    |
 | --------------- | ------   | ---------- | --------------- | -------- |
-| [drawSQL](https://drawsql.app/teams/gitau-harrison/diagrams/sample-elearning-app)        | [Figma](https://www.figma.com/proto/iHXb2ynMTIyelCqlVAk30u/Lean-Sigma?node-id=1%3A2&scaling=min-zoom&page-id=0%3A1&starting-point-node-id=1%3A2) | Render     | [GitHub](https://github.com/GitauHarrison/sample-elearning-app/graphs/contributors)        | [Tests](tests.py) |
+| [drawSQL](https://drawsql.app/teams/gitau-harrison/diagrams/sample-elearning-app)        | [Figma](https://www.figma.com/proto/iHXb2ynMTIyelCqlVAk30u/Lean-Sigma?node-id=1%3A2&scaling=min-zoom&page-id=0%3A1&starting-point-node-id=1%3A2) | Render     | [GitHub](https://github.com/GitauHarrison/sample-elearning-app/graphs/contributors)        | [Tests](test_app.py) |
 
 
 ## Application Details
