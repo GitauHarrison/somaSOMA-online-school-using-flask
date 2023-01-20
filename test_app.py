@@ -37,6 +37,25 @@ class TestElearningApp(unittest.TestCase):
         assert self.app is not None
         assert app == self.app
 
+    def add_parent_to_db(self):
+        parent = Parent(
+            first_name='Test',
+            last_name='User',
+            username='testuser',
+            email='testuser@email.com',
+            phone_number='+254700111222',
+            residence='Roselyn, Nairobi'
+        )
+        parent.set_password('testuser2023')
+        db.session.add(parent)
+        db.session.commit()
+
+    def parent_login(self):
+        self.client.post('/login', data={
+            'username': 'testuser',
+            'password': 'testuser2023'
+        })
+
     def test_home_page_access(self):
         ''''''
         response = self.client.get('/')
@@ -44,7 +63,7 @@ class TestElearningApp(unittest.TestCase):
         assert response.status_code == 200
         assert response_home.status_code == 200
 
-    def test_registration_form(self):
+    def test_parent_registration_form(self):
         response = self.client.get('/register')
         assert response.status_code == 200
         html = response.get_data(as_text=True)
@@ -60,7 +79,7 @@ class TestElearningApp(unittest.TestCase):
         assert 'name="residence"' in html
         assert 'name="register"' in html
 
-    def test_mismatched_passwords_during_registration(self):
+    def test_mismatched_passwords_during_parent_registration(self):
         response = self.client.post('/register', data={
             'first_name': 'test',
             'last_name': 'user',
@@ -76,7 +95,7 @@ class TestElearningApp(unittest.TestCase):
         assert 'Field must be equal to confirm_password' in html
 
     def test_parent_registration(self):
-        response = self.client.post('/register', data={
+        response = self.client.post('/register/parent', data={
             'first_name': 'test',
             'last_name': 'user',
             'username': 'testuser',
@@ -97,29 +116,10 @@ class TestElearningApp(unittest.TestCase):
         assert response.status_code == 200
         assert response.request.path == '/profile'
         html = response.get_data(as_text=True)
-        assert 'Hi, testuser!' in html
-
-    def add_parent_to_db(self):
-        parent = Parent(
-            first_name='Test',
-            last_name='User',
-            username='testuser',
-            email='testuser@email.com',
-            phone_number='+254700111222',
-            residence='Roselyn, Nairobi'
-        )
-        parent.set_password('testuser2023')
-        db.session.add(parent)
-        db.session.commit()
-
-    def login(self):
-        self.client.post('/login', data={
-            'username': 'testuseer',
-            'password': 'testuser2023'
-        })
+        assert 'Hi, testuser!' in html    
 
     def parent_register_child(self):
-        self.login()
+        self.parent_login()
         response = self.client.post('/register/child', data={
             'first_name': 'test',
             'last_name': 'student',
@@ -129,10 +129,10 @@ class TestElearningApp(unittest.TestCase):
             'confirm_password': 'teststudent2023',
             'phone_number': '+254700111222',
             'school': 'Roselyn Academy',
-            'age': '10',
+            'age': 10,
             'coding_experience': 'None',
             'program': 'Introduction to Web Development',
-            'cohort': '1',
+            'cohort': 1,
             'program_schedule': 'Crash'
         }, follow_redirects=True)
         assert response.status_code == 200
