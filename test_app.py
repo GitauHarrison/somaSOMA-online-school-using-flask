@@ -6,7 +6,7 @@ os.environ['DATABASE_URL'] = 'sqlite://'
 
 from app import app, db
 import unittest
-from app.models import Parent
+from app.models import Parent, Student
 
 
 class TestElearningApp(unittest.TestCase):
@@ -117,3 +117,25 @@ class TestElearningApp(unittest.TestCase):
             'username': 'testuseer',
             'password': 'testuser2023'
         })
+
+    def parent_register_child(self):
+        self.login()
+        response = self.client.post('/register/child', data={
+            'first_name': 'test',
+            'last_name': 'student',
+            'username': 'teststudent',
+            'email': 'teststudent@email.com',
+            'password': 'teststudent2023',
+            'confirm_password': 'teststudent2023',
+            'phone_number': '+254700111222',
+            'school': 'Roselyn Academy',
+            'age': '10',
+            'coding_experience': 'None',
+            'program': 'Introduction to Web Development',
+            'cohort': '1',
+            'program_schedule': 'Crash'
+        }, follow_redirects=True)
+        assert response.status_code == 200
+        html = response.get_data(as_text=True)
+        assert 'Child successfully registered' in html
+        assert response.request.path == '/profile'
