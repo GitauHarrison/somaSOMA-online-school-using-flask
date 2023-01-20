@@ -111,3 +111,9 @@ class TestElearningApp(unittest.TestCase):
         parent.set_password('testuser2023')
         db.session.add(parent)
         db.session.commit()
+
+    def login(self):
+        self.client.post('/login', data={
+            'username': 'testuseer',
+            'password': 'testuser2023'
+        })
