@@ -10909,7 +10909,7 @@ sample Elearning App
   .with-pattern-1::before {
     content: '';
     position: absolute;
-    background: url(../img/pattern.png);
+    background: url(../images/home/pattern.png);
     width: 265px;
     height: 325px;
     right: 0px;
@@ -10950,7 +10950,7 @@ sample Elearning App
   
   .card.with-pattern::before {
     content: '';
-    background: url(../img/pattern-2.png) no-repeat;
+    background: url(../images/home/pattern-2.png) no-repeat;
     background-size: cover;
     background-position: center center;
     position: absolute;
