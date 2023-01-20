@@ -72,7 +72,14 @@ class TestElearningApp(unittest.TestCase):
         assert response.status_code == 200
         assert response.request.path == '/login' # redirected to the login page
 
-
+    def test_parent_login(self):
+        response = self.client.post('/login', data={
+            'username': 'testuser',
+            'password': 'testuser2023'
+        }, follow_redirect=True)
+        assert response.status_code == 200
+        html = response.get_data(as_text=True)
+        assert 'Hi, testuser!' in html
 
 
 # Redirection
