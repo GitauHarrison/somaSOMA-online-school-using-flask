@@ -3,7 +3,15 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Sample Elearning App</title>
+
+    {% if title %}
+        {{ title }} - somaSOMA
+    {% else %}
+        somaSOMA eLearning App
+    {% endif %}
+
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/main.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/custom.css') }}">
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="robots" content="all,follow">
@@ -24,16 +32,25 @@
     <!-- navbar-->
     <header class="header">
       <nav class="navbar navbar-light navbar-expand-lg fixed-top" id="navbar">
-        <div class="container"><a class="navbar-brand" href="index.html">
+        <div class="container"><a class="navbar-brand" href="{{ url_for('home') }}">
           <ul class="navbar-nav ms-auto">
             <li class="nav-item">
               <strong>
-                <span class="logo">wL</span>we<span class="logo-name">Learn</span>
+                <span class="logo">sS</span>soma<span class="logo-name">soma</span>
               </strong>
             </li>
           </ul>
         </a>
-          <button class="navbar-toggler navbar-toggler-end" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><i class="fas fa-bars"></i></button>
+          <button 
+            class="navbar-toggler navbar-toggler-end" 
+            type="button" 
+            data-bs-toggle="collapse" 
+            data-bs-target="#navbarSupportedContent" 
+            aria-controls="navbarSupportedContent" 
+            aria-expanded="false" 
+            aria-label="Toggle navigation">
+              <i class="fas fa-bars"></i>
+          </button>
           <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav ms-auto">
               <li class="nav-item"><a class="nav-link link-scroll active" href="#hero">
@@ -61,7 +78,7 @@
           </div>
           <div class="col-lg-6 ml-auto">
             <div class="mx-auto">
-              <img class="img-fluid" src="img/mindset.svg" alt="">
+              <img class="img-fluid" src="img/mindset.svg" alt="Mindset">
             </div>
           </div>
         </div>
@@ -87,41 +104,8 @@
               </small>
             </div>
             <div class="col-lg-3 col-md-3">
-              <!-- Services Item-->
-              <!-- <div class="card border-0 shadow rounded-lg py-4 text-start">
-                <div class="card-body p-5">
-                  <svg class="svg-icon svg-icon-light" style="width:60px;height:60px;color:#ff904e">
-                    <use xlink:href="#document-saved-1"> </use>
-                  </svg>
-                  <h3 class="h4 my-4">Online Marketing</h3>
-                  <p class="text-sm text-muted mb-0">Lorem ipsum dolor amet consectetur adipisicing sed do eiusmod tempor incididunt ut labore.</p>
-                </div>
-              </div> -->
+              <!-- Empty col -->
             </div>
-            <!-- <div class="col-lg-4 col-md-6"> -->
-              <!-- Services Item-->
-              <!-- <div class="card border-0 shadow rounded-lg py-4 text-start">
-                <div class="card-body p-5">
-                  <svg class="svg-icon svg-icon-light" style="width:60px;height:60px;color:#39f8d2">
-                    <use xlink:href="#map-marker-1"> </use>
-                  </svg>
-                  <h3 class="h4 my-4">Track your move </h3>
-                  <p class="text-sm text-muted mb-0">Lorem ipsum dolor amet consectetur adipisicing sed do eiusmod tempor incididunt ut labore.</p>
-                </div>
-              </div>
-            </div> -->
-            <!-- <div class="col-lg-4 col-md-6"> -->
-              <!-- Services Item-->
-              <!-- <div class="card border-0 shadow rounded-lg py-4 text-start">
-                <div class="card-body p-5">
-                  <svg class="svg-icon svg-icon-light" style="width:60px;height:60px;color:#8190ff">
-                    <use xlink:href="#arrow-target-1"> </use>
-                  </svg>
-                  <h3 class="h4 my-4">Market analysis</h3>
-                  <p class="text-sm text-muted mb-0">Lorem ipsum dolor amet consectetur adipisicing sed do eiusmod tempor incididunt ut labore.</p>
-                </div>
-              </div>
-            </div> -->
           </div>
         </div>
       </section>
@@ -130,77 +114,13 @@
           <div class="row align-items-center mb-5 gy-5">
             <div class="col-lg-6"><img class="img-fluid w-100 px-lg-5" src="img/about.svg" alt=""></div>
             <div class="col-lg-6">
-              <h2>About we<span class="logo-name">Learn</span></h2>
+              <h2>About soma<span class="logo-name">soma</span></h2>
               <p class="text-muted">
                 Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s
               </p>
               <button class="btn btn-primary js-modal-btn" data-video-id="BVCqBnb-epk"><i class="fas fa-play-circle me-2"></i>Play video</button>
             </div>
-          </div>
-          <!-- <div class="row align-items-center gy-5">
-            <div class="col-lg-6">
-              <h2>Make your own success as simple you clap</h2>
-              <p class="text-muted">Dolor sit amet consectetur elit sed do eiusmod tempor incididunt labore dolore magna aliqua enim ad minim veniam quis nostrud exercitation.</p>
-              <ul class="list-check">
-                <li class="text-muted mb-2">Various Analysis Options</li>
-                <li class="text-muted mb-2">Page Load Details (time, size, number of requests)</li>
-                <li class="text-muted mb-2">Waterfall, Video and Report History</li>
-              </ul>
-              <button class="btn btn-primary js-modal-btn" data-video-id="B6uuIHpFkuo"><i class="fas fa-play-circle me-2"></i>Play video</button>
-            </div>
-            <div class="col-lg-6">
-              <div class="row gy-4">
-                <div class="col-lg-6 col-sm-6">
-                  <!-- Services Item-->
-                  <!-- <div class="card border-0 shadow rounded-lg text-start px-2">
-                    <div class="card-body px py-5">
-                      <svg class="svg-icon" style="width:40px;height:40px;color:#ff904e">
-                        <use xlink:href="#document-saved-1"> </use>
-                      </svg>
-                      <h3 class="h5 my-3">Online Marketing</h3>
-                      <p class="text-sm mb-0 text-muted">Lorem ipsum dolor amet consectetur adipisicing.</p>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-lg-6 col-sm-6"> -->
-                  <!-- Services Item-->
-                  <!-- <div class="card border-0 shadow rounded-lg text-start px-2">
-                    <div class="card-body px py-5">
-                      <svg class="svg-icon" style="width:40px;height:40px;color:#39f8d2">
-                        <use xlink:href="#map-marker-1"> </use>
-                      </svg>
-                      <h3 class="h5 my-3">Track your move </h3>
-                      <p class="text-sm mb-0 text-muted">Lorem ipsum dolor amet consectetur adipisicing.</p>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-lg-6 col-sm-6"> -->
-                  <!-- Services Item-->
-                  <!-- <div class="card border-0 shadow rounded-lg text-start px-2">
-                    <div class="card-body px py-5">
-                      <svg class="svg-icon" style="width:40px;height:40px;color:#8190ff">
-                        <use xlink:href="#arrow-target-1"> </use>
-                      </svg>
-                      <h3 class="h5 my-3">Market analysis</h3>
-                      <p class="text-sm mb-0 text-muted">Lorem ipsum dolor amet consectetur adipisicing.</p>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-lg-6 col-sm-6"> -->
-                  <!-- Services Item-->
-                  <!-- <div class="card border-0 shadow rounded-lg text-start px-2">
-                    <div class="card-body px py-5">
-                      <svg class="svg-icon" style="width:40px;height:40px;color:#ff634b">
-                        <use xlink:href="#sorting-1"> </use>
-                      </svg>
-                      <h3 class="h5 my-3">Full Settings</h3>
-                      <p class="text-sm mb-0 text-muted">Lorem ipsum dolor amet consectetur adipisicing.</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div> -->
+          </div>          
         </div>
       </section>
     </section>
@@ -351,7 +271,7 @@
               <ul class="navbar-nav ms-auto">
                 <li class="nav-item">
                   <strong>
-                    <span class="logo">wL</span>we<span class="logo-name">Learn</span>
+                    <span class="logo">sS</span>soma<span class="logo-name">soma</span>
                   </strong>
                 </li>
               </ul>
@@ -382,12 +302,19 @@
         </div>
       </div>
     </footer>
-    <!-- JavaScript files-->
-    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <script src="vendor/swiper/swiper-bundle.min.js"></script>
-    <script src="vendor/modal-video/js/modal-video.js"></script>
-    <script src="js/main.js"></script>
-    <!-- FontAwesome CSS - loading as last, so it doesn't block rendering-->
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+    <!-- All scripts will go here -->
+    {% block scripts %}
+        {{  super() }}
+        <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+        <script src="vendor/swiper/swiper-bundle.min.js"></script>
+        <script src="vendor/modal-video/js/modal-video.js"></script>
+        <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+        <!-- FontAwesome CSS - loading as last, so it doesn't block rendering-->
+        <link 
+          rel="stylesheet" 
+          href="https://use.fontawesome.com/releases/v5.7.1/css/all.css" 
+          integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" 
+          crossorigin="anonymous">
+    {% endblock %}    
   </body>
 </html>
