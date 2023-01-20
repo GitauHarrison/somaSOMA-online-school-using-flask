@@ -58,7 +58,7 @@ class TestElearningApp(unittest.TestCase):
         assert 'name="residence"' in html
         assert 'name="register"' in html
 
-    def test_registration_form_validation(self):
+    def test_mismatched_passwords_during_registration(self):
         response = self.client.post('/register', data={
             'first_name': 'test',
             'last_name': 'user',
@@ -93,5 +93,6 @@ class TestElearningApp(unittest.TestCase):
             'password': 'testuser2023'
         }, follow_redirect=True)
         assert response.status_code == 200
+        assert response.request.path == '/profile'
         html = response.get_data(as_text=True)
         assert 'Hi, testuser!' in html
