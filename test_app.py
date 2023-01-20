@@ -14,6 +14,11 @@ class TestElearningApp(unittest.TestCase):
 
     def setUp(self):
         self.app = app
+
+        # Disable csrf protection
+        self.app.config['SECRET_KEY'] = 'somaSOMA'
+        self.app.config['WTF_CSRF_ENABLED'] = False
+
         self.appctx = self.app.app_context()
         self.appctx.push()
         db.create_all() # < --- create database during setup
@@ -52,6 +57,22 @@ class TestElearningApp(unittest.TestCase):
         assert 'name="phone_number"' in html
         assert 'name="residence"' in html
         assert 'name="register"' in html
+
+    def test_parent_registration(self):
+        response = self.client.post('/register', data={
+            'first_name': 'test',
+            'last_name': 'user',
+            'username': 'testuser',
+            'email': 'testuser@email.com',
+            'password': 'testuser2023',
+            'confirm_password': 'testuser2023',
+            'phone_number': '+254700111222',
+            'residence': 'Nairobi'
+        }, follow_redirects=True)
+        assert response.status_code == 200
+        assert response.request.path == '/login' # redirected to the login page
+
+
 
 
 # Redirection
