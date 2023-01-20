@@ -1,3 +1,7 @@
+"""
+Testing all aspects of the application
+"""
+
 # Database configuration is imported first prior to
 # all other configurations
 
@@ -11,23 +15,22 @@ from app.models import Parent, Student
 
 class TestElearningApp(unittest.TestCase):
 
-    # Application context
-
     def setUp(self):
         self.app = app
 
         # Disable csrf protection
-        self.app.config['SECRET_KEY'] = 'somaSOMA'
+        self.app.config['SECRET_KEY'] = 'testKEY'
         self.app.config['WTF_CSRF_ENABLED'] = False
 
+        # Application context
         self.appctx = self.app.app_context()
         self.appctx.push()
-        db.create_all() # < --- create database during setup
-        self.add_parent_to_db() # < --- populate parent db
-        self.client = self.app.test_client() # < --- test client
+        db.create_all()                       # < --- create database during setup
+        self.add_parent_to_db()               # < --- populate parent db
+        self.client = self.app.test_client()  # < --- test client
 
     def tearDown(self):
-        db.drop_all() # < --- discard database after each test
+        db.drop_all()                         # < --- discard database after each test
         self.appctx.pop()
         self.app = None
         self.appctx = None
@@ -106,7 +109,7 @@ class TestElearningApp(unittest.TestCase):
             'residence': 'Nairobi'
         }, follow_redirects=True)
         assert response.status_code == 200
-        assert response.request.path == '/login' # redirected to the login page
+        assert response.request.path == '/login'            # <--- redirected to the login page
 
     def test_parent_login(self):
         response = self.client.post('/login', data={
