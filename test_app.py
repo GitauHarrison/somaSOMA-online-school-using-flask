@@ -58,6 +58,21 @@ class TestElearningApp(unittest.TestCase):
         assert 'name="residence"' in html
         assert 'name="register"' in html
 
+    def test_registration_form_validation(self):
+        response = self.client.post('/register', data={
+            'first_name': 'test',
+            'last_name': 'user',
+            'username': 'testuser',
+            'email': 'testuser@email.com',
+            'password': 'testuser2023',
+            'confirm_password': 'testuser2023',
+            'phone_number': '+254700111222',
+            'residence': 'Nairobi'
+        })
+        assert response.status_code == 200
+        html = response.get_data(as_text=True)
+        assert 'Field must be equal to confirm_password' in html
+
     def test_parent_registration(self):
         response = self.client.post('/register', data={
             'first_name': 'test',
@@ -80,10 +95,3 @@ class TestElearningApp(unittest.TestCase):
         assert response.status_code == 200
         html = response.get_data(as_text=True)
         assert 'Hi, testuser!' in html
-
-
-# Redirection
-
-# Access to templates
-
-# Authentication
