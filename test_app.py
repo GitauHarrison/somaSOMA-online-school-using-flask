@@ -1,19 +1,30 @@
 """
 Testing all aspects of the application
 """
+from flask_mail import Message
 
 # Database configuration is imported first prior to
 # all other configurations
 
 import os
-os.environ['DATABASE_URL'] = 'sqlite://'
+os.environ['DATABASE_URL'] = 'sqlite://' # Use in-memory db, denoted by two forward slashes
+# Email Support
+os.environ['MAIL_SERVER'] = 'smtp.gmail.com'
+os.environ['MAIL_PORT'] = 587
+os.environ['MAIL_USE_TLS'] = True
+os.environ['MAIL_USERNAME'] = ''
+os.environ['MAIL_PASSWORD'] = ''
+os.environ['ADMINS'] = ['']
 
 from app import app, db
+from app.email import send_async_email, send_email
 import unittest
-from app.models import Parent, Student, User
+from app.models import Parent, Student,Teacher, Admin, User
 from datetime import datetime, timedelta
 from time import time
 import jwt
+from app import mail
+from threading import Thread
 
 
 class TestElearningApp(unittest.TestCase):
@@ -81,11 +92,18 @@ class TestElearningApp(unittest.TestCase):
         token = jwt.encode(
                 {'reset_password': user.email, 'exp': time() + expires_in},
                 'secret',
-                algorithm='HS256'
-            )
+                algorithm='HS256')
         token = jwt.encode({'reset_password': 'testuser@email.com'},'secret',algorithm='HS256')
         email = jwt.decode(token, 'secret', algorithms=['HS256'])['reset_password']
         assert email == 'testuser@email.com'
+
+    def sending_email_to_user(self, user):
+        self.send_email(
+            subject='Test Email',
+            sender=app.config['MAIL_USERNAME'],
+            recipients=[user.email],
+            text_body='This is a test',
+            html_body='<p>This is a test</p>')
 
     # =====================
     # End of user testing
@@ -112,7 +130,7 @@ class TestElearningApp(unittest.TestCase):
         self.client.post('/login', data={
             'username': 'testuser',
             'password': 'testuser2023'
-        })    
+        })
 
     def test_parent_registration_form(self):
         response = self.client.get('/register')
@@ -163,11 +181,11 @@ class TestElearningApp(unittest.TestCase):
         response = self.client.post('/login', data={
             'username': 'testuser',
             'password': 'testuser2023'
-        }, follow_redirect=True)
+        }, follow_redirects=True)
         assert response.status_code == 200
         assert response.request.path == '/profile'
         html = response.get_data(as_text=True)
-        assert 'Hi, testuser!' in html    
+        assert 'Hi, testuser!' in html
 
     def test_parent_register_child(self):
         self.parent_login()
@@ -190,6 +208,16 @@ class TestElearningApp(unittest.TestCase):
         html = response.get_data(as_text=True)
         assert 'Child successfully registered' in html
         assert response.request.path == '/profile'
+
+    def test_parent_payment(self):
+        pass
+
+    def test_parent_deactivate_account(self):
+        parent = Parent(username='testparent', email='testparent@email.com')
+        response = self.client.get('/deactivate-account', follow_redirects=True)
+        assert response.status_code == 200
+        assert response.request.path == '/profile'
+        self.sending_email_to_user(parent)
 
     # =====================
     # End of parent testing
