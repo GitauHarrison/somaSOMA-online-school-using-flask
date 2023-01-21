@@ -219,6 +219,17 @@ class TestElearningApp(unittest.TestCase):
         assert response.request.path == '/profile'
         self.sending_email_to_user(parent)
 
+    def test_parent_writing_email_to_support(self):
+        self.parent_login()
+        response = self.client.post('/contact-support', data={
+            'subject': 'Test Subject',
+            'body': 'Test email'
+        }, follow_redirects=True)
+        assert response.status_code == 200
+        html = response.get_data(as_text=True)
+        assert 'Email saved' in html
+        assert response.request.path == '/support-history'
+
     # =====================
     # End of parent testing
     # =====================
