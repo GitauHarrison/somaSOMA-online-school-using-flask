@@ -10,11 +10,9 @@ import os
 os.environ['DATABASE_URL'] = 'sqlite://' # Use in-memory db, denoted by two forward slashes
 # Email Support
 os.environ['MAIL_SERVER'] = 'smtp.gmail.com'
-os.environ['MAIL_PORT'] = 587
-os.environ['MAIL_USE_TLS'] = True
-os.environ['MAIL_USERNAME'] = ''
-os.environ['MAIL_PASSWORD'] = ''
-os.environ['ADMINS'] = ['']
+os.environ['MAIL_USERNAME'] = 'testparent@email.com'
+os.environ['MAIL_PASSWORD'] = 'testparent'
+os.environ['ADMINS'] = 'testuser@email.com'
 
 from app import app, db
 from app.email import send_async_email, send_email
