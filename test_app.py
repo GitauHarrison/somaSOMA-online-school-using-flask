@@ -11,6 +11,9 @@ os.environ['DATABASE_URL'] = 'sqlite://'
 from app import app, db
 import unittest
 from app.models import Parent, Student, User
+from datetime import datetime, timedelta
+from time import time
+import jwt
 
 
 class TestElearningApp(unittest.TestCase):
@@ -62,6 +65,27 @@ class TestElearningApp(unittest.TestCase):
         assert user.avatar(36) == ('https://www.gravatar.com/avatar/'
                                     '04678e8bacf37f21ebfbcdddefad9468'
                                     '?d=identicon&s=36')
+
+    def test_reset_password_token(self):
+        """Test generation of password reset token"""
+        user = User(username='testuser', email='testuser@email.com')
+
+        assert jwt.encode({'reset_password': user.email},'secret', algorithm='HS256') == \
+            ('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyZXNldF9wYXNzd29yZCI6InRlc'
+             '3R1c2VyQGVtYWlsLmNvbSJ9.t__XarhVUwMSwekw_QsoipBREdvLjcl7kCwqwKlfnB8')
+
+    def test_verify_password_reset_token(self, expires_in=600):
+        """Verify the token generated"""
+        user = User(username='testuser', email='testuser@email.com')
+
+        token = jwt.encode(
+                {'reset_password': user.email, 'exp': time() + expires_in},
+                'secret',
+                algorithm='HS256'
+            )
+        token = jwt.encode({'reset_password': 'testuser@email.com'},'secret',algorithm='HS256')
+        email = jwt.decode(token, 'secret', algorithms=['HS256'])['reset_password']
+        assert email == 'testuser@email.com'
 
     # =====================
     # End of user testing
