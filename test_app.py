@@ -39,6 +39,12 @@ class TestElearningApp(unittest.TestCase):
     def test_elearning_app(self):
         assert self.app is not None
         assert app == self.app
+    
+    def test_password_hashing(self):
+        parent = Parent(username='testuser')
+        parent.set_password('testuser2023')
+        assert parent.check_password('muthoni') == False
+        assert parent.check_password('testuser2023') == True
 
     def add_parent_to_db(self):
         parent = Parent(
@@ -121,7 +127,7 @@ class TestElearningApp(unittest.TestCase):
         html = response.get_data(as_text=True)
         assert 'Hi, testuser!' in html    
 
-    def parent_register_child(self):
+    def test_parent_register_child(self):
         self.parent_login()
         response = self.client.post('/register/child', data={
             'first_name': 'test',
