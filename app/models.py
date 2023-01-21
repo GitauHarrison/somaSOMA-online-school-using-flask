@@ -143,3 +143,27 @@ class Admin(User):
 # =================
 # End of Application Users
 # =================
+
+# =================
+# Classroom Management
+# =================
+
+
+class StudentAttendance(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    student_first_name = db.Column(db.String(64), index=True, default='Student', nullable=False)
+    program = db.Column(db.String(64))
+    cohort = db.Column(db.String(64))
+    program_schedule = db.Column(db.String(64))
+    lesson_number = db.Column(db.Integer, default=1)
+    hours = db.Column(db.Integer, default=0)
+    lesson_date = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
+    teacher_id = db.Column(db.Integer, db.ForeignKey('teacher.id', ondelete='CASCADE'))
+
+    def as_dict(self):
+        return {item.name: getattr(self, item.name) for item in self.__table__.columns}
+
+
+# =================
+# End of classroom management
+# =================
