@@ -17,7 +17,7 @@ os.environ['ADMINS'] = 'testuser@email.com'
 from app import app, db
 from app.email import send_async_email, send_email
 import unittest
-from app.models import Parent, Student,Teacher, Admin, User
+from app.models import Parent, Student,Teacher, Admin, User, Email
 from datetime import datetime, timedelta
 from time import time
 import jwt
@@ -226,7 +226,39 @@ class TestElearningApp(unittest.TestCase):
         assert response.status_code == 200
         html = response.get_data(as_text=True)
         assert 'Email saved' in html
-        assert response.request.path == '/support-history'
+        assert response.request.path == '/engagment-history'
+
+        response = self.client.get('/email/send', data={
+            'subject': 'I Need Help',
+            'body': 'I am new on this platform'
+        },follow_redirects=True)
+        assert response.status_code == 200
+        html = response.get_data(as_text=True)
+        assert 'I Need Help' in html
+        assert response.request.path == '/engagment-history'
+
+    def test_parent_delete_written_email(self):
+        self.parent_login()
+
+        # Add email to db
+        parent = Parent(username='testparent')
+        email = Email(subject='I Need Help', body='I am new on this platform', author=parent)
+        db.session.add(email)
+        db.session.commit()
+
+        # Deleting email from db
+        response = self.client.get('email/delete', follow_redirects=True)
+        email1 = Email.query.filter_by(subject='I Need Help').first_or_404()
+        db.session.delete(email1)
+        db.session.commit()
+
+        assert response.status_code == 200
+        assert email1 is None
+        assert response.request.path == '/engagment-history'
+        html = response.get_data(as_text=True)
+        assert 'Email deleted' in html
+
+
 
     # =====================
     # End of parent testing
