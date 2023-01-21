@@ -10,7 +10,7 @@ os.environ['DATABASE_URL'] = 'sqlite://'
 
 from app import app, db
 import unittest
-from app.models import Parent, Student
+from app.models import Parent, Student, User
 
 
 class TestElearningApp(unittest.TestCase):
@@ -39,12 +39,37 @@ class TestElearningApp(unittest.TestCase):
     def test_elearning_app(self):
         assert self.app is not None
         assert app == self.app
-    
+
+    def test_home_page_access(self):
+        ''''''
+        response = self.client.get('/')
+        response_home = self.client.get('/home')
+        assert response.status_code == 200
+        assert response_home.status_code == 200
+
+    # =====================
+    # User
+    # =====================
+
     def test_password_hashing(self):
-        parent = Parent(username='testuser')
-        parent.set_password('testuser2023')
-        assert parent.check_password('muthoni') == False
-        assert parent.check_password('testuser2023') == True
+        user = User(username='testuser')
+        user.set_password('testuser2023')
+        assert user.check_password('muthoni') == False
+        assert user.check_password('testuser2023') == True
+
+    def test_avatar(self):
+        user = User(username='testuser', email='testuser@email.com')
+        assert user.avatar(36) == ('https://www.gravatar.com/avatar/'
+                                    '04678e8bacf37f21ebfbcdddefad9468'
+                                    '?d=identicon&s=36')
+
+    # =====================
+    # End of user testing
+    # =====================
+
+    # =====================
+    # Parent
+    # =====================
 
     def add_parent_to_db(self):
         parent = Parent(
@@ -63,14 +88,7 @@ class TestElearningApp(unittest.TestCase):
         self.client.post('/login', data={
             'username': 'testuser',
             'password': 'testuser2023'
-        })
-
-    def test_home_page_access(self):
-        ''''''
-        response = self.client.get('/')
-        response_home = self.client.get('/home')
-        assert response.status_code == 200
-        assert response_home.status_code == 200
+        })    
 
     def test_parent_registration_form(self):
         response = self.client.get('/register')
@@ -148,3 +166,34 @@ class TestElearningApp(unittest.TestCase):
         html = response.get_data(as_text=True)
         assert 'Child successfully registered' in html
         assert response.request.path == '/profile'
+
+    # =====================
+    # End of parent testing
+    # =====================
+
+    # =====================
+    # Student
+    # =====================
+
+
+    # =====================
+    # End of student testing
+    # =====================
+
+    # =====================
+    # Teacher
+    # =====================
+
+
+    # =====================
+    # End of teacher testing
+    # =====================
+
+    # =====================
+    # Admin
+    # =====================
+
+
+    # =====================
+    # End of admin testing
+    # =====================
