@@ -7,7 +7,7 @@ class Config(object):
     """All application configurations"""
 
     # Secret key
-    SECRET_KEY = os.environ.get('SECRET_KEY')
+    SECRET_KEY = os.environ.get('SECRET_KEY') or 'you-cannot-guess'
 
     # Database configurations
     SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or \
