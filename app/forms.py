@@ -5,6 +5,7 @@ from wtforms.validators import DataRequired, Length, EqualTo, Email, \
     Regexp, ValidationError
 import phonenumbers
 from app.models import User
+from flask_wtf.recaptcha import RecaptchaField
 
 
 # ========================================
@@ -22,6 +23,42 @@ class LoginForm(FlaskForm):
 
 # ========================================
 # END OF USER LOGIN
+# ========================================
+
+
+
+# ========================================
+# PASSWORD RESET
+# ========================================
+
+
+
+class RequestPasswordResetForm(FlaskForm):
+    """User can request for a password reset"""
+    email = StringField(
+        'Email',
+        validators=[DataRequired(), Email()],
+        render_kw={'autofocus': True, 'placeholder': 'You have access to this email address'})
+    recaptcha = RecaptchaField()
+    submit = SubmitField('Request Password Reset')
+
+
+class ResetPasswordForm(FlaskForm):
+    """User can change their password"""
+    password = PasswordField(
+        'Password',
+        validators=[DataRequired(), Length(min=8, max=20),
+        Regexp(r'^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$',
+               message='Password must be at least 8 characters long and '
+               'contain at least one letter and one number.')],
+        render_kw={'autofocus':True, 'placeholder': 'Password'})
+    confirm_password = PasswordField(
+        'Confirm Password', validators=[DataRequired(), EqualTo('password')])
+    submit = SubmitField('Reset Password')
+
+
+# ========================================
+# END OF PASSWORD RESET
 # ========================================
 
 
