@@ -230,10 +230,10 @@
         <!-- Newsletter -->
         <div class="container py-5">
           <div class="row align-items-center mb-5 gy-5">
-            <div class="col-lg-2">
+            <div class="col-lg-1">
               <!-- Empty col -->
             </div>
-            <div class="col-lg-8 newsletter">
+            <div class="col-lg-10 newsletter">
               <h2>Newsletter</h2>
               <p class="text-muted">
                 Lorem Ipsum is simply dummy text of the printing and typesetting industry. 
@@ -248,7 +248,7 @@
                 </div>
               </form>
             </div>
-            <div class="col-lg-2">
+            <div class="col-lg-1">
               <!-- Empty col -->
             </div>
           </div>
@@ -305,9 +305,9 @@
     <!-- All scripts will go here -->
     {% block scripts %}
         {{  super() }}
-        <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-        <script src="vendor/swiper/swiper-bundle.min.js"></script>
-        <script src="vendor/modal-video/js/modal-video.js"></script>
+        <script src="{{ url_for('static', filename='vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+        <script src="{{ url_for('static', filename='vendor/swiper/swiper-bundle.min.js') }}"></script>
+        <script src="{{ url_for('static', filename='vendor/modal-video/js/modal-video.js') }}"></script>
         <script src="{{ url_for('static', filename='js/main.js') }}"></script>
         <!-- FontAwesome CSS - loading as last, so it doesn't block rendering-->
         <link 
