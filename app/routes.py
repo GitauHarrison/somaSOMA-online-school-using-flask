@@ -65,7 +65,10 @@ def login():
         login_user(user, remember=form.remember_me.data)
         flash(f"Welcome {user.username}.")
         return redirect(next_page)
-    return render_template("auth/login.html", title="Login")
+    return render_template(
+        "auth/login.html",
+        title="Login",
+        form=form)
 
 
 
@@ -402,5 +405,5 @@ def all_admins():
 
 
 # =========================================
-# END OFAUTHENTICATED USERS
+# END OF AUTHENTICATED USERS
 # =========================================
