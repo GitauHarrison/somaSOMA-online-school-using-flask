@@ -15,6 +15,12 @@
         <title>somaSOMA eLearning App</title>
     {% endif %}
 
+    <!-- intl-tel-input -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/16.0.4/css/intlTelInput.css">
+
+    <!-- DataTable JS -->
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.25/css/dataTables.bootstrap5.css">
+
     <!-- ============================================== -->
     <!-- Anonymous user -->
     <!-- ============================================== -->
@@ -31,7 +37,7 @@
         <!-- Custom stylesheet - for your changes-->
         <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/custom.css') }}">
         <!-- Favicon-->
-        <link rel="shortcut icon" href=" {{ url_for('static', filename='images/home/somaSOMA.png') }}">
+        <link rel="shortcut icon" href=" {{ url_for('static', filename='images/home/somaSOMA2.png') }}">
     {% endif %}
     <!-- ============================================== -->
     <!-- Anonymous user -->
@@ -80,212 +86,24 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
               <ul class="navbar-nav ms-auto">
                 <li class="nav-item"><a class="nav-link link-scroll active" href="#hero">
-                  <button class="btn btn-primary">Register</button>
+                  <a href="{{ url_for('register_parent') }}">
+                    <button class="btn btn-primary">Register</button>
+                  </a>
                   <span class="sr-only">(current)</span></a></li>
               </ul>
             </div>
           </div>
         </nav>
       </header>
-      <!-- Hero Section-->
-      <section class="hero bg-top py-5" id="hero" style="background: url({{ url_for('static', filename='images/home/banner-4.png') }}) no-repeat; background-size: 100% 80%">
-        <div class="container py-5">
-          <div class="row py-5">
-            <div class="col-lg-5 py-5">
-              <h1>
-                Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-              </h1>
-              <p class="my-4 text-muted">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod.</p>
-              <ul class="list-inline mb-0">
-                <li class="list-inline-item mb-2 mb-lg-0">
-                  <button class="btn btn-primary">Register</button>
-                </li>
-              </ul>
-            </div>
-            <div class="col-lg-6 ml-auto">
-              <div class="mx-auto">
-                <img class="img-fluid" src="{{ url_for('static', filename='images/home/mindset.svg') }}" alt="Mindset">
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-      <section class="bg-center py-0" id="about" style="background: url({{ url_for('static', filename='images/home/service-bg.svg') }}) no-repeat; background-size: cover">
-        <section class="about py-0 text-center">
-          <div class="container">
-            <p class="h6 text-uppercase text-primary">Lorem Ipsum is simply?</p>
-            <h2 class="mb-5">Lorem Ipsum is simply</h2>
-            <div class="row pb-5 gy-4">
-              <div class="col-lg-3 col-md-3">
+      <!-- End of navbar -->
 
-              </div>
-              <div class="col-lg-6 col-md-6">
-                <p class="text-muted">
-                  Lorem Ipsum is simply dummy text of the printing and typesetting industry. 
-                  Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, 
-                  when an unknown printer took a galley of type and scrambled it to make a type specimen book.
-                </p>
-                <small class="text-muted">
-                  "Lorem Ipsum is simply dummy text of the printing and typesetting industry."
-                </small>
-              </div>
-              <div class="col-lg-3 col-md-3">
-                <!-- Empty col -->
-              </div>
-            </div>
-          </div>
-        </section>
-        <section class="with-pattern-1 py-5" id="services">
-          <div class="container py-5">
-            <div class="row align-items-center mb-5 gy-5">
-              <div class="col-lg-6"><img class="img-fluid w-100 px-lg-5" src="{{ url_for('static', filename='images/home/about.svg') }}" alt=""></div>
-              <div class="col-lg-6">
-                <h2>About soma<span class="logo-name">soma</span></h2>
-                <p class="text-muted">
-                  Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s
-                </p>
-                <button class="btn btn-primary js-modal-btn" data-video-id="BVCqBnb-epk"><i class="fas fa-play-circle me-2"></i>Play video</button>
-              </div>
-            </div>          
-          </div>
-        </section>
-      </section>
-
-      <!-- Programs -->
-      <section class="p-0" id="testimonials" style="background: url({{ url_for('static', filename='images/home/testimonials-bg.png') }}) no-repeat; background-size: 40% 100%; background-position: left center">
-        <div class="container text-center">
-          <p class="h6 text-uppercase text-primary">What is Lorem Ipsum?</p>
-          <h2 class="mb-5">Lorem Ipsum is simply dummy text</h2>
-          <div class="row">
-            <div class="col-md-4">
-              <div class="mx-3 mx-lg-5 my-5 pt-3">
-                <div class="card shadow rounded-lg px-4 py-5 px-lg-5 with-pattern bg-white border-0">
-                  <div class="card-body index-forward pt-5 rounded-lg">
-                    <div class="testimonial-img"><img class="rounded-circle" src="{{ url_for('static', filename='images/home/child.svg') }}" alt="" width="100"/></div>
-                    <h5>Program 1</h5>
-                    <p class="lead text-muted mb-1">
-                      Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="col-md-4">
-              <div class="mx-3 mx-lg-5 my-5 pt-3">
-                <div class="card shadow rounded-lg px-4 py-5 px-lg-5 with-pattern bg-white border-0">
-                  <div class="card-body index-forward pt-5 rounded-lg">
-                    <div class="testimonial-img"><img class="rounded-circle" src="{{ url_for('static', filename='images/home/child2.svg') }}" alt="" width="100"/></div>
-                    <h5>Program 2</h5>
-                    <p class="lead text-muted mb-1">
-                      Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="col-md-4">
-              <div class="mx-3 mx-lg-5 my-5 pt-3">
-                <div class="card shadow rounded-lg px-4 py-5 px-lg-5 with-pattern bg-white border-0">
-                  <div class="card-body index-forward pt-5 rounded-lg">
-                    <div class="testimonial-img"><img class="rounded-circle" src="{{ url_for('static', filename='images/home/teen.svg') }}" alt="" width="100"/></div>
-                    <h5>Program 3</h5>
-                    <p class="lead text-muted mb-1">
-                      Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-md-4">
-              <div class="mx-3 mx-lg-5 my-5 pt-3">
-                <div class="card shadow rounded-lg px-4 py-5 px-lg-5 with-pattern bg-white border-0">
-                  <div class="card-body index-forward pt-5 rounded-lg">
-                    <div class="testimonial-img"><img class="rounded-circle" src="{{ url_for('static', filename='images/home/man.svg') }}" alt="" width="100"/></div>
-                    <h5>Program 4</h5>
-                    <p class="lead text-muted mb-1">
-                      Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="col-md-4">
-              <div class="mx-3 mx-lg-5 my-5 pt-3">
-                <div class="card shadow rounded-lg px-4 py-5 px-lg-5 with-pattern bg-white border-0">
-                  <div class="card-body index-forward pt-5 rounded-lg">
-                    <div class="testimonial-img"><img class="rounded-circle" src="{{ url_for('static', filename='images/home/man2.svg') }}" alt="" width="100"/></div>
-                    <h5>Program 5</h5>
-                    <p class="lead text-muted mb-1">
-                      Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="col-md-4">
-              <div class="mx-3 mx-lg-5 my-5 pt-3">
-                <div class="card shadow rounded-lg px-4 py-5 px-lg-5 with-pattern bg-white border-0">
-                  <div class="card-body index-forward pt-5 rounded-lg">
-                    <div class="testimonial-img"><img class="rounded-circle" src="{{ url_for('static', filename='images/home/girl.svg') }}" alt="" width="100"/></div>
-                    <h5>Program 6</h5>
-                    <p class="lead text-muted mb-1">
-                      Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-md-3">
-              <!-- Empty col -->
-            </div>
-            <div class="col-md-6">
-              <p class="text-muted">
-                "Lorem Ipsum is simply dummy text of the printing and typesetting industry. 
-                Lorem Ipsum has been the industry's standard dummy text ever since the 1500s"
-              </p>
-            </div>
-            <div class="col-md-3">
-              <!-- Empty col -->
-            </div>
-          </div>        
-
-          <!-- Newsletter -->
-          <div class="container py-5">
-            <div class="row align-items-center mb-5 gy-5">
-              <div class="col-lg-1">
-                <!-- Empty col -->
-              </div>
-              <div class="col-lg-10 newsletter">
-                <h2>Newsletter</h2>
-                <p class="text-muted">
-                  Lorem Ipsum is simply dummy text of the printing and typesetting industry. 
-                  Lorem Ipsum has been the industry's standard dummy text ever since the 1500s
-                </p>
-                <!-- Newsletter form-->
-                <form action="#" class="subscription-form mt-5">
-                  <div class="form-group">
-                    <label>Email</label>
-                    <input type="email" name="email" placeholder="your@email.com" class="form-control">
-                    <button type="submit" class="btn btn-primary">Sign Up</button>
-                  </div>
-                </form>
-              </div>
-              <div class="col-lg-1">
-                <!-- Empty col -->
-              </div>
-            </div>
-          </div>
-          <!-- End of newsletter -->
-
-        </div>
-      </section>
+      {% block anonymous_content %}{% endblock %}
+     
       <!-- Scroll to the top -->
       <a class="scroll-top-btn" id="scrollTop" href="#!"><i class="fas fa-long-arrow-alt-up"></i></a>
       <!-- End of scroll to the top -->
+
+      <!-- Footer -->
       <footer class="with-pattern-1 position-relative pt-5">
         <div class="container py-5">
           <div class="row gy-4">
@@ -328,23 +146,50 @@
           </div>
         </div>
       </footer>
-      {% block scripts %}
-          <!-- Momentjs -->
-          {{ moment.include_moment() }}
-          <!-- All scripts will go here -->
-          <script src="{{ url_for('static', filename='vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
-          <script src="{{ url_for('static', filename='vendor/swiper/swiper-bundle.min.js') }}"></script>
-          <script src="{{ url_for('static', filename='vendor/modal-video/js/modal-video.js') }}"></script>
-          <script src="{{ url_for('static', filename='js/main.js') }}"></script>
-          <!-- FontAwesome CSS - loading as last, so it doesn't block rendering-->
-          <link 
-              rel="stylesheet" 
-              href="https://use.fontawesome.com/releases/v5.7.1/css/all.css" 
-              integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" 
-              crossorigin="anonymous">   
+      <!-- End of footer -->
+
+      {% block anonymous_user_scripts %}
+
+        <!-- Momentjs -->
+        {{ moment.include_moment() }}
+
+        <!-- All scripts will go here -->
+        <script src="{{ url_for('static', filename='vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+        <script src="{{ url_for('static', filename='vendor/swiper/swiper-bundle.min.js') }}"></script>
+        <script src="{{ url_for('static', filename='vendor/modal-video/js/modal-video.js') }}"></script>
+        <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+        <!-- FontAwesome CSS - loading as last, so it doesn't block rendering-->
+        <link 
+            rel="stylesheet" 
+            href="https://use.fontawesome.com/releases/v5.7.1/css/all.css" 
+            integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" 
+            crossorigin="anonymous">  
+
+        <!-- intl-tel-input -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/16.0.4/js/intlTelInput.min.js"></script>
+
+        <!-- Phone number -->
+        <script>
+          var wtf_phone_field = document.getElementById('phone_number');
+          wtf_phone_field.style.position = 'absolute';
+          wtf_phone_field.style.top = '-9999px';
+          wtf_phone_field.style.left = '-9999px';
+          wtf_phone_field.parentElement.insertAdjacentHTML('beforeend', '<div><input type="tel" id="_phone"></div>');
+          var fancy_phone_field = document.getElementById('_phone');
+          var fancy_phone_iti = window.intlTelInput(fancy_phone_field, {
+              separateDialCode: true,
+              utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/16.0.4/js/utils.js",
+          });
+          fancy_phone_iti.setNumber(wtf_phone_field.value);
+          fancy_phone_field.addEventListener('blur', function() {
+              wtf_phone_field.value = fancy_phone_iti.getNumber();
+          });
+      </script>
+
       {% endblock %}
+               
     {% endif %}
-     <!-- ============================================== -->
+    <!-- ============================================== -->
     <!-- End of anonymously accessed content -->
     <!-- ============================================== -->
 
@@ -353,13 +198,64 @@
     <!-- Content accessed by logged-in user -->
     <!-- ============================================== -->
 
+    {% if current_user.is_authenticated %}
 
+        {% block current_user_scripts %}
+
+          <!-- Momentjs -->
+          {{ moment.include_moment() }}
+
+
+          <!-- DataTableJs links -->
+          <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.js"></script>
+          <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.25/js/dataTables.bootstrap5.js"></script>
+
+          <!-- intl-tel-input -->
+          <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/16.0.4/js/intlTelInput.min.js"></script>
+
+          <!-- Verification Phone number -->
+          <script>
+            var wtf_phone_field = document.getElementById('verification_phone');
+            wtf_phone_field.style.position = 'absolute';
+            wtf_phone_field.style.top = '-9999px';
+            wtf_phone_field.style.left = '-9999px';
+            wtf_phone_field.parentElement.insertAdjacentHTML('beforeend', '<div><input type="tel" id="_phone"></div>');
+            var fancy_phone_field = document.getElementById('_phone');
+            var fancy_phone_iti = window.intlTelInput(fancy_phone_field, {
+                separateDialCode: true,
+                utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/16.0.4/js/utils.js",
+            });
+            fancy_phone_iti.setNumber(wtf_phone_field.value);
+            fancy_phone_field.addEventListener('blur', function() {
+                wtf_phone_field.value = fancy_phone_iti.getNumber();
+            });
+        </script>
+          <!-- Phone number -->
+          <script>
+            var wtf_phone_field = document.getElementById('phone_number');
+            wtf_phone_field.style.position = 'absolute';
+            wtf_phone_field.style.top = '-9999px';
+            wtf_phone_field.style.left = '-9999px';
+            wtf_phone_field.parentElement.insertAdjacentHTML('beforeend', '<div><input type="tel" id="_phone"></div>');
+            var fancy_phone_field = document.getElementById('_phone');
+            var fancy_phone_iti = window.intlTelInput(fancy_phone_field, {
+                separateDialCode: true,
+                utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/16.0.4/js/utils.js",
+            });
+            fancy_phone_iti.setNumber(wtf_phone_field.value);
+            fancy_phone_field.addEventListener('blur', function() {
+                wtf_phone_field.value = fancy_phone_iti.getNumber();
+            });
+        </script>
+        {% endblock %}
+
+    {% endif %}
 
 
      <!-- ============================================== -->
-    <!-- End of content accessed by logged-in user -->
+      <!-- End of content accessed by logged-in user -->
     <!-- ============================================== -->
-
+    
 
   </body>
 </html>
