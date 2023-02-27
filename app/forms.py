@@ -127,8 +127,8 @@ class UserForm(FlaskForm):
 
 class ParentRegistrationForm(UserForm):
     """Parent Registration Form"""
-    residence = StringField(
-        'Residence',
+    current_residence = StringField(
+        'Current Residence',
         validators=[DataRequired(), Length(1, 64)],
         render_kw={'placeholder': 'Nairobi'})
     submit = SubmitField('Register')
@@ -197,6 +197,10 @@ class StudentRegistrationForm(UserForm):
 
 class AdminRegistrationForm(UserForm):
     """Admin Registration Form"""
+    current_residence = StringField(
+        'Current Residence',
+        validators=[DataRequired(), Length(1, 64)],
+        render_kw={'placeholder': 'Nairobi'})
     department = SelectField(
         'Department',
         choices=[
@@ -212,6 +216,10 @@ class AdminRegistrationForm(UserForm):
 
 class TeacherRegistrationForm(UserForm):
     """Teacher Registration Form"""
+    current_residence = StringField(
+        'Current Residence',
+        validators=[DataRequired(), Length(1, 64)],
+        render_kw={'placeholder': 'Nairobi'})
     course = SelectField(
         'Department',
         choices=[
