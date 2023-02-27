@@ -6,6 +6,7 @@ from app.models import User, Parent, Student, Teacher, Admin
 def make_shell_context():
     return dict(
         db=db,
+        User=User,
         Admin=Admin,
         Teacher=Teacher,
         Parent=Parent,
