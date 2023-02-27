@@ -12,11 +12,14 @@
 
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/main.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/custom.css') }}">
-    <meta name="description" content="">
+    <meta name="description" content="eLearning App">
+    <meta name="keywords" content="Newsletter, eLearning, Python, Flask, JavaScript, Django, Twilio">
+    <meta name="author" content="Gitau Harrison">
+    <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="robots" content="all,follow">
     <!-- Modal Video-->
-    <link rel="stylesheet" href="vendor/modal-video/css/modal-video.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='vendor/modal-video/css/modal-video.min.css') }}">
     <!-- Google fonts-->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -24,9 +27,9 @@
     <!-- theme stylesheet-->
     <link rel="stylesheet" href="css/main.css" id="theme-stylesheet">
     <!-- Custom stylesheet - for your changes-->
-    <link rel="stylesheet" href="css/custom.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/custom.css') }}">
     <!-- Favicon-->
-    <link rel="shortcut icon" href="img/weLEARN.png">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='img/weLEARN.png') }}">
   </head>
   <body>
     <!-- navbar-->
