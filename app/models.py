@@ -82,7 +82,7 @@ class Student(User):
     school = db.Column(db.String(64), default='Lean Sigma')
     coding_experience = db.Column(db.String(64), default='None')
     program = db.Column(db.String(64), default='Introduction to Flask')
-    program_type = db.Column(db.String(64), default='Crash')
+    program_schedule = db.Column(db.String(64), default='Crash')
     cohort = db.Column(db.Integer, default=1)
 
     # Multiple join conditions where more than one foreign key is used
@@ -103,6 +103,7 @@ class Student(User):
 class Teacher(User):
     id = db.Column(db.Integer, db.ForeignKey('user.id', ondelete='CASCADE'), primary_key=True)
     course = db.Column(db.String(64), default='Flask')
+    current_residence = db.Column(db.String(64), default='Roselyn, Nairobi')
     attendance = db.relationship(
         'StudentAttendance', backref='teacher', lazy='dynamic', passive_deletes=True)
 
@@ -117,7 +118,7 @@ class Teacher(User):
 
 class Parent(User):
     id = db.Column(db.Integer, db.ForeignKey('user.id', ondelete='CASCADE'), primary_key=True)
-    residence = db.Column(db.String(64), default='Roselyn, Nairobi')
+    current_residence = db.Column(db.String(64), default='Roselyn, Nairobi')
 
     __mapper_args__ = {
         'polymorphic_identity': 'parent',
