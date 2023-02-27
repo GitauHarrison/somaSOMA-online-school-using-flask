@@ -5,7 +5,6 @@ from wtforms.validators import DataRequired, Length, EqualTo, Email, \
     Regexp, ValidationError
 import phonenumbers
 from app.models import User
-from flask_wtf.recaptcha import RecaptchaField
 
 
 # ========================================
@@ -15,8 +14,17 @@ from flask_wtf.recaptcha import RecaptchaField
 
 class LoginForm(FlaskForm):
     """Login Form"""
-    username = StringField('Username', validators=[DataRequired(), Length(1, 64)])
-    password = PasswordField('Password', validators=[DataRequired()])
+    username = StringField(
+        'Username',
+        validators=[DataRequired(), Length(1, 64)],
+        render_kw={'placeholder': 'muthonigitau'})
+    password = PasswordField(
+        'Password:',
+        validators=[DataRequired(), Length(min=8, max=20),
+        Regexp(r'^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$',
+               message='Password must be at least 8 characters long and '
+               'contain at least one letter and one number.')],
+        render_kw={'placeholder': 'Example: somaSOMA123'})
     remember_me = BooleanField('Keep me logged in')
     submit = SubmitField('Log In')
 
@@ -39,7 +47,6 @@ class RequestPasswordResetForm(FlaskForm):
         'Email',
         validators=[DataRequired(), Email()],
         render_kw={'autofocus': True, 'placeholder': 'You have access to this email address'})
-    recaptcha = RecaptchaField()
     submit = SubmitField('Request Password Reset')
 
 
@@ -84,7 +91,7 @@ class UserForm(FlaskForm):
     username = StringField(
         'Username',
         validators=[DataRequired(), Length(1, 64)],
-        render_kw={'placeholder': 'johndoe'})
+        render_kw={'placeholder': 'muthonigitau'})
     email = StringField(
         'Email',
         validators=[DataRequired(), Email()],
@@ -98,7 +105,7 @@ class UserForm(FlaskForm):
         Regexp(r'^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$',
                message='Password must be at least 8 characters long and '
                'contain at least one letter and one number.')],
-        render_kw={'placeholder': 'Use: ecommerceapp123'})
+        render_kw={'placeholder': 'Example: somaSOMA123'})
     confirm_password = PasswordField(
         'Confirm Password',
         validators=[DataRequired(), EqualTo('password')],
