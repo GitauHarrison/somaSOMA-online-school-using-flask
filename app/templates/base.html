@@ -98,7 +98,18 @@
       </header>
       <!-- End of navbar -->
 
-      {% block anonymous_content %}{% endblock %}
+      <section class="hero bg-top py-5" id="hero" style="background: url({{ url_for('static', filename='images/home/banner-4.png') }}) no-repeat; background-size: 100% 80%">
+        <div class="container py-5">
+
+          <!-- Flash message -->
+          {% include '_flash_message.html' %}
+          <!-- End of flash message -->
+
+          <!-- Child templates will go here -->
+          {% block anonymous_content %}{% endblock %}
+          <!-- End of child templates -->
+        </div>
+      </section>      
      
       <!-- Scroll to the top -->
       <a class="scroll-top-btn" id="scrollTop" href="#!"><i class="fas fa-long-arrow-alt-up"></i></a>

@@ -110,7 +110,7 @@ def request_password_reset():
         flash("Check your email for the instructions to reset your password")
         return redirect(url_for("login"))
     return render_template(
-        "auth/request_password_reset.html", title="Request Password Reset", form=form)
+        "auth/register_anonymous_user.html", title="Request Password Reset", form=form)
 
 
 
@@ -139,7 +139,7 @@ def reset_password(token):
         db.session.commit()
         flash("Your password has been reset. Login to continue")
         return redirect(url_for("login"))
-    return render_template("auth/reset_password.html", title="Reset Password", form=form)
+    return render_template("auth/register_anonymous_user.html", title="Reset Password", form=form)
 
 
 
@@ -175,7 +175,7 @@ def register_parent():
               "Check your email for further guidance.")
         return redirect(url_for('home'))
     return render_template(
-        "auth/register_parent.html",
+        "auth/register_anonymous_user.html",
         title="Register As A Parent",
         form=form)
 
@@ -220,7 +220,7 @@ def register_student():
         #     return redirect(url_for("admin_profile"))
         no_access()
     return render_template(
-        "auth/register_student.html",
+        "auth/register_current_user.html",
         title="Register Your Child",
         form=form)
 
@@ -254,7 +254,7 @@ def register_teacher():
     else:
         no_access()
     return render_template(
-        "auth/register_teacher.html",
+        "auth/register_current_user.html",
         title="Register A Teacher",
         form=form)
 
@@ -262,6 +262,7 @@ def register_teacher():
 # Admin registration
 
 @app.route("/register/admin", methods=["GET", "POST"])
+@login_required
 def register_admin():
     """Admin registration logic"""
     if current_user.type == "admin":
@@ -286,7 +287,7 @@ def register_admin():
     else:
         no_access()
     return render_template(
-        "auth/register_admin.html",
+        "auth/register_current_user.html",
         title="Register As An Admin",
         form=form)
 
