@@ -18,6 +18,7 @@ Flask-Moment==1.0.5
 Flask-SQLAlchemy==3.0.2
 Flask-WTF==1.1.1
 greenlet==2.0.1
+gunicorn==20.1.0
 idna==3.4
 importlib-metadata==6.0.0
 importlib-resources==5.10.2
@@ -29,6 +30,7 @@ MarkupSafe==2.1.1
 packaging==23.0
 phonenumbers==8.13.6
 pluggy==1.0.0
+psycopg2==2.9.5
 pycparser==2.21
 PyJWT==2.6.0
 pytest==7.2.1
