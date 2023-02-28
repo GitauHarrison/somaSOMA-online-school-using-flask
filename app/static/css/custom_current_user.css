@@ -190,6 +190,290 @@ a.article:hover {
     }
 }
 
+/* =============================== */
+/* === Center Contents in Page === */
+/* =============================== */
+@media screen and (max-width: 576px) {
+    .index-content {
+        margin:0 auto;
+        position:absolute;
+        left:3%;
+        top:20%;
+        margin-left:-10px;
+        margin-top:-10px;
+    }
+    .index-content h1 {
+        font-size: 20px;
+        line-height: 23px;
+    }
+    p {
+        font-size: 13px;
+    }
+    small {
+        font-size: 10px;
+    }
+}
+@media screen and (min-width: 576px) and (max-width: 992px) {
+    /* Index page content */
+    .index-content {
+        margin:0 auto;
+        position:absolute;
+        left:20%;
+        top:30%;
+        margin-left:-150px;
+        margin-top:-150px;
+    }
+    .index-content h1 {
+        font-size: 55px;
+        line-height: 50px;
+    }
+    .index-image {
+        padding-top: 50px;
+    }
+    p {
+        padding-top: 10px;
+        font-size: 25px;
+    }
+    small {
+        font-size: 15px;
+    }
+}
+
+@media screen and (min-width: 992px) and (max-width: 1200px) {
+    /* Index page content */
+    .index-content {
+        margin:0 auto;
+        position:absolute;
+        left:20%;
+        top: 55%;
+        margin-left:-150px;
+        margin-top:-150px;
+    }
+    .index-content h1 {
+        font-size: 40px;
+        line-height: 50px;
+    }
+    .index-image {
+        top: 80px;
+    }
+    p {
+        padding-top: 10px;
+        font-size: 15px;
+    }
+    small {
+        font-size: 10px;
+    }
+}
+
+@media screen and (min-width: 1200px) and (max-width: 1300px) {
+    .index-content {
+        margin:0 auto;
+        position:absolute;
+        left: 20%;
+        top:40%;
+        right: 10%;
+        margin-left:-150px;
+        margin-top:-150px;
+    }
+    .index-content h1 {
+        font-size: 60px;
+        line-height: 60px;
+    }
+    .index-image {
+        padding-top: 40px;
+    }
+    p {
+        padding-top: 10px;
+        font-size: 20px;
+    }
+    small {
+        font-size: 15px;
+    }
+}
+
+@media screen and (min-width: 1300px) {
+    .index-content {
+        margin:0 auto;
+        position:absolute;
+        left: 20%;
+        top:37%;
+        right: 10%;
+        margin-left:-150px;
+        margin-top:-150px;
+    }
+    .index-content h1 {
+        font-size: 60px;
+        line-height: 60px;
+    }
+    .index-image {
+        padding-top: 40px;
+    }
+    p {
+        padding-top: 10px;
+        font-size: 30px;
+    }
+    small {
+        font-size: 15px;
+    }
+}
+
+/* ------------------------------------------------- */
+/* CONTENT STYLE */
+/* ------------------------------------------------- */
+.users {
+    margin-bottom: 25px;
+    padding: 25px;
+    border-radius: 15px;
+    box-shadow: #63636333 0px 2px 8px 0px;
+}
+.users:hover {
+    box-shadow: #0000003d 0px 3px 8px;
+}
+.danger {
+    border: 1px solid #fcd9d9;
+    background-color: #fcd9d9;
+    box-shadow: #fcd9d9 0px 3px 8px;
+    border-radius: 5px;
+}
+.danger:hover {
+    box-shadow: #f5b0b0 0px 2px 8px 0px;
+}
+.attendance {
+    margin: 5px;
+}
+.profile, .danger-profile {
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: #92929233 0px 2px 8px 0px;
+}
+.profile:hover, .danger-profile:hover {
+    box-shadow: #2727273d 0px 3px 8px;
+}
+
+
+/* ------------------------------------------------- */
+/*  Forms  */
+/* ------------------------------------------------- */
+.my-form {
+    border: 1px solid rgb(236, 236, 236);
+    border-radius: 5px;
+    padding: 20px;
+}
+
+/* ------------------------------------------------- */
+/*  Links */
+/* ------------------------------------------------- */
+.link_disabled {
+    pointer-events: none;
+    color: currentColor;
+    cursor: not-allowed;
+    opacity: 0.5;
+    text-decoration: none;
+  }
+  .page-less, .page-more {
+    margin: 20px;
+  }
+
+/* ------------------------------------------------- */
+/*  Logo  */
+/* ------------------------------------------------- */
+.nav-logo {
+    width: 55px;
+    height: 55px;
+}
+
+/* ------------------------------------------------- */
+/*  Navbar */
+/* ------------------------------------------------- */
+.navbar-brand {
+    text-decoration: none;
+    font-size: 20px;
+    font-weight: 600;
+    color: gray;
+}
+.navbar-brand:hover {
+    text-decoration: none;
+    font-weight: 800;
+    color: #686d99;
+}
+
+/* ------------------------------------------------- */
+/*  Button  */
+/* ------------------------------------------------- */
+
+.btn {
+    display: inline-block;
+    font-weight: 400;
+    line-height: 0.5;
+    color: #575555;
+    text-align: center;
+    text-decoration: none;
+    vertical-align: middle;
+    cursor: pointer;
+    -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+            user-select: none;
+    background-color: #c2c2c2;
+    border: 1px solid transparent;
+    padding: 0.8rem 0.8rem;
+    font-size: 1.1em;
+    border-radius: 0.25rem;
+    transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+/* ------------------------------------------------- */
+/*  Email  */
+/* ------------------------------------------------- */
+.email {
+    padding: 20px;
+    margin-bottom: 10px;
+    box-shadow: #43475545 0px 0px 0.25em, #5a7dbc0d 0px 0.25em 1em;
+  }
+  .email:hover {
+    box-shadow: #00000026 0px 5px 15px 0px;
+  }
+
+/* ------------------------------------------------- */
+/*  Labels  */
+/* ------------------------------------------------- */
+.label {
+    display: inline-block;
+    font-weight: 400;
+    line-height: 0.5;
+    text-align: center;
+    text-decoration: none;
+    vertical-align: middle;
+    cursor: pointer;
+    -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+            user-select: none;
+    background-color: #e2e2e2;
+    border: 1px solid transparent;
+    padding: 0.4rem 0.4rem;
+    font-size: 1.1em;
+    border-radius: 0.25rem;
+    transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+.label-info {
+    background-color: #8fabbe;
+}
+.label-success {
+    background-color: #aac7aa;
+}
+.label-warning {
+    background-color: #bebe89;
+}
+.label-danger {
+    background-color: #bd6b76;
+}
+.label-info, .label-success, .label-warning, .label-danger,
+.label-info:hover, .label-success:hover, .label-warning:hover, .label-danger:hover {
+    color: white;
+}
+
+
 
 
 /* =========================================== */

@@ -257,9 +257,9 @@
 
               <ul class="list-unstyled components">
 
-                  <!-- Class content can be seen by all except the parent -->
-                  {% if current_user.type != 'parent' %}
-                      {% if current_user.type == 'student' %}                                
+                <!-- Class content can be seen by all except the parent -->
+                {% if current_user.type != 'parent' %}
+                    {% if current_user.type == 'student' %}                                
                       <li>
                           <a href="#pySubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Python</a>
                           <ul class="collapse list-unstyled" id="pySubmenu"> 
@@ -321,7 +321,7 @@
                               </ul>   
                           </li>
                       {% endif %}
-                  {% endif %}
+                    {% endif %}
 
                   <!-- Each user has their own profile page -->
                   {% if current_user.type == 'student' %}

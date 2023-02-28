@@ -13,6 +13,20 @@ from app import app, db
 
 
 
+# Authenticated users redirection
+
+def authenticated_users_redirection():
+    """Redirect uses appropriately if accessing certain pages"""
+    if current_user.type == "parent":
+        return redirect(url_for("parent_profile"))
+    if current_user.type == "student":
+        return redirect(url_for("student_profile"))
+    if current_user.type == "teacher":
+        return redirect(url_for("teacher_profile"))
+    if current_user.type == "admin":
+        return redirect(url_for("admin_profile"))
+
+
 
 # =========================================
 # NEWSLETTER
@@ -112,20 +126,6 @@ def unsubscribe():
 # =========================================
 # USER AUTHENTICATION
 # =========================================
-
-
-# Authenticated users redirection
-
-def authenticated_users_redirection():
-    """Redirect uses appropriately if accessing certain pages"""
-    if current_user.type == "parent":
-        return redirect(url_for("parent_profile"))
-    if current_user.type == "student":
-        return redirect(url_for("student_profile"))
-    if current_user.type == "teacher":
-        return redirect(url_for("teacher_profile"))
-    if current_user.type == "admin":
-        return redirect(url_for("admin_profile"))
 
 
 # Login
