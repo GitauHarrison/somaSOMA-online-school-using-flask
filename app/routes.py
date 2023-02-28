@@ -7,7 +7,8 @@ from app.forms import ParentRegistrationForm, StudentRegistrationForm, \
 from app.models import User, Parent, Student, Teacher, Admin, Client
 from app.email import send_password_reset_email, thank_you_client
 from werkzeug.urls import url_parse
-# from app.email import send_password_reset_email
+from app.twilio_verify_api import request_email_verification_token, \
+    check_email_verification_token
 from app import app, db
 
 
@@ -29,8 +30,9 @@ def home():
     """
     if request.method == "POST":
         newsletter_client = request.form["email"]
+        request_email_verification_token(newsletter_client)
         session["email"] = newsletter_client
-        flash("Please check your inbox for a verification code")
+        flash("Please check your email inbox for a verification code")
         return redirect(url_for('home'))
     return render_template("home.html", title="Home")
 
