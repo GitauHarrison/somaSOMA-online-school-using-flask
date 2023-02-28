@@ -2,7 +2,7 @@
 
 [Complete application image will go here]
 
-This is the third and final iteration of the somaSoma elearning app. The original application can be seen on [this repo](https://github.com/GitauHarrison/somasoma-eLearning-app). A project started while at [Moringa School](https://moringaschool.com/) with my friends [Mark Mwaura](https://github.com/Markmwaura) and [Alexona Kinuthia](https://github.com/muirurikin), I finally have a complete demo of the vision we had. This is a demo, though there are a handful other live versions I have built.
+_This is the third and final iteration of the somaSoma elearning app. The original application can be seen on [this repo](https://github.com/GitauHarrison/somasoma-eLearning-app). A project started while at [Moringa School](https://moringaschool.com/) with my friends [Mark Mwaura](https://github.com/Markmwaura) and [Alexona Kinuthia](https://github.com/muirurikin), I finally have a complete demo of the vision we had. This is a demo, though there are a handful other live versions I have built._
 
 ## Overview
 
