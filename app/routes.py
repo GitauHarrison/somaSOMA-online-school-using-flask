@@ -28,6 +28,8 @@ def home():
     Display the home page
     Seen by anonymous users
     """
+    if current_user.is_authenticated:
+        authenticated_users_redirection()
     if request.method == "POST":
         newsletter_client = request.form["email"]
         request_email_verification_token(newsletter_client)
@@ -143,7 +145,7 @@ def login():
         if not next_page or url_parse(next_page).netloc != '':
             next_page = url_for("home")
         login_user(user, remember=form.remember_me.data)
-        flash(f"Welcome {user.username}.")
+        flash(f'Welcome {user.username}.')
         return redirect(next_page)
     return render_template(
         "auth/login.html",
@@ -170,7 +172,7 @@ def request_password_reset():
     Registerd user can request for a password reset
     If not registered, the application will not tell the anonymous user why not
     """
-    if current_user.is_authenticated:        
+    if current_user.is_authenticated:
         authenticated_users_redirection()
     form = RequestPasswordResetForm()
     if form.validate_on_submit():
@@ -362,7 +364,7 @@ def register_admin():
             return redirect(url_for("parent_profile"))
     return render_template(
         "auth/register_current_user.html",
-        title="Register As An Admin",
+        title="Register An Admin",
         form=form)
 
 
@@ -417,7 +419,7 @@ def teacher_profile():
 
 # Admin profile
 
-@app.route("/parent/profile")
+@app.route("/admin/profile")
 @login_required
 def admin_profile():
     return render_template(
@@ -429,7 +431,7 @@ def admin_profile():
 
 # All parents
 
-@app.route("/dashbaord/all-parents")
+@app.route("/dashboard/all-parents")
 @login_required
 def all_parents():
     return render_template(
@@ -440,7 +442,7 @@ def all_parents():
 
 # All students
 
-@app.route("/dashbaord/all-students")
+@app.route("/dashboard/all-students")
 @login_required
 def all_students():
     return render_template(
@@ -452,7 +454,7 @@ def all_students():
 
 # All teachers
 
-@app.route("/dashbaord/all-teachers")
+@app.route("/dashboard/all-teachers")
 @login_required
 def all_teachers():
     return render_template(
@@ -463,7 +465,7 @@ def all_teachers():
 
 # All admins
 
-@app.route("/dashbaord/all-admins")
+@app.route("/dashboard/all-admins")
 @login_required
 def all_admins():
     return render_template(
@@ -471,6 +473,17 @@ def all_admins():
         title="All Admins"
     )
 
+
+# Private emails
+
+
+@app.route("/dashboard/all-private-emails")
+@login_required
+def private_emails():
+    return render_template(
+        "admin/private_emails.html",
+        title="All Private Emails"
+    )
 
 # ==========
 # END OF DASHBOARD
