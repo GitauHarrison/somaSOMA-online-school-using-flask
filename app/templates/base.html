@@ -48,6 +48,9 @@
     <!-- Authenticated user user -->
     <!-- ============================================== -->
 
+    {% if current_user.is_authenticated %}
+      <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/custom.css') }}">
+    {% endif %}
 
     <!-- ============================================== -->
     <!-- End of authenticated user user -->
@@ -211,55 +214,294 @@
     <!-- ============================================== -->
 
     {% if current_user.is_authenticated %}
+      {% if current_user.is_active %}
+        <div class="wrapper">
+          <!-- Sidebar  -->
+          <nav id="sidebar">
+              <div class="sidebar-header">
+                  <h3>Dashboard</h3>
+              </a>
+              </div>
 
-        {% block current_user_scripts %}
+              <ul class="list-unstyled components">
+
+                  <!-- Class content can be seen by all except the parent -->
+                  {% if current_user.type != 'parent' %}
+                      {% if current_user.type == 'student' %}                                
+                      <li>
+                          <a href="#pySubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Python</a>
+                          <ul class="collapse list-unstyled" id="pySubmenu"> 
+                              <li><a href=" # ">Chapter 1: Syntax</a></li>
+                              <li><a href=" # ">Chapter 2: Print Statements</a></li>
+                              {% for score in scores2 %}
+                                  {% if score.chapter2 < 3 %}
+                                      <li><a class="link_disabled" href=" # ">Chapter 3: Loops</a></li>
+                                  {% endif %}
+                                  {% if score.chapter2 >= 3 %}
+                                      <li><a href=" # ">Chapter 3: Loops</a></li>
+                                  {% endif %}
+                              {% endfor %}
+                              {% for score in scores3 %}
+                                  {% if score.chapter3 < 4 %}
+                                      <li><a class="link_disabled" href=" # ">Chapter 4: Conditional Statements</a></li>
+                                  {% endif %}
+                                  {% if score.chapter3 >= 4 %}
+                                      <li><a href=" # ">Chapter 4: Conditional Statements</a></li>
+                                  {% endif %}
+                              {% endfor %}
+                              {% for score in scores4 %}
+                                  {% if score.chapter4 < 4 %}
+                                  <li><a class="link_disabled" href=" # ">Chapter 5: Functions</a></li>
+                                  {% endif %}
+                                  {% if score.chapter4 >= 4 %}
+                                  <li><a href=" {{ url_for('admin.backend_chapter5') }} ">Chapter 5: Functions</a></li>
+                                  {% endif %}
+                              {% endfor %}                            
+                          </ul>   
+                      </li>
+                      <li class="active">
+                          <a href="#jsSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">JavaScript</a>
+                          <ul class="collapse list-unstyled" id="jsSubmenu">
+                            <li><a href=" # ">Chapter 1: Syntax</a></li>
+                            <li><a href=" # ">Chapter 2: Print Statements</a></li>
+                            <li><a href=" # ">Chapter 3: Loops</a></li>
+                          </ul>   
+                      </li>
+                      {% endif %}
+
+                      <!-- Accessible by teachers and admins only -->
+                      <!-- There are no conditions set to view any of the lessons' chapters -->
+                      {% if current_user.type != "student" and current_user.type == "parent" %}                                    
+                          <li>
+                              <a href="#pySubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Python</a>
+                              <ul class="collapse list-unstyled" id="pySubmenu">
+                                  <li><a href=" # ">Chapter 1: Syntax</a></li>
+                                  <li><a href=" # ">Chapter 2: Print Statements</a></li>
+                                  <li><a href=" # ">Chapter 3: Loops</a></li>                                
+                              </ul>   
+                          </li>
+                          <li class="active">
+                              <a href="#jsSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">JavaScript</a>
+                              <ul class="collapse list-unstyled" id="jsSubmenu">
+                                  <li><a href=" # ">Chapter 1: Syntax</a></li>
+                                  <li><a href=" # ">Chapter 2: Print Statements</a></li>
+                                  <li><a href=" # ">Chapter 3: Loops</a></li>
+                              </ul>   
+                          </li>
+                      {% endif %}
+                  {% endif %}
+
+                  <!-- Each user has their own profile page -->
+                  {% if current_user.type == 'student' %}
+                      <li>
+                          <a href=" {{ url_for('student_profile') }} ">Profile</a>
+                      </li>
+                  {% endif %}
+                  {% if current_user.type == 'teacher' %}
+                      <li>
+                          <a href=" {{ url_for('teacher_profile') }} ">Profile</a>
+                      </li>
+                  {% endif %}
+                  {% if current_user.type == 'parent' %}
+                      <!-- Only parent can register child/student -->
+                      <li class="active">
+                          <a href=" {{ url_for('register_student') }} ">Register Student</a>
+                      </li>
+                      <li>
+                          <a href=" # ">Student Analysis</a>
+                      </li>
+                      <li>
+                          <a href=" # ">Profile</a>
+                      </li>
+                  {% endif %}
+                  {% if current_user.type == 'admin' %}
+                      <li>
+                          <a href=" {{ url_for('admin_profile') }} ">Profile</a>
+                      </li>
+                  {% endif %}
+
+                  <!-- Student and Parent cannot see the list of app users -->
+                  {% if current_user.type != 'student' and current_user.type != 'parent' %}
+                      <li class="active">
+                          <a href="#usersSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Users</a>
+                          <ul class="collapse list-unstyled" id="usersSubmenu">
+                              <li>
+                                  <a href=" {{ url_for('all_students') }} ">All Students</a>
+                              </li>
+                              <li>
+                                  <a href=" {{ url_for('all_parents') }} ">All Parents</a>
+                              </li>
+                              <li>
+                                  <a href=" {{ url_for('all_teachers') }} ">All Teachers</a>
+                              </li>
+                              <li>
+                                  <a href=" {{ url_for('all_admins') }} ">All Admins</a>
+                              </li>
+                          </ul>   
+                      </li> 
+                      <li>
+                          <a href=" {{ url_for('private_emails') }} ">All Private Emails</a>
+                      </li> 
+                      <li class="active">
+                          <a href="#studentAnalysisSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Student Analysis</a>
+                          <ul class="collapse list-unstyled" id="studentAnalysisSubmenu">
+                              <li>
+                                  <a href=" # ">Student Attendance</a>
+                              </li>
+                              <li>
+                                  <a href=" # ">Projects Submissions</a>
+                              </li>
+                              <li>
+                                  <a href=" # ">Assess Projects</a>
+                              </li>
+                          </ul>   
+                      </li>                                                                                                                              
+                  {% endif %}
+
+                  <!-- Only admins can access the links below -->
+                  {% if current_user.type == 'admin' %}
+                      <li class="active">
+                          <a href="#registrationSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Registration</a>
+                          <ul class="collapse list-unstyled" id="registrationSubmenu">
+                              <li>
+                                  <a href=" {{ url_for('register_teacher') }} ">Register Teacher</a>
+                              </li>
+                              <li>
+                                  <a href=" {{ url_for('register_admin') }} ">Register Admin</a>
+                              </li>
+                          </ul>   
+                      </li>
+                      <li>
+                          <a href=" # ">App Analytics</a>
+                      </li>                                  
+                      <li>
+                          <a href="#newsletterSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Newsletter</a>
+                          <ul class="collapse list-unstyled" id="newsletterSubmenu">
+                              <li>
+                                  <a href=" # ">Subscribers</a>
+                              </li>
+                          </ul>                            
+                      </li>
+                  {% endif %}
+              </ul>
+
+              <ul class="list-unstyled CTAs">
+                  <li>
+                      {% if not current_user.two_factor_enabled() %}
+                          <a class="nav-link article" href=" # ">Enable 2FA</a>
+                      {% else %}
+                          <a class="nav-link download" href=" # ">Disable 2FA</a>
+                      {% endif %}
+                  </li>
+              </ul>
+          </nav>
+
+          <!-- Page Content  -->
+          <div id="content">
+
+              <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                  <div class="container-fluid">
+
+                      <button type="button" id="sidebarCollapse" class="btn btn-light">
+                          <i class="fas fa-align-left"></i>
+                          <span>Toggle Sidebar</span>
+                      </button>
+                      <button class="btn btn-dark d-inline-block d-lg-none ml-auto" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                          <i class="fas fa-align-justify"></i>
+                      </button>
+
+                      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                          <ul class="nav navbar-nav ml-auto">
+                              <li class="nav-item link_disabled"><a class="nav-link" href=" # ">{{ current_user.username }}</a></li>
+                              <li class="nav-item active">
+                                  <a class="nav-link" href="{{ url_for('logout') }}">Logout</a>
+                              </li>
+                          </ul>
+                      </div>
+                  </div>
+              </nav>
+
+              {% block current_user_content %}
+
+              {% endblock %}
+          </div>
+        </div>
+      {% endif %}
+      {% if current_user.active == False %}
+        <p>
+            Your account was deactivated. You can no longer access any services. 
+            Contact somaSOMA for further assistance.
+        </p>
+      {% endif %}
+
+      {% block current_user_scripts %}
 
           <!-- Momentjs -->
           {{ moment.include_moment() }}
 
-
+          <!-- jQuery CDN - Slim version (=without AJAX) -->
+          <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+          <!-- Popper.JS -->
+          <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
+          <!-- Bootstrap JS -->
+          <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
+          <!-- jQuery Custom Scroller CDN -->
+          <script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>
           <!-- DataTableJs links -->
           <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.js"></script>
           <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.25/js/dataTables.bootstrap5.js"></script>
-
           <!-- intl-tel-input -->
           <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/16.0.4/js/intlTelInput.min.js"></script>
 
-          <!-- Verification Phone number -->
-          <script>
-            var wtf_phone_field = document.getElementById('verification_phone');
-            wtf_phone_field.style.position = 'absolute';
-            wtf_phone_field.style.top = '-9999px';
-            wtf_phone_field.style.left = '-9999px';
-            wtf_phone_field.parentElement.insertAdjacentHTML('beforeend', '<div><input type="tel" id="_phone"></div>');
-            var fancy_phone_field = document.getElementById('_phone');
-            var fancy_phone_iti = window.intlTelInput(fancy_phone_field, {
-                separateDialCode: true,
-                utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/16.0.4/js/utils.js",
-            });
-            fancy_phone_iti.setNumber(wtf_phone_field.value);
-            fancy_phone_field.addEventListener('blur', function() {
-                wtf_phone_field.value = fancy_phone_iti.getNumber();
-            });
-        </script>
-          <!-- Phone number -->
-          <script>
-            var wtf_phone_field = document.getElementById('phone_number');
-            wtf_phone_field.style.position = 'absolute';
-            wtf_phone_field.style.top = '-9999px';
-            wtf_phone_field.style.left = '-9999px';
-            wtf_phone_field.parentElement.insertAdjacentHTML('beforeend', '<div><input type="tel" id="_phone"></div>');
-            var fancy_phone_field = document.getElementById('_phone');
-            var fancy_phone_iti = window.intlTelInput(fancy_phone_field, {
-                separateDialCode: true,
-                utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/16.0.4/js/utils.js",
-            });
-            fancy_phone_iti.setNumber(wtf_phone_field.value);
-            fancy_phone_field.addEventListener('blur', function() {
-                wtf_phone_field.value = fancy_phone_iti.getNumber();
-            });
-        </script>
-        {% endblock %}
+          <script type="text/javascript">
+              $(document).ready(function () {
+                  $("#sidebar").mCustomScrollbar({
+                      theme: "minimal"
+                  });
+
+                  $('#sidebarCollapse').on('click', function () {
+                      $('#sidebar, #content').toggleClass('active');
+                      $('.collapse.in').toggleClass('in');
+                      $('a[aria-expanded=true]').attr('aria-expanded', 'false');
+                  });
+              });
+          </script>
+
+            <!-- Verification Phone number -->
+            <script>
+              var wtf_phone_field = document.getElementById('verification_phone');
+              wtf_phone_field.style.position = 'absolute';
+              wtf_phone_field.style.top = '-9999px';
+              wtf_phone_field.style.left = '-9999px';
+              wtf_phone_field.parentElement.insertAdjacentHTML('beforeend', '<div><input type="tel" id="_phone"></div>');
+              var fancy_phone_field = document.getElementById('_phone');
+              var fancy_phone_iti = window.intlTelInput(fancy_phone_field, {
+                  separateDialCode: true,
+                  utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/16.0.4/js/utils.js",
+              });
+              fancy_phone_iti.setNumber(wtf_phone_field.value);
+              fancy_phone_field.addEventListener('blur', function() {
+                  wtf_phone_field.value = fancy_phone_iti.getNumber();
+              });
+            </script>
+            <!-- Phone number -->
+            <script>
+              var wtf_phone_field = document.getElementById('phone_number');
+              wtf_phone_field.style.position = 'absolute';
+              wtf_phone_field.style.top = '-9999px';
+              wtf_phone_field.style.left = '-9999px';
+              wtf_phone_field.parentElement.insertAdjacentHTML('beforeend', '<div><input type="tel" id="_phone"></div>');
+              var fancy_phone_field = document.getElementById('_phone');
+              var fancy_phone_iti = window.intlTelInput(fancy_phone_field, {
+                  separateDialCode: true,
+                  utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/16.0.4/js/utils.js",
+              });
+              fancy_phone_iti.setNumber(wtf_phone_field.value);
+              fancy_phone_field.addEventListener('blur', function() {
+                  wtf_phone_field.value = fancy_phone_iti.getNumber();
+              });
+          </script>
+      {% endblock %}
 
     {% endif %}
 
