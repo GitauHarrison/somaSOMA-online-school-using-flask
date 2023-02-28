@@ -190,10 +190,10 @@
               Lorem Ipsum has been the industry's standard dummy text ever since the 1500s
             </p>
             <!-- Newsletter form-->
-            <form action="#" class="subscription-form mt-5">
+            <form action="{{ url_for('home') }}" method="post" class="subscription-form mt-5">
               <div class="form-group">
                 <label>Email</label>
-                <input type="email" name="email" placeholder="your@email.com" class="form-control">
+                <input type="email" name="email" placeholder="your@email.com" class="form-control" value="{{ request.form['email'] }}">
                 <button type="submit" class="btn btn-primary">Sign Up</button>
               </div>
             </form>

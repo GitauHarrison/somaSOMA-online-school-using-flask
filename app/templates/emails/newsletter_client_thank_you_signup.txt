@@ -1,0 +1,37 @@
+Dear {{ client_username }},
+
+Karibu.
+
+Thank you for making our day by signing up to receive our emails. 
+We hope that you will find great value from the newsletters.
+
+
+You have joined our exclusive club of members to receive updates from us 
+directly to your inbox. Periodically, we will keep you informed of what 
+we are working on, and any offers that you can take advantage of.
+
+We are human!
+
+Even though this is an automated service, you can still reach us directly via 
+<a href="#">WhatsApp</a>. There is a human behind the scenes.
+
+
+Alternatively, you can meet us in person here: 
+
+Long Heights, 2nd Floor 
+Simba Road,
+Ruaka.
+
+Follow Us
+
+You can find us on <a href="#">FaceBook</a> | <a href="#">Twitter</a> | <a href="#">LinkedIn</a> | <a href="#">Instagram</a>
+
+Unsubscribe
+
+Read our <a href="#">Privacy policy to understand how we handle your data.</a>
+
+
+Want to unsubscribe? <a href="{{ url_for('unsubscribe', _external=True) }}">Do so here?</a>
+
+Sincerely,
+somaSOMA Support

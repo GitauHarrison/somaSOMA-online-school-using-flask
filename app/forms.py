@@ -242,3 +242,36 @@ class TeacherRegistrationForm(UserForm):
 # ========================================
 # END OF USER REGISTRATION
 # ========================================
+
+
+
+# ========================================
+# TWO FACTOR AUTHENTICATION
+# ========================================
+
+# Verify token sent
+
+class VerifyForm(FlaskForm):
+    """token verification form"""
+    token = StringField(
+        'Token',
+        validators=[DataRequired()],
+        render_kw={'autofocus': True, 'placeholder': 'Enter token sent'})
+    submit = SubmitField('Verify')
+
+
+
+# Unsubscribe from newsletter
+
+
+class UnsubscribeForm(FlaskForm):
+    email = StringField(
+        'Email',
+        validators=[DataRequired(), Email()],
+        render_kw={'autofocus': True, 'placeholder': 'Your subscription email'})
+    submit = SubmitField('Unsubscribe')
+
+
+# ========================================
+# END OF TWO FACTOR AUTHENTICATION
+# ========================================

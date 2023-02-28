@@ -1,23 +1,107 @@
-from flask import render_template, redirect, url_for, flash, request
+from flask import render_template, redirect, url_for, flash, request, session
 from flask_login import current_user, login_user, logout_user, login_required
 from app.forms import ParentRegistrationForm, StudentRegistrationForm, \
     TeacherRegistrationForm, AdminRegistrationForm, LoginForm, \
-    ResetPasswordForm, RequestPasswordResetForm
-from app.models import User, Parent, Student, Teacher, Admin
+    ResetPasswordForm, RequestPasswordResetForm, VerifyForm,\
+    UnsubscribeForm
+from app.models import User, Parent, Student, Teacher, Admin, Client
+from app.email import send_password_reset_email, thank_you_client
 from werkzeug.urls import url_parse
 # from app.email import send_password_reset_email
 from app import app, db
 
 
-@app.route("/")
-@app.route("/home")
+
+
+# =========================================
+# NEWSLETTER
+# =========================================
+
+
+# Client signs up for the newsletter
+
+@app.route("/", methods=["GET", "POST"])
+@app.route("/home", methods=["GET", "POST"])
 def home():
     """
     Display the home page
     Seen by anonymous users
     """
+    if request.method == "POST":
+        newsletter_client = request.form["email"]
+        session["email"] = newsletter_client
+        flash("Please check your inbox for a verification code")
+        return redirect(url_for('home'))
     return render_template("home.html", title="Home")
 
+
+
+# Client verifies email ownership
+
+@app.route("/verify-email-token", methods=["GET", "POST"])
+def verify_email_token():
+    """
+    Client verifies their email address by
+    providing token sent to their inbox
+    """
+    form = VerifyForm()
+    if form.validate_on_submit():
+        email = session["email"]
+        if check_email_verification_token(email, form.token.data):
+            # Get the client's username
+            client_email = session['email']
+            client_username = client_email.split("@")[0].capitalize()
+
+            # Add client to the database
+            client = Client(email=session["email"])
+            client.num_newsletter = 0 # determines what newsletter to be sent
+            db.session.add(client)
+            db.session.commit()
+            del session["email"]
+
+            # Send client a thank you email
+            thank_you_client(client, client_username)
+
+            flash("Thank you for subscribing to our newsletter. Please check you inbox.")
+            return redirect(url_for("home"))
+        form.token.errors.append("Invalid token.")
+    return render_template(
+        "auth/register_anonymous_user.html",
+        title="Verify Your Email",
+        form=form)
+
+
+
+# Client can unsubscribe from the email newsletter
+
+@app.route('/unsubscribe', methods=['GET', 'POST'])
+def unsubscribe():
+    """Client can stop receiving newsletters"""
+    if current_user.is_authenticated:
+        flash('You need to logout first to unsubscribe from our newsletters.')
+        authenticated_users_redirection()
+    form = UnsubscribeForm()
+    if form.validate_on_submit():
+        client = Client.query.filter_by(email=form.email.data).first()
+        if client is None:
+            flash("Please enter the email used during subscription.")
+            return redirect(url_for("unsubscribe"))
+        if client.is_active():
+            client.active = False
+            db.session.commit()
+            flash("You have successfully unsubscribed from our newsletters.")
+            return redirect(url_for("home"))
+        if client.active is False:
+            flash("You are already unsubscribed from our newsletters")
+            return redirect(url_for('home'))
+    return render_template(
+        "auth/register_anonymous_user.html",
+        title="Unsubscribe",
+        form=form)
+
+# =========================================
+# END OF NEWSLETTER
+# =========================================
 
 
 
@@ -26,11 +110,12 @@ def home():
 # =========================================
 
 
-# No Access
+# Authenticated users redirection
 
-def no_access():
-    """Code for redirection if user has no access to select pages"""
-    flash("You do not have access to this page!")
+def authenticated_users_redirection():
+    """Redirect uses appropriately if accessing certain pages"""
+    if current_user.type == "parent":
+        return redirect(url_for("parent_profile"))
     if current_user.type == "student":
         return redirect(url_for("student_profile"))
     if current_user.type == "teacher":
@@ -45,14 +130,7 @@ def no_access():
 def login():
     """Login logic"""
     if current_user.is_authenticated:
-        if current_user.type == "parent":
-            return redirect(url_for("parent_profile"))
-        if current_user.type == "student":
-            return redirect(url_for("student_profile"))
-        if current_user.type == "teacher":
-            return redirect(url_for("teacher_profile"))
-        if current_user.type == "admin":
-            return redirect(url_for("admin_profile"))
+        authenticated_users_redirection()
     form = LoginForm()
     if form.validate_on_submit():
         user = User.query.filter_by(username=form.username.data).first()
@@ -91,26 +169,20 @@ def request_password_reset():
     If not registered, the application will not tell the anonymous user why not
     """
     if current_user.is_authenticated:        
-        if current_user.type == "parent":
-            return redirect(url_for("parent_profile"))
-        if current_user.type == "student":
-            return redirect(url_for("student_profile"))
-        if current_user.type == "teacher":
-            return redirect(url_for("teacher_profile"))
-        if current_user.type == "admin":
-            return redirect(url_for("admin_profile"))
+        authenticated_users_redirection()
     form = RequestPasswordResetForm()
     if form.validate_on_submit():
         user = User.query.filter_by(email=form.email.data).first()
         if user:
             # Send user an email
-            # send_password_reset_email(user)
-            pass
+            send_password_reset_email(user)
         # Conceal database information by giving general information
         flash("Check your email for the instructions to reset your password")
         return redirect(url_for("login"))
     return render_template(
-        "auth/register_anonymous_user.html", title="Request Password Reset", form=form)
+        "auth/register_anonymous_user.html",
+        title="Request Password Reset",
+        form=form)
 
 
 
@@ -122,14 +194,7 @@ def reset_password(token):
     Time-bound link to reset password requested by an active user sent to their inbox
     """
     if current_user.is_authenticated:
-        if current_user.type == "parent":
-            return redirect(url_for("parent_profile"))
-        if current_user.type == "student":
-            return redirect(url_for("student_profile"))
-        if current_user.type == "teacher":
-            return redirect(url_for("teacher_profile"))
-        if current_user.type == "admin":
-            return redirect(url_for("admin_profile"))
+        authenticated_users_redirection()
     user = User.verify_reset_password_token(token)
     if not user:
         return redirect(url_for("login"))
@@ -139,7 +204,10 @@ def reset_password(token):
         db.session.commit()
         flash("Your password has been reset. Login to continue")
         return redirect(url_for("login"))
-    return render_template("auth/register_anonymous_user.html", title="Reset Password", form=form)
+    return render_template(
+        "auth/register_anonymous_user.html",
+        title="Reset Password",
+        form=form)
 
 
 
@@ -149,14 +217,7 @@ def reset_password(token):
 def register_parent():
     """Parent registration logic"""
     if current_user.is_authenticated:
-        if current_user.type == "parent":
-            return redirect(url_for("parent_profile"))
-        if current_user.type == "student":
-            return redirect(url_for("student_profile"))
-        if current_user.type == "teacher":
-            return redirect(url_for("teacher_profile"))
-        if current_user.type == "admin":
-            return redirect(url_for("admin_profile"))
+        authenticated_users_redirection()
     form = ParentRegistrationForm()
     if form.validate_on_submit():
         parent = Parent(
@@ -211,14 +272,13 @@ def register_student():
                 "An email has been sent to them on the next steps to take.")
             return redirect(url_for('parent_profile'))
     else:
-        # flash("You do not have access to this page!")
-        # if current_user.type == "student":
-        #     return redirect(url_for("student_profile"))
-        # if current_user.type == "teacher":
-        #     return redirect(url_for("teacher_profile"))
-        # if current_user.type == "admin":
-        #     return redirect(url_for("admin_profile"))
-        no_access()
+        flash("You do not have access to this page!")
+        if current_user.type == "student":
+            return redirect(url_for("student_profile"))
+        if current_user.type == "teacher":
+            return redirect(url_for("teacher_profile"))
+        if current_user.type == "admin":
+            return redirect(url_for("admin_profile"))
     return render_template(
         "auth/register_current_user.html",
         title="Register Your Child",
@@ -252,7 +312,13 @@ def register_teacher():
                 "An email has been sent to the teacher on the next steps.")
             return redirect(url_for('all_teachers'))
     else:
-        no_access()
+        flash("You do not have access to this page!")
+        if current_user.type == "student":
+            return redirect(url_for("student_profile"))
+        if current_user.type == "teacher":
+            return redirect(url_for("teacher_profile"))
+        if current_user.type == "parent":
+            return redirect(url_for("parent_profile"))
     return render_template(
         "auth/register_current_user.html",
         title="Register A Teacher",
@@ -285,7 +351,13 @@ def register_admin():
                 "An email has been sent to the teacher on the next steps.")
             return redirect(url_for('all_admins'))
     else:
-        no_access()
+        flash("You do not have access to this page!")
+        if current_user.type == "student":
+            return redirect(url_for("student_profile"))
+        if current_user.type == "teacher":
+            return redirect(url_for("teacher_profile"))
+        if current_user.type == "parent":
+            return redirect(url_for("parent_profile"))
     return render_template(
         "auth/register_current_user.html",
         title="Register As An Admin",

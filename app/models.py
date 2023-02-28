@@ -168,3 +168,32 @@ class StudentAttendance(db.Model):
 # =================
 # End of classroom management
 # =================
+
+
+# =================
+# Newsletter
+# =================
+
+class Client(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    email = db.Column(db.String(128), index=True, unique=True, nullable=False)
+    num_newsletter = db.Column(db.Integer, nullable=False)
+    email_confirmed_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
+    active = db.Column(db.Boolean, nullable=False, default=True)
+
+    def __repr__(self):
+        return f'Email: {self.email}'
+
+    def avatar(self, size):
+        digest = md5(self.email.lower().encode('utf-8')).hexdigest()
+        return f'https://www.gravatar.com/avatar/{digest}?d=identicon&s={size}'
+
+    def is_active(self):
+        # Override UserMixin property which always returns True
+        # Return the value from the active column instead
+        return self.active is True
+
+
+# =================
+# End of newsletter
+# =================
