@@ -17,7 +17,7 @@ class LoginForm(FlaskForm):
     username = StringField(
         'Username',
         validators=[DataRequired(), Length(1, 64)],
-        render_kw={'placeholder': 'muthonigitau'})
+        render_kw={'autofocus': True, 'placeholder': 'muthonigitau'})
     password = PasswordField(
         'Password:',
         validators=[DataRequired(), Length(min=8, max=20),
@@ -83,7 +83,7 @@ class UserForm(FlaskForm):
     first_name = StringField(
         'First Name',
         validators=[DataRequired(), Length(1, 64)],
-        render_kw={'placeholder': 'Muthoni'})
+        render_kw={'autofocus': True, 'placeholder': 'Muthoni'})
     last_name = StringField(
         'Last Name',
         validators=[DataRequired(), Length(1, 64)],
