@@ -33,7 +33,7 @@ def home():
         request_email_verification_token(newsletter_client)
         session["email"] = newsletter_client
         flash("Please check your email inbox for a verification code")
-        return redirect(url_for('home'))
+        return redirect(url_for('verify_email_token'))
     return render_template("home.html", title="Home")
 
 
