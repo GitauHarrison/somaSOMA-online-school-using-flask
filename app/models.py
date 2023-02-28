@@ -26,6 +26,8 @@ class User(db.Model, UserMixin):
     password_hash = db.Column(db.String(128))
     phone_number = db.Column(db.String(20), default='+254700111222')
     verification_phone = db.Column(db.String(20))
+    active = db.Column(db.Boolean, nullable=False, default=True)
+    delete_account = db.Column(db.Boolean, default=False)
     registered_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
 
 
@@ -131,6 +133,7 @@ class Parent(User):
 
 class Admin(User):
     id = db.Column(db.Integer, db.ForeignKey('user.id', ondelete='CASCADE'), primary_key=True)
+    current_residence = db.Column(db.String(64), default='Roselyn, Nairobi')
     department = db.Column(db.String(64), default='Administration')
 
     __mapper_args__ = {
