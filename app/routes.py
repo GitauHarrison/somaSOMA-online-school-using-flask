@@ -44,11 +44,16 @@ def home():
     """
     if current_user.is_authenticated:
         authenticated_users_redirection()
+    # Newsletter form
     if request.method == "POST":
         newsletter_client = request.form["email"]
+        # Send email owner a verification token in their inbox
         request_email_verification_token(newsletter_client)
+        # Save user email in session
+        # User not saved in database just yet
         session["email"] = newsletter_client
         flash("Please check your email inbox for a verification code")
+        # Email owner redirected to confirm token received
         return redirect(url_for('verify_email_token'))
     return render_template("home.html", title="Home")
 
@@ -67,6 +72,7 @@ def verify_email_token():
         email = session["email"]
         if check_email_verification_token(email, form.token.data):
             # Get the client's username
+            # It will be used to send a personalized thank you note for signing up
             client_email = session['email']
             client_username = client_email.split("@")[0].capitalize()
 
@@ -75,6 +81,7 @@ def verify_email_token():
             client.num_newsletter = 0 # determines what newsletter to be sent
             db.session.add(client)
             db.session.commit()
+            # Remove the client from the session since they are now added to the database
             del session["email"]
 
             # Send client a thank you email
