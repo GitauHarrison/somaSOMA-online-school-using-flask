@@ -31,7 +31,7 @@ Unsubscribe
 Read our <a href="#">Privacy policy to understand how we handle your data.</a>
 
 
-Want to unsubscribe? <a href="{{ url_for('unsubscribe', _external=True) }}">Do so here?</a>
+Want to unsubscribe? <a href="{{ url_for('unsubscribe', _external=True) }}">Do so here?</a>.
 
 Sincerely,
 somaSOMA Support
