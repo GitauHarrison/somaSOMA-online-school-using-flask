@@ -95,7 +95,7 @@ class UserForm(FlaskForm):
     email = StringField(
         'Email',
         validators=[DataRequired(), Email()],
-        render_kw={'placeholder': 'johndoe@email.com'})
+        render_kw={'placeholder': 'muthonigitau@email.com'})
     phone_number = StringField(
         'Phone Number',
         validators=[DataRequired(), Length(min=2, max=30)])
@@ -137,7 +137,7 @@ class ParentRegistrationForm(UserForm):
     current_residence = StringField(
         'Current Residence',
         validators=[DataRequired(), Length(1, 64)],
-        render_kw={'placeholder': 'Nairobi'})
+        render_kw={'placeholder': 'Roselyn, Nairobi'})
     submit = SubmitField('Register')
 
 
@@ -207,7 +207,7 @@ class AdminRegistrationForm(UserForm):
     current_residence = StringField(
         'Current Residence',
         validators=[DataRequired(), Length(1, 64)],
-        render_kw={'placeholder': 'Nairobi'})
+        render_kw={'placeholder': 'Roselyn, Nairobi'})
     department = SelectField(
         'Department',
         choices=[
@@ -226,9 +226,9 @@ class TeacherRegistrationForm(UserForm):
     current_residence = StringField(
         'Current Residence',
         validators=[DataRequired(), Length(1, 64)],
-        render_kw={'placeholder': 'Nairobi'})
+        render_kw={'placeholder': 'Roselyn, Nairobi'})
     course = SelectField(
-        'Department',
+        'Teaching Course',
         choices=[
             ('Tailwind CSS', 'Tailwind CSS'),
             ('Python', 'Python'),

@@ -4,19 +4,17 @@
 
 {% block current_user_content %}
   <!-- Login form -->
-  <div class="container py-5">
-    <div class="row align-items-center mb-1 gy-1">
-      <div class="col-lg-6 newsletter">
-        <h2 class="text-center">{{ title }}</h2>
-        <!-- form-->
-        <div class="my-form">
-          <p>{{ wtf.quick_form(form) }}</p>
-        </div>        
-        <!-- End of form -->
-      </div>
-      <div class="col-lg-6">
-        <!-- Empty col -->
-      </div>
+  <div class="row align-items-center mb-1 gy-1">
+    <div class="col-lg-6">
+      <h2 class="text-center">{{ title }}</h2>
+      <!-- form-->
+      <div class="my-form">
+        <p>{{ wtf.quick_form(form) }}</p>
+      </div>        
+      <!-- End of form -->
+    </div>
+    <div class="col-lg-6">
+      <!-- Empty col -->
     </div>
   </div>
   <!-- End of login form -->

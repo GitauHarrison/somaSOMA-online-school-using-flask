@@ -19,7 +19,7 @@ p {
     font-size: 1.1em;
     font-weight: 300;
     line-height: 1.7em;
-    color: #999;
+    color: #7a488a;
 }
 
 a,
@@ -146,7 +146,7 @@ a.download {
 }
 
 a.article {
-    background: #6d7fcc !important;
+    background: #7a488a !important;
     color: #fff !important;
 }
 a.article:hover {
