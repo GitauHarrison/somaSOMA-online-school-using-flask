@@ -275,3 +275,33 @@ class UnsubscribeForm(FlaskForm):
 # ========================================
 # END OF TWO FACTOR AUTHENTICATION
 # ========================================
+
+
+# ========================================
+# EMAIL
+# ========================================
+
+
+class EmailForm(FlaskForm):
+    subject = StringField(
+        'Subject',
+        validators=[DataRequired()],
+        render_kw={'autofocus':True, 'placeholder': 'Markdown enabled'})
+    body = TextAreaField(
+        'Body',
+        validators=[DataRequired()],
+        render_kw={'placeholder': 'Markdown enabled'})
+    closing = SelectField(
+        'Closing',
+        choices=[('Kind Regards', 'Kind Regards')],
+        validators=[DataRequired()])
+    signature = SelectField(
+        'Signature',
+        choices=[],
+        validators=[DataRequired()])
+    submit = SubmitField('Create Email')
+
+
+# ========================================
+# END OF EMAIL
+# ========================================

@@ -42,4 +42,39 @@ def thank_you_client(client, client_username):
             "emails/newsletter_client_thank_you_signup.html",
             client=client,
             client_username=client_username))
-    
+
+
+# Email subscriber individually
+
+def send_subscriber_private_email(email, subscriber_username):
+    """Send newsletter subscriber a private email"""
+    send_email(
+        subject=email.subject,
+        sender=app.config["MAIL_DEFAULT_SENDER"],
+        recipients=[email.email],
+        text_body=render_template(
+            "emails/newsletter_subscriber_private_email.txt",
+            email=email,
+            subscriber_username=subscriber_username),
+        html_body=render_template(
+            "emails/newsletter_subscriber_private_email.html",
+            email=email,
+            subscriber_username=subscriber_username))
+
+
+# Email user individually
+
+def send_user_private_email(email, user_username):
+    """Send user a private email"""
+    send_email(
+        subject=email.subject,
+        sender=app.config["MAIL_DEFAULT_SENDER"],
+        recipients=[email.email],
+        text_body=render_template(
+            "emails/private_email.txt",
+            email=email,
+            user_username=user_username),
+        html_body=render_template(
+            "emails/private_email.html",
+            email=email,
+            user_username=user_username))

@@ -3,9 +3,10 @@ from flask_login import current_user, login_user, logout_user, login_required
 from app.forms import ParentRegistrationForm, StudentRegistrationForm, \
     TeacherRegistrationForm, AdminRegistrationForm, LoginForm, \
     ResetPasswordForm, RequestPasswordResetForm, VerifyForm,\
-    UnsubscribeForm
+    UnsubscribeForm, EmailForm
 from app.models import User, Parent, Student, Teacher, Admin,\
     Newsletter_Subscriber, Email
+from app.email import send_subscriber_private_email, send_user_private_email
 from app.email import send_password_reset_email, thank_you_client
 from werkzeug.urls import url_parse
 from app.twilio_verify_api import request_email_verification_token, \
@@ -511,7 +512,7 @@ def newsletter_subscribers():
     )
 
 
-# Emaail newsletter subscribers
+# Email newsletter subscribers
 
 @app.route("/dashboard/newsletter-subscribers")
 @login_required
@@ -536,7 +537,7 @@ def resubscribe_newsletter_subscriber(email):
     subscriber.active = True
     db.session.commit()
     flash('The subscriber can now continue receiving newsletters')
-    return redirect(url_for('newsletter_subscribers'))
+    return redirect(url_for('email_newsletter_subscribers'))
 
 
 # Delete subscriber
@@ -549,14 +550,14 @@ def delete_newsletter_subscriber(email):
     db.session.delete(subscriber)
     db.session.commit()
     flash('The subscriber can now continue receiving newsletters')
-    return redirect(url_for('newsletter_subscribers'))
+    return redirect(url_for('email_newsletter_subscribers'))
 
 
 # Compose direct email
 
-# Delete subscriber
-
-@app.route('/newsletter/compose-direct-email/<email>')
+@app.route(
+    '/newsletter/compose-direct-email/<email>',
+    methods=['GET', 'POST'])
 @login_required
 def newsletter_subscriber_compose_direct_email(email):
     """Write email to individual newsletter subscriber"""
@@ -565,7 +566,7 @@ def newsletter_subscriber_compose_direct_email(email):
     session['subscriber'] = subscriber.email
     subscriber_username = session['subscriber'].split('@')[0].capitalize()
 
-    form = Newsletter_Subscriber()
+    form = EmailForm()
     form.signature.choices = [
         (current_user.first_name.capitalize(), current_user.first_name.capitalize())]
     if form.validate_on_submit():
@@ -581,7 +582,7 @@ def newsletter_subscriber_compose_direct_email(email):
         flash(f'Sample private email to {subscriber_username} saved')
         return redirect(url_for('newsletter_subscribers_email_sent_out'))
     return render_template(
-        'admin/send_private_email.html',
+        'admin/email.html',
         title='Compose Private Email',
         form=form,
         subscriber=subscriber)
@@ -596,15 +597,81 @@ def newsletter_subscriber_compose_direct_email(email):
 # ---------------------------------------
 
 
-# Individual emails sent out
+# List of individual emails sent out
 
-@app.route('/newsletter/individual-newsletter-subscriber-email')
+@app.route('/newsletter/individual-email-to-newsletter-subscriber')
 @login_required
 def newsletter_subscribers_email_sent_out():
     """Emails sent out to individual newsletter subscribers"""
+    emails_sent_to_newsletter_subscribers = Email.query.filter_by(
+        bulk='Newsletter Subscriber').all()
+    emails = len(emails_sent_to_newsletter_subscribers)
     return render_template(
         'admin/individual_newsletter_subscribers_email.html',
-        title='Individual Emails To Newsletter Subscribers')
+        title='Individual Emails Sent To Newsletter Subscribers',
+        emails_sent_to_newsletter_subscribers=emails_sent_to_newsletter_subscribers,
+        emails=emails)
+
+
+# Send email to individual subscriber
+
+@app.route('/newsletter/send-email/<id>')
+@login_required
+def send_email(id):
+    """Send email to user from the database"""
+    email = Email.query.filter_by(id=id).first()
+
+    # Update db so that the email is not sent again
+    email.allow = True
+    db.session.add(email)
+    db.session.commit()
+
+    # Send email to subscriber
+    subscriber_username = email.split('@')[0].capitalize()
+    send_subscriber_private_email(email, subscriber_username)
+
+    # Notify user that email has been sent
+    flash(f'Email successfully sent to {email}')
+    return redirect(url_for('newsletter_subscribers_email_sent_out'))
+
+
+# Edit sample email
+
+@app.route('/edit-email/<id>', methods=['GET', 'POST'])
+@login_required
+def edit_email(id):
+    """Edit email to user from the database"""
+    email = Email.query.filter_by(id=id).first()
+    form = EmailForm()
+    form.signature.choices = [
+        (current_user.first_name.capitalize(), current_user.first_name.capitalize())]
+    if form.validate_on_submit():
+        email.subject = form.subject.data
+        email.body = form.body.data
+        email.closing = form.closing.data
+        email.signature = form.signature.data
+        db.session.commit()
+        flash('Your changes have been saved')
+        return redirect(url_for('newsletter_subscribers_email_sent_out'))
+    if request.method == 'GET':
+        form.subject.data = email.subject
+        form.body.data = email.body
+        form.signature.data = email.signature
+    return render_template(
+        'admin/email.html', title='Edit Sample Email', form=form)
+
+
+# Delete email from database
+
+@app.route('/delete-email/<id>')
+@login_required
+def delete_email(id):
+    """Delete email to user from the database"""
+    email = Email.query.filter_by(id=id).first()
+    db.session.delete(email)
+    db.session.commit()
+    flash('Email successfully deleted')
+    return redirect(url_for('newsletter_subscribers_email_sent_out'))
 
 
 # ==========

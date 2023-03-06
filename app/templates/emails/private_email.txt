@@ -1,0 +1,9 @@
+{% if subscriber_username %}
+    Dear {{ subscriber_username }},
+{% else %}
+    Dear {{ user_username }},
+{% endif %}
+
+{{ email.body }}
+
+{{ email.signature }}

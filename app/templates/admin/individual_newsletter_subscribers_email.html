@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block current_user_content %}
+    <div class="container-fluid content">
+        {% include '_flash_message.html' %}
+        <h1 class="mb-4">{{ title }} ({{ emails }})</h1>
+        <p>These are all the individual emails your organization has sent to <strong>Newsletter Subscribers</strong>.</p>
+        {% for email in emails_sent_to_newsletter_subscribers %}
+            {% include '_email.html' %}
+        {% endfor %}
+        <!-- Pagination of comments -->
+        <div class="row text-center">
+            <div class="col-md-6">
+                {% if prev_url %}
+                    <a href="{{ prev_url or '#' }}">
+                        <span aria-hidden="true">&#60;</span> Newer Emails
+                    </a>
+                {% else %}
+                    <a class="link_disabled" href="{{ prev_url or '#' }}">
+                        <span aria-hidden="true">&#60;</span> Newer Emails
+                    </a>
+                {% endif %}
+            </div>
+            <div class="col-md-6">
+                {% if next_url %}
+                    <a href="{{ next_url or '#' }}">
+                        Older Emails <span aria-hidden="true">&#62;</span>
+                    </a>
+                {% else %}
+                    <a class="link_disabled" href="{{ next_url or '#' }}">
+                        Older Emails <span aria-hidden="true">&#62;</span>
+                    </a>
+                {% endif %}
+            </div>
+        </div>
+        <!-- End of pagination of comments -->
+    </div>
+{% endblock %}

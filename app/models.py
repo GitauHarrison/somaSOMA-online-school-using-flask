@@ -29,6 +29,7 @@ class User(db.Model, UserMixin):
     active = db.Column(db.Boolean, nullable=False, default=True)
     delete_account = db.Column(db.Boolean, default=False)
     registered_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
+    emails = db.relationship('Email', backref='author', lazy='dynamic')
 
 
     type = db.Column(db.String(64))
@@ -186,6 +187,10 @@ class Newsletter_Subscriber(db.Model):
 
     def __repr__(self):
         return f'Email: {self.email}'
+
+    def avatar(self, size):
+        digest = md5(self.email.lower().encode('utf-8')).hexdigest()
+        return f'https://www.gravatar.com/avatar/{digest}?d=identicon&s={size}'
 
     def is_active(self):
         # Override UserMixin property which always returns True
