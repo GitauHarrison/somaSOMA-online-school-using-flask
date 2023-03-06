@@ -195,45 +195,43 @@
       </footer>
       <!-- End of footer -->
 
-      {% block anonymous_user_scripts %}
+      <!-- Momentjs -->
+      {{ moment.include_moment() }}
 
-        <!-- Momentjs -->
-        {{ moment.include_moment() }}
+      <!-- All scripts will go here -->
+      <script src="{{ url_for('static', filename='vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+      <script src="{{ url_for('static', filename='vendor/swiper/swiper-bundle.min.js') }}"></script>
+      <script src="{{ url_for('static', filename='vendor/modal-video/js/modal-video.js') }}"></script>
+      <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+      <!-- FontAwesome CSS - loading as last, so it doesn't block rendering-->
+      <link 
+          rel="stylesheet" 
+          href="https://use.fontawesome.com/releases/v5.7.1/css/all.css" 
+          integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" 
+          crossorigin="anonymous">  
 
-        <!-- All scripts will go here -->
-        <script src="{{ url_for('static', filename='vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
-        <script src="{{ url_for('static', filename='vendor/swiper/swiper-bundle.min.js') }}"></script>
-        <script src="{{ url_for('static', filename='vendor/modal-video/js/modal-video.js') }}"></script>
-        <script src="{{ url_for('static', filename='js/main.js') }}"></script>
-        <!-- FontAwesome CSS - loading as last, so it doesn't block rendering-->
-        <link 
-            rel="stylesheet" 
-            href="https://use.fontawesome.com/releases/v5.7.1/css/all.css" 
-            integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" 
-            crossorigin="anonymous">  
+      <!-- intl-tel-input -->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/16.0.4/js/intlTelInput.min.js"></script>
 
-        <!-- intl-tel-input -->
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/16.0.4/js/intlTelInput.min.js"></script>
-
-        <!-- Phone number -->
-        <script>
-          var wtf_phone_field = document.getElementById('phone_number');
-          wtf_phone_field.style.position = 'absolute';
-          wtf_phone_field.style.top = '-9999px';
-          wtf_phone_field.style.left = '-9999px';
-          wtf_phone_field.parentElement.insertAdjacentHTML('beforeend', '<div><input type="tel" id="_phone"></div>');
-          var fancy_phone_field = document.getElementById('_phone');
-          var fancy_phone_iti = window.intlTelInput(fancy_phone_field, {
-              separateDialCode: true,
-              utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/16.0.4/js/utils.js",
-          });
-          fancy_phone_iti.setNumber(wtf_phone_field.value);
-          fancy_phone_field.addEventListener('blur', function() {
-              wtf_phone_field.value = fancy_phone_iti.getNumber();
-          });
+      <!-- Phone number -->
+      <script>
+        var wtf_phone_field = document.getElementById('phone_number');
+        wtf_phone_field.style.position = 'absolute';
+        wtf_phone_field.style.top = '-9999px';
+        wtf_phone_field.style.left = '-9999px';
+        wtf_phone_field.parentElement.insertAdjacentHTML('beforeend', '<div><input type="tel" id="_phone"></div>');
+        var fancy_phone_field = document.getElementById('_phone');
+        var fancy_phone_iti = window.intlTelInput(fancy_phone_field, {
+            separateDialCode: true,
+            utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/16.0.4/js/utils.js",
+        });
+        fancy_phone_iti.setNumber(wtf_phone_field.value);
+        fancy_phone_field.addEventListener('blur', function() {
+            wtf_phone_field.value = fancy_phone_iti.getNumber();
+        });
       </script>
 
-      {% endblock %}
+      {% block anonymous_user_scripts %}{% endblock %}
                
     {% endif %}
     <!-- ============================================== -->
@@ -371,9 +369,29 @@
                               </li>
                           </ul>   
                       </li> 
-                      <li>
-                          <a href=" {{ url_for('private_emails') }} ">All Private Emails</a>
-                      </li> 
+                      <li class="active">
+                        <a href="#allEmailsSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Emails</a>
+                        <ul class="collapse list-unstyled" id="allEmailsSubmenu">
+                            <li>
+                                <a href=" {{ url_for('newsletter_subscribers_email_sent_out') }} ">Subscribers Emails</a>
+                            </li>
+                            <li>
+                              <a href=" # ">Individual User Emails</a>
+                          </li>
+                            <li>
+                                <a href=" # ">Emails To All Parents</a>
+                            </li>
+                            <li>
+                                <a href=" # ">Emails To All Students</a>
+                            </li>
+                            <li>
+                                <a href=" # ">Emails To All Teachers</a>
+                            </li>
+                            <li>
+                                <a href=" # ">Emails To All Admins</a>
+                            </li>
+                        </ul>   
+                      </li>
                       <li class="active">
                           <a href="#studentAnalysisSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Student Analysis</a>
                           <ul class="collapse list-unstyled" id="studentAnalysisSubmenu">
@@ -410,7 +428,7 @@
                           <a href="#newsletterSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Newsletter</a>
                           <ul class="collapse list-unstyled" id="newsletterSubmenu">
                               <li>
-                                  <a href=" # ">Subscribers</a>
+                                  <a href=" {{ url_for('newsletter_subscribers') }} ">Subscribers</a>
                               </li>
                           </ul>                            
                       </li>
@@ -466,104 +484,103 @@
         </p>
       {% endif %}
 
-      {% block current_user_scripts %}
-
-          <!-- Momentjs -->
-          {{ moment.include_moment() }}
+       <!-- Momentjs -->
+       {{ moment.include_moment() }}
           
-          <!-- Custom JS -->
-          <script src="{{ url_for('static', filename='js/custom_current_user.js') }}"></script>
-          <!-- jQuery CDN - Slim version (=without AJAX) -->
-        <script 
-          src="https://code.jquery.com/jquery-3.3.1.slim.min.js" 
-          integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" 
-          crossorigin="anonymous"></script>
-        <!-- Popper.JS -->
-        <script 
-            src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" 
-            integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" 
-            crossorigin="anonymous"></script>
-        <!-- Bootstrap JS -->
-        <script 
-            src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" 
-            integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" 
-            crossorigin="anonymous"></script>
-        <script 
-            src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" 
-            integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" 
-            crossorigin="anonymous"></script>
-        <!-- jQuery Custom Scroller CDN -->
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>
-          <!-- DataTableJs links -->
-          <script 
-            type="text/javascript" 
-            charset="utf8" 
-            src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.js">
-          </script>
-          <script 
-            type="text/javascript" 
-            charset="utf8" 
-            src="https://cdn.datatables.net/1.10.25/js/dataTables.bootstrap5.js">
-          </script>
-          <!-- intl-tel-input -->
-          <script 
-            src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/16.0.4/js/intlTelInput.min.js">
-          </script>
+       <!-- Custom JS -->
+       <script src="{{ url_for('static', filename='js/custom_current_user.js') }}"></script>
+       <!-- jQuery CDN - Slim version (=without AJAX) -->
+       <script 
+         src="https://code.jquery.com/jquery-3.3.1.slim.min.js" 
+         integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" 
+         crossorigin="anonymous"></script>
+       <!-- Popper.JS -->
+       <script 
+           src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" 
+           integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" 
+           crossorigin="anonymous"></script>
+       <!-- Bootstrap JS -->
+       <script 
+           src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" 
+           integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" 
+           crossorigin="anonymous"></script>
+       <script 
+           src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" 
+           integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" 
+           crossorigin="anonymous"></script>
+       <!-- jQuery Custom Scroller CDN -->
+       <script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>
+         <!-- DataTableJs links -->
+         <script 
+           type="text/javascript" 
+           charset="utf8" 
+           src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.js">
+         </script>
+         <script 
+           type="text/javascript" 
+           charset="utf8" 
+           src="https://cdn.datatables.net/1.10.25/js/dataTables.bootstrap5.js">
+         </script>
+         <!-- intl-tel-input -->
+         <script 
+           src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/16.0.4/js/intlTelInput.min.js">
+         </script>
 
-          <script type="text/javascript">
-            $(document).ready(function () {
-                $("#sidebar").mCustomScrollbar({
-                    theme: "minimal"
-                });
+         <script type="text/javascript">
+           $(document).ready(function () {
+               $("#sidebar").mCustomScrollbar({
+                   theme: "minimal"
+               });
 
-                $('#sidebarCollapse').on('click', function () {
-                    $('#sidebar, #content').toggleClass('active');
-                    $('.collapse.in').toggleClass('in');
-                    $('a[aria-expanded=true]').attr('aria-expanded', 'false');
-                });
-            });
-          </script>
+               $('#sidebarCollapse').on('click', function () {
+                   $('#sidebar, #content').toggleClass('active');
+                   $('.collapse.in').toggleClass('in');
+                   $('a[aria-expanded=true]').attr('aria-expanded', 'false');
+               });
+           });
+         </script>
 
-          <!-- Make image fullscreen when clicked -->
-          <script>
-              $(document).ready(function(){$("img").click(function(){this.requestFullscreen()})});
-          </script>
+         <!-- Make image fullscreen when clicked -->
+         <script>
+             $(document).ready(function(){$("img").click(function(){this.requestFullscreen()})});
+         </script>
 
-            <!-- Verification Phone number -->
-            <script>
-              var wtf_phone_field = document.getElementById('verification_phone');
-              wtf_phone_field.style.position = 'absolute';
-              wtf_phone_field.style.top = '-9999px';
-              wtf_phone_field.style.left = '-9999px';
-              wtf_phone_field.parentElement.insertAdjacentHTML('beforeend', '<div><input type="tel" id="_phone"></div>');
-              var fancy_phone_field = document.getElementById('_phone');
-              var fancy_phone_iti = window.intlTelInput(fancy_phone_field, {
-                  separateDialCode: true,
-                  utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/16.0.4/js/utils.js",
-              });
-              fancy_phone_iti.setNumber(wtf_phone_field.value);
-              fancy_phone_field.addEventListener('blur', function() {
-                  wtf_phone_field.value = fancy_phone_iti.getNumber();
-              });
-            </script>
-            <!-- Phone number -->
-            <script>
-              var wtf_phone_field = document.getElementById('phone_number');
-              wtf_phone_field.style.position = 'absolute';
-              wtf_phone_field.style.top = '-9999px';
-              wtf_phone_field.style.left = '-9999px';
-              wtf_phone_field.parentElement.insertAdjacentHTML('beforeend', '<div><input type="tel" id="_phone"></div>');
-              var fancy_phone_field = document.getElementById('_phone');
-              var fancy_phone_iti = window.intlTelInput(fancy_phone_field, {
-                  separateDialCode: true,
-                  utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/16.0.4/js/utils.js",
-              });
-              fancy_phone_iti.setNumber(wtf_phone_field.value);
-              fancy_phone_field.addEventListener('blur', function() {
-                  wtf_phone_field.value = fancy_phone_iti.getNumber();
-              });
-          </script>
-      {% endblock %}
+           <!-- Verification Phone number -->
+           <script>
+             var wtf_phone_field = document.getElementById('verification_phone');
+             wtf_phone_field.style.position = 'absolute';
+             wtf_phone_field.style.top = '-9999px';
+             wtf_phone_field.style.left = '-9999px';
+             wtf_phone_field.parentElement.insertAdjacentHTML('beforeend', '<div><input type="tel" id="_phone"></div>');
+             var fancy_phone_field = document.getElementById('_phone');
+             var fancy_phone_iti = window.intlTelInput(fancy_phone_field, {
+                 separateDialCode: true,
+                 utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/16.0.4/js/utils.js",
+             });
+             fancy_phone_iti.setNumber(wtf_phone_field.value);
+             fancy_phone_field.addEventListener('blur', function() {
+                 wtf_phone_field.value = fancy_phone_iti.getNumber();
+             });
+           </script>
+           <!-- Phone number -->
+           <script>
+             var wtf_phone_field = document.getElementById('phone_number');
+             wtf_phone_field.style.position = 'absolute';
+             wtf_phone_field.style.top = '-9999px';
+             wtf_phone_field.style.left = '-9999px';
+             wtf_phone_field.parentElement.insertAdjacentHTML('beforeend', '<div><input type="tel" id="_phone"></div>');
+             var fancy_phone_field = document.getElementById('_phone');
+             var fancy_phone_iti = window.intlTelInput(fancy_phone_field, {
+                 separateDialCode: true,
+                 utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/16.0.4/js/utils.js",
+             });
+             fancy_phone_iti.setNumber(wtf_phone_field.value);
+             fancy_phone_field.addEventListener('blur', function() {
+                 wtf_phone_field.value = fancy_phone_iti.getNumber();
+             });
+         </script>
+
+      {% block current_user_scripts %}{% endblock %}
 
     {% endif %}
 

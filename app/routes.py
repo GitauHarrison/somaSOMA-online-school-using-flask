@@ -4,7 +4,8 @@ from app.forms import ParentRegistrationForm, StudentRegistrationForm, \
     TeacherRegistrationForm, AdminRegistrationForm, LoginForm, \
     ResetPasswordForm, RequestPasswordResetForm, VerifyForm,\
     UnsubscribeForm
-from app.models import User, Parent, Student, Teacher, Admin, Client
+from app.models import User, Parent, Student, Teacher, Admin,\
+    Newsletter_Subscriber, Email
 from app.email import send_password_reset_email, thank_you_client
 from werkzeug.urls import url_parse
 from app.twilio_verify_api import request_email_verification_token, \
@@ -29,7 +30,7 @@ def authenticated_users_redirection():
 
 
 # =========================================
-# NEWSLETTER
+# NEWSLETTER HOME PAGE
 # =========================================
 
 
@@ -77,7 +78,7 @@ def verify_email_token():
             client_username = client_email.split("@")[0].capitalize()
 
             # Add client to the database
-            client = Client(email=session["email"])
+            client = Newsletter_Subscriber(email=session["email"])
             client.num_newsletter = 0 # determines what newsletter to be sent
             db.session.add(client)
             db.session.commit()
@@ -107,7 +108,7 @@ def unsubscribe():
         authenticated_users_redirection()
     form = UnsubscribeForm()
     if form.validate_on_submit():
-        client = Client.query.filter_by(email=form.email.data).first()
+        client = Newsletter_Subscriber.query.filter_by(email=form.email.data).first()
         if client is None:
             flash("Please enter the email used during subscription.")
             return redirect(url_for("unsubscribe"))
@@ -120,12 +121,12 @@ def unsubscribe():
             flash("You are already unsubscribed from our newsletters")
             return redirect(url_for('home'))
     return render_template(
-        "auth/register_anonymous_user.html",
+        "auth/unsubscribe.html",
         title="Unsubscribe",
         form=form)
 
 # =========================================
-# END OF NEWSLETTER
+# END OF NEWSLETTER HOME PAGE
 # =========================================
 
 
@@ -491,6 +492,120 @@ def private_emails():
         "admin/private_emails.html",
         title="All Private Emails"
     )
+
+
+# ----------------------------------------
+# Newsletter subscribers
+# ----------------------------------------
+
+
+@app.route("/dashboard/newsletter-subscribers")
+@login_required
+def newsletter_subscribers():
+    subscribers = Newsletter_Subscriber.query.order_by(
+        Newsletter_Subscriber.email_confirmed_at.desc()).all()
+    return render_template(
+        "admin/newsletter_subscribers.html",
+        title="Newsletter Subscribers",
+        subscribers=subscribers
+    )
+
+
+# Emaail newsletter subscribers
+
+@app.route("/dashboard/newsletter-subscribers")
+@login_required
+def email_newsletter_subscribers():
+    subscribers = Newsletter_Subscriber.query.order_by(
+        Newsletter_Subscriber.email_confirmed_at.desc()).all()
+    return render_template(
+        "admin/newsletter_subscribers.html",
+        title="Newsletter Subscribers",
+        subscribers=subscribers
+    )
+
+
+
+# Resubscribe
+
+@app.route('/newsletter/resubscription/<email>')
+@login_required
+def resubscribe_newsletter_subscriber(email):
+    """Resubscribe the client to continue receiving newsletters"""
+    subscriber = Newsletter_Subscriber.query.filter_by(email=email).first()
+    subscriber.active = True
+    db.session.commit()
+    flash('The subscriber can now continue receiving newsletters')
+    return redirect(url_for('newsletter_subscribers'))
+
+
+# Delete subscriber
+
+@app.route('/newsletter/delete/<email>')
+@login_required
+def delete_newsletter_subscriber(email):
+    """Permanently delete client from the database"""
+    subscriber = Newsletter_Subscriber.query.filter_by(email=email).first()
+    db.session.delete(subscriber)
+    db.session.commit()
+    flash('The subscriber can now continue receiving newsletters')
+    return redirect(url_for('newsletter_subscribers'))
+
+
+# Compose direct email
+
+# Delete subscriber
+
+@app.route('/newsletter/compose-direct-email/<email>')
+@login_required
+def newsletter_subscriber_compose_direct_email(email):
+    """Write email to individual newsletter subscriber"""
+    # Get the client (newsletter)
+    subscriber = Newsletter_Subscriber.query.filter_by(email=email).first()
+    session['subscriber'] = subscriber.email
+    subscriber_username = session['subscriber'].split('@')[0].capitalize()
+
+    form = Newsletter_Subscriber()
+    form.signature.choices = [
+        (current_user.first_name.capitalize(), current_user.first_name.capitalize())]
+    if form.validate_on_submit():
+        email = Email(
+            subject=form.subject.data,
+            body=form.body.data,
+            closing=form.closing.data,
+            signature=form.signature.data,
+            bulk='Newsletter Subscriber',
+            author=current_user)
+        db.session.add(email)
+        db.session.commit()
+        flash(f'Sample private email to {subscriber_username} saved')
+        return redirect(url_for('newsletter_subscribers_email_sent_out'))
+    return render_template(
+        'admin/send_private_email.html',
+        title='Compose Private Email',
+        form=form,
+        subscriber=subscriber)
+
+# ----------------------------------------
+# End of Newsletter subscribers
+# ----------------------------------------
+
+
+# ---------------------------------------
+# SAMPLE EMAILS
+# ---------------------------------------
+
+
+# Individual emails sent out
+
+@app.route('/newsletter/individual-newsletter-subscriber-email')
+@login_required
+def newsletter_subscribers_email_sent_out():
+    """Emails sent out to individual newsletter subscribers"""
+    return render_template(
+        'admin/individual_newsletter_subscribers_email.html',
+        title='Individual Emails To Newsletter Subscribers')
+
 
 # ==========
 # END OF DASHBOARD

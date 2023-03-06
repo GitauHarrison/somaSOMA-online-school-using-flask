@@ -1,0 +1,101 @@
+{% extends 'base.html' %}
+
+
+{% block current_user_content %}
+  <!-- Login form -->
+  <div class="row align-items-center mb-1 gy-1">
+    <div class="col-lg-12">
+      <h2 class="text-center mb-4">{{ title }}</h2>
+      <div class="table-responsive users">
+        <table id="data" class="table table-hover table-bordered">
+            <thead>
+                <tr>
+                    <th>Email</th>
+                    <th>Registration Date</th>
+                    <th>Reach Out</th>
+                    <th>Subscription Status</th>
+                    <th>Resubscribe</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for subscriber in subscribers %}
+                    <tr>
+                        <td>{{ subscriber.email }}</td>
+                        <td>{{ moment(subscriber.email_confirmed_at).format('lll') }}</td>
+                        {% if current_user.email == subscriber.email %}
+                            <td>
+                                <a 
+                                    href=" {{ url_for('admin.compose_private_email', email=client.email) }} " 
+                                    class="btn btn-light link_disabled">
+                                        Send Private Email
+                                </a>
+                            </td>
+                        {% else %}
+                            {% if subscriber.active == False %}
+                                <td>
+                                    <a 
+                                        href=" {{ url_for('newsletter_subscriber_compose_direct_email', email=subscriber.email) }} " 
+                                        class="btn btn-success link_disabled" >
+                                            Send Private Email
+                                    </a>
+                                </td>
+                            {% else %}
+                                <td>
+                                    <a 
+                                        href=" {{ url_for('newsletter_subscriber_compose_direct_email', email=subscriber.email) }} " 
+                                        class="btn btn-success" >
+                                            Send Private Email
+                                    </a>
+                                </td>
+                            {% endif %}
+                        {% endif %}
+                        {% if subscriber.subscription_status == True %}
+                            <td>
+                                <span style="color: white;" class="label label-success">{{ subscriber.subscription_status }}</span>
+                            </td>
+                        {% else %}
+                            <td>
+                                <span style="color: white;" class="label label-warning">{{ subscriber.subscription_status }}</span>
+                            </td>
+                        {% endif %}
+                        {% if subscriber.subscription_status == True %}
+                            <td>
+                                <a 
+                                    href="{{ url_for('resubscribe_newsletter_subscriber', email=subscriber.email) }}" 
+                                    class="link_disabled">
+                                        Resubscribe
+                                </a>
+                            </td>
+                        {% else %}
+                            <td>
+                                <a href="{{ url_for('resubscribe_newsletter_subscriber', email=subscriber.email) }}">Resubscribe</a>
+                            </td>
+                        {% endif %}
+                        {% if current_user.type == 'admin' %}
+                            <td>
+                                <a 
+                                    href=" {{ url_for('delete_newsletter_subscriber', email=subscriber.email) }} " 
+                                    class="btn" 
+                                    style="background-color: red; color: white;">
+                                        Delete Client
+                                </a>
+                            </td>
+                        {% endif %}
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <!-- End of login form -->
+{% endblock %}
+
+{% block current_user_scripts %}
+    <script>
+        $(document).ready(function() {
+            $('#data').DataTable();
+        });
+    </script>
+{% endblock %}

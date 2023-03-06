@@ -177,26 +177,48 @@ class StudentAttendance(db.Model):
 # Newsletter
 # =================
 
-class Client(db.Model):
+class Newsletter_Subscriber(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(128), index=True, unique=True, nullable=False)
     num_newsletter = db.Column(db.Integer, nullable=False)
     email_confirmed_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
-    active = db.Column(db.Boolean, nullable=False, default=True)
+    subscription_status = db.Column(db.Boolean, nullable=False, default=True)
 
     def __repr__(self):
         return f'Email: {self.email}'
 
-    def avatar(self, size):
-        digest = md5(self.email.lower().encode('utf-8')).hexdigest()
-        return f'https://www.gravatar.com/avatar/{digest}?d=identicon&s={size}'
-
     def is_active(self):
         # Override UserMixin property which always returns True
         # Return the value from the active column instead
-        return self.active is True
+        return self.subscription_status is True
 
 
 # =================
 # End of newsletter
+# =================
+
+
+
+# =================
+# Emails sent out
+# =================
+
+
+class Email(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    subject = db.Column(db.String(128), nullable=False)
+    body = db.Column(db.String(500), nullable=False)
+    closing = db.Column(db.String(50), nullable=False)
+    bulk = db.Column(db.String(30), default='Bulk')
+    signature = db.Column(db.String(50), nullable=False)
+    timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
+    allow = db.Column(db.Boolean, default=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id', ondelete='CASCADE'))
+
+    def __repr__(self):
+        return f'Subject: {self.subject}'
+
+
+# =================
+# End of emails sent out
 # =================
