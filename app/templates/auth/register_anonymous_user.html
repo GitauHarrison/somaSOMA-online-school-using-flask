@@ -17,7 +17,7 @@
             class="img img-fluid"
             style="width: 100%; height: auto;">
         <!-- form-->
-        <p>{{ wtf.quick_form(form) }}</p>
+        <p>{{ wtf.quick_form(form, button_map={"submit":"warning"}) }}</p>
         <!-- End of form -->
       </div>
       <div class="col-lg-3">
