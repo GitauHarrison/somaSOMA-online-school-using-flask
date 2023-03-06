@@ -9,7 +9,7 @@
       <h2 class="text-center">{{ title }}</h2>
       <!-- form-->
       <div class="my-form">
-        <p>{{ wtf.quick_form(form) }}</p>
+        <p>{{ wtf.quick_form(form, button_map={"submit":"warning"}) }}</p>
       </div>        
       <!-- End of form -->
     </div>
