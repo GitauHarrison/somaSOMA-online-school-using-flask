@@ -1,7 +1,7 @@
 {% if subscriber_username %}
     <p>Dear {{ subscriber_username }},</p>
 {% else %}
-    <p>Dear {{ subscriber_username }},</p>
+    <p>Dear {{ user.first_name }},</p>
 {% endif %}
 <p>{{ email.body }}</p>
 <p>{{ email.closing }}, <br> {{ email.signature }}.</p>
