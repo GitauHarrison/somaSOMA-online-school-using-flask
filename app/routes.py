@@ -135,6 +135,12 @@ def unsubscribe():
 # =========================================
 
 
+@app.route('/dashboard')
+def dashboard():
+    authenticated_users_redirection()
+
+
+
 # Login
 
 @app.route("/login", methods=["GET", "POST"])
@@ -391,75 +397,73 @@ def register_admin():
 # ==========
 
 
-# Parent profile
-
-@app.route("/parent/profile")
-@login_required
-def parent_profile():
-    return render_template(
-        "parent/profile.html",
-        title="Parent Profile"
-    )
-
-
-# Student profile
-
-@app.route("/student/profile")
-@login_required
-def student_profile():
-    return render_template(
-        "student/profile.html",
-        title="Student Profile"
-    )
-
-
+# --------------------------------------
 # Teacher profile
+# --------------------------------------
 
-@app.route("/teacher/profile")
+
+@app.route("/dashboard/teacher/profile")
 @login_required
 def teacher_profile():
+    teachers = Teacher.query.all()
     return render_template(
         "teacher/profile.html",
-        title="Teacher Profile"
+        title="Teacher Profile",
+        teachers=teachers
     )
 
 
-# Admin profile
+# Compose direct email to teacher
 
-@app.route("/admin/profile")
+@app.route(
+    '/dashboard/compose-direct-email/<email>',
+    methods=['GET', 'POST'])
 @login_required
-def admin_profile():
+def compose_direct_email_to_teacher(email):
+    """Write email to individual teacher"""
+    # Get the teacher
+    teacher = Teacher.query.filter_by(email=email).first()
+    teacher_username = teacher.email.split('@')[0].capitalize()
+
+    form = EmailForm()
+    form.signature.choices = [
+        (current_user.first_name.capitalize(), current_user.first_name.capitalize())]
+    if form.validate_on_submit():
+        email = Email(
+            subject=form.subject.data,
+            body=form.body.data,
+            closing=form.closing.data,
+            signature=form.signature.data,
+            bulk='Teacher Email',
+            author=current_user)
+        db.session.add(email)
+        db.session.commit()
+        flash(f'Sample private email to {teacher_username} saved')
+        return redirect(url_for('emails_to_individual_teachers'))
     return render_template(
-        "admin/profile.html",
-        title="Admin Profile"
-    )
+        'admin/email_teacher.html',
+        title='Compose Private Email',
+        form=form,
+        teacher=teacher)
 
 
+# List of emails sent out to individual teachers
 
-# All parents
-
-@app.route("/dashboard/all-parents")
+@app.route('/dashboard/emails-to-individual-teachers')
 @login_required
-def all_parents():
+def emails_to_individual_teachers():
+    """Emails sent out to individual teachers"""
+    emails_sent_to_individual_teachers = Email.query.filter_by(
+        bulk='Teacher Email').all()
+    emails = len(emails_sent_to_individual_teachers)
     return render_template(
-        "admin/all_parents.html",
-        title="All Parents"
-    )
+        'admin/individual_teacher_email.html',
+        title='Emails Sent To Individual Teachers',
+        emails_sent_to_individual_teachers=emails_sent_to_individual_teachers,
+        emails=emails)
 
 
-# All students
-
-@app.route("/dashboard/all-students")
-@login_required
-def all_students():
-    return render_template(
-        "admin/all_students.html",
-        title="All Students"
-    )
-
-
-
-# All teachers
+# List of all teachers
 
 @app.route("/dashboard/all-teachers")
 @login_required
@@ -470,27 +474,467 @@ def all_teachers():
     )
 
 
-# All admins
+# Deactivate teacher
+
+@app.route("/dashboard/deactivate-teacher/<username>")
+@login_required
+def deactivate_teacher(username):
+    teacher = Teacher.query.filter_by(username=username).first_or_404()
+    teacher.active = False
+    db.session.add(teacher)
+    db.session.commit()
+    flash(f'{teacher.username} has been deactivated as a teacher')
+    return redirect(url_for('all_teachers'))
+
+
+# Reactivate admin
+
+@app.route("/dashboard/reactivate-teacher/<username>")
+@login_required
+def reactivate_teacher(username):
+    teacher = Teacher.query.filter_by(username=username).first_or_404()
+    teacher.active = True
+    db.session.add(teacher)
+    db.session.commit()
+    flash(f'{teacher.username} has been reactivated as a teacher')
+    return redirect(url_for('all_teachers'))
+
+
+
+# Delete teacher
+
+@app.route("/dashboard/delete-teacher/<username>")
+@login_required
+def delete_teacher(username):
+    teacher = Teacher.query.filter_by(username=username).first_or_404()
+    db.session.delete(teacher)
+    db.session.commit()
+    flash(f'{teacher.username} has been deleted as a teacher')
+    return redirect(url_for('all_teachers'))
+
+
+# --------------------------------------
+# End of teacher profile
+# --------------------------------------
+
+
+# --------------------------------------
+# Admin profile
+# --------------------------------------
+
+
+@app.route("/admin/profile")
+@login_required
+def admin_profile():
+    return render_template(
+        "admin/profile.html",
+        title="Admin Profile"
+    )
+
+
+# Compose direct email to admin
+
+@app.route(
+    '/dashboard/compose-direct-email-to-an-admin/<email>',
+    methods=['GET', 'POST'])
+@login_required
+def compose_direct_email_to_admin(email):
+    """Write email to individual admin"""
+    # Get the teacher
+    admin = Admin.query.filter_by(email=email).first()
+    admin_username = admin.email.split('@')[0].capitalize()
+
+    form = EmailForm()
+    form.signature.choices = [
+        (current_user.first_name.capitalize(), current_user.first_name.capitalize())]
+    if form.validate_on_submit():
+        email = Email(
+            subject=form.subject.data,
+            body=form.body.data,
+            closing=form.closing.data,
+            signature=form.signature.data,
+            bulk='Admin Email',
+            author=current_user)
+        db.session.add(email)
+        db.session.commit()
+        flash(f'Sample private email to {admin_username} saved')
+        return redirect(url_for('emails_to_individual_admin'))
+    return render_template(
+        'admin/email_admin.html',
+        title='Compose Private Email',
+        form=form,
+        admin=admin)
+
+
+# List of emails sent out to individual admin
+
+@app.route('/dashboard/emails-to-individual-admins')
+@login_required
+def emails_to_individual_admins():
+    """Emails sent out to individual admins"""
+    emails_sent_to_individual_admins = Email.query.filter_by(
+        bulk='Admin Email').all()
+    emails = len(emails_sent_to_individual_admins)
+    return render_template(
+        'admin/individual_admin_email.html',
+        title='Emails Sent To Individual Admins',
+        emails_sent_to_individual_admins=emails_sent_to_individual_admins,
+        emails=emails)
+
+
+# List all admins
 
 @app.route("/dashboard/all-admins")
 @login_required
 def all_admins():
+    admins = Admin.query.all()
     return render_template(
         "admin/all_admins.html",
-        title="All Admins"
+        title="All Admins",
+        admins=admins
     )
 
 
-# Private emails
+# Deactivate admin
 
-
-@app.route("/dashboard/all-private-emails")
+@app.route("/dashboard/deactivate-admin/<username>")
 @login_required
-def private_emails():
+def deactivate_admin(username):
+    admin = Admin.query.filter_by(username=username).first_or_404()
+    admin.active = False
+    db.session.add(admin)
+    db.session.commit()
+    flash(f'{admin.username} has been deactivated as an admin')
+    return redirect(url_for('all_admins'))
+
+
+# Reactivate admin
+
+@app.route("/dashboard/reactivate-admin/<username>")
+@login_required
+def reactivate_admin(username):
+    admin = Admin.query.filter_by(username=username).first_or_404()
+    admin.active = True
+    db.session.add(admin)
+    db.session.commit()
+    flash(f'{admin.username} has been reactivated as an admin')
+    return redirect(url_for('all_admins'))
+
+
+
+# Delete admin
+
+@app.route("/dashboard/delete-admin/<username>")
+@login_required
+def delete_admin(username):
+    admin = Admin.query.filter_by(username=username).first_or_404()
+    db.session.delete(admin)
+    db.session.commit()
+    flash(f'{admin.username} has been deleted as an admin')
+    return redirect(url_for('all_admins'))
+
+
+# --------------------------------------
+# End of admin profile
+# --------------------------------------
+
+
+# --------------------------------------
+# All parents
+# --------------------------------------
+
+
+# Compose direct email to parent
+
+@app.route(
+    '/dashboard/compose-direct-email-to-a-parent/<email>',
+    methods=['GET', 'POST'])
+@login_required
+def compose_direct_email_to_parent(email):
+    """Write email to individual parent"""
+    # Get the parent
+    parent = Parent.query.filter_by(email=email).first()
+    parent_username = parent.email.split('@')[0].capitalize()
+
+    form = EmailForm()
+    form.signature.choices = [
+        (current_user.first_name.capitalize(), current_user.first_name.capitalize())]
+    if form.validate_on_submit():
+        email = Email(
+            subject=form.subject.data,
+            body=form.body.data,
+            closing=form.closing.data,
+            signature=form.signature.data,
+            bulk='Parent Email',
+            author=current_user)
+        db.session.add(email)
+        db.session.commit()
+        flash(f'Sample private email to {parent_username} saved')
+        return redirect(url_for('emails_to_individual_parent'))
     return render_template(
-        "admin/private_emails.html",
-        title="All Private Emails"
+        'admin/email_parent.html',
+        title='Compose Private Email',
+        form=form,
+        parent=parent)
+
+
+# List of emails sent out to individual parent
+
+@app.route('/dashboard/emails-to-individual-parents')
+@login_required
+def emails_to_individual_parents():
+    """Emails sent out to individual parents"""
+    emails_sent_to_individual_parent = Email.query.filter_by(
+        bulk='Parent Email').all()
+    emails = len(emails_sent_to_individual_parent)
+    return render_template(
+        'admin/individual_parent_email.html',
+        title='Emails Sent To Individual Parents',
+        emails_sent_to_individual_parent=emails_sent_to_individual_parent,
+        emails=emails)
+
+
+# List all parents
+
+@app.route("/dashboard/all-parents")
+@login_required
+def all_parents():
+    parents = Parent.query.all()
+    return render_template(
+        "admin/all_parents.html",
+        title="All Parents",
+        parents=parents
     )
+
+
+# Deactivate parent
+
+@app.route("/dashboard/deactivate-parent/<username>")
+@login_required
+def deactivate_parent(username):
+    parent = Parent.query.filter_by(username=username).first_or_404()
+    parent.active = False
+    db.session.add(parent)
+    db.session.commit()
+    flash(f'{parent.username} has been deactivated as a parent')
+    return redirect(url_for('all_parents'))
+
+
+# Reactivate parent
+
+@app.route("/dashboard/reactivate-parent/<username>")
+@login_required
+def reactivate_parent(username):
+    parent = Parent.query.filter_by(username=username).first_or_404()
+    parent.active = True
+    db.session.add(parent)
+    db.session.commit()
+    flash(f'{parent.username} has been reactivated as a parent')
+    return redirect(url_for('all_parents'))
+
+
+
+# Delete parent
+
+@app.route("/dashboard/delete-parent/<username>")
+@login_required
+def delete_parent(username):
+    parent = Parent.query.filter_by(username=username).first_or_404()
+    db.session.delete(parent)
+    db.session.commit()
+    flash(f'{parent.username} has been deleted as a parent')
+    return redirect(url_for('all_parents'))
+
+
+# --------------------------------------
+# End of all parents
+# --------------------------------------
+
+
+# --------------------------------------
+# All students
+# --------------------------------------
+
+
+# Compose direct email to student
+
+@app.route(
+    '/dashboard/compose-direct-email-to-a-student/<email>',
+    methods=['GET', 'POST'])
+@login_required
+def compose_direct_email_to_student(email):
+    """Write email to individual student"""
+    # Get the parent
+    student = Student.query.filter_by(email=email).first()
+    student_username = student.email.split('@')[0].capitalize()
+
+    form = EmailForm()
+    form.signature.choices = [
+        (current_user.first_name.capitalize(), current_user.first_name.capitalize())]
+    if form.validate_on_submit():
+        email = Email(
+            subject=form.subject.data,
+            body=form.body.data,
+            closing=form.closing.data,
+            signature=form.signature.data,
+            bulk='Student Email',
+            author=current_user)
+        db.session.add(email)
+        db.session.commit()
+        flash(f'Sample private email to {student_username} saved')
+        return redirect(url_for('emails_to_individual_student'))
+    return render_template(
+        'admin/email_student.html',
+        title='Compose Private Email',
+        form=form,
+        student=student)
+
+
+# List of emails sent out to individual student
+
+@app.route('/dashboard/emails-to-individual-students')
+@login_required
+def emails_to_individual_students():
+    """Emails sent out to individual student"""
+    emails_sent_to_individual_student = Email.query.filter_by(
+        bulk='Student Email').all()
+    emails = len(emails_sent_to_individual_student)
+    return render_template(
+        'admin/individual_student_email.html',
+        title='Emails Sent To Individual Students',
+        emails_sent_to_individual_student=emails_sent_to_individual_student,
+        emails=emails)
+
+
+
+@app.route("/dashboard/all-students")
+@login_required
+def all_students():
+    students = Student.query.all()
+    return render_template(
+        "admin/all_students.html",
+        title="All Students",
+        students=students
+    )
+
+
+# Deactivate student
+
+@app.route("/dashboard/deactivate-student/<username>")
+@login_required
+def deactivate_student(username):
+    student = Student.query.filter_by(username=username).first_or_404()
+    student.active = False
+    db.session.add(student)
+    db.session.commit()
+    flash(f'{student.username} has been deactivated as a student')
+    return redirect(url_for('all_students'))
+
+
+# Reactivate student
+
+@app.route("/dashboard/reactivate-student/<username>")
+@login_required
+def reactivate_student(username):
+    student = Student.query.filter_by(username=username).first_or_404()
+    student.active = True
+    db.session.add(student)
+    db.session.commit()
+    flash(f'{student.username} has been reactivated as a student')
+    return redirect(url_for('all_students'))
+
+
+
+# Delete student
+
+@app.route("/dashboard/delete-parent/<username>")
+@login_required
+def delete_students(username):
+    student = Student.query.filter_by(username=username).first_or_404()
+    db.session.delete(student)
+    db.session.commit()
+    flash(f'{student.username} has been deleted as a student')
+    return redirect(url_for('all_students'))
+
+
+# --------------------------------------
+# End of all students
+# --------------------------------------
+
+
+# --------------------------------------
+# Bulk emails
+# --------------------------------------
+
+
+# Bulk emails to all teachers
+
+@app.route("/dashboard/bulk-emails/teachers")
+@login_required
+def bulk_emails_teachers():
+    bulk_emails_sent_to_all_teachers = Email.query.filter_by(
+        bulk='Parent Email').all()
+    emails = len(bulk_emails_sent_to_all_teachers)
+    return render_template(
+        "admin/bulk_emails_teachers.html",
+        title="Bulk Emails Sent To All Teachers",
+        bulk_emails_sent_to_all_teachers=bulk_emails_sent_to_all_teachers,
+        emails=emails
+    )
+
+
+# Bulk emails to all admins
+
+@app.route("/dashboard/bulk-emails/admins")
+@login_required
+def bulk_emails_admins():
+    bulk_emails_sent_to_all_admins = Email.query.filter_by(
+        bulk='Admin Email').all()
+    emails = len(bulk_emails_sent_to_all_admins)
+    return render_template(
+        "admin/bulk_emails_admins.html",
+        title="Bulk Emails Sent To All Admins",
+        bulk_emails_sent_to_all_admins=bulk_emails_sent_to_all_admins,
+        emails=emails
+    )
+
+
+# Bulk emails to all parents
+
+@app.route("/dashboard/bulk-emails/parents")
+@login_required
+def bulk_emails_parents():
+    bulk_emails_sent_to_all_parents = Email.query.filter_by(
+        bulk='Parent Email').all()
+    emails = len(bulk_emails_sent_to_all_parents)
+    return render_template(
+        "admin/bulk_emails_parents.html",
+        title="Bulk Emails Sent To All Parents",
+        bulk_emails_sent_to_all_parents=bulk_emails_sent_to_all_parents,
+        emails=emails
+    )
+
+
+# Bulk emails to all students
+
+@app.route("/dashboard/bulk-emails/students")
+@login_required
+def bulk_emails_students():
+    bulk_emails_sent_to_all_students = Email.query.filter_by(
+        bulk='Parent Email').all()
+    emails = len(bulk_emails_sent_to_all_students)
+    return render_template(
+        "admin/bulk_emails_students.html",
+        title="Bulk Emails Sent To All Students",
+        bulk_emails_sent_to_all_students=bulk_emails_sent_to_all_students,
+        emails=emails
+    )
+
+
+
+# --------------------------------------
+# End of bulk emails
+# --------------------------------------
 
 
 # ----------------------------------------
@@ -509,20 +953,6 @@ def newsletter_subscribers():
         title="Newsletter Subscribers",
         subscribers=subscribers, 
         num_subscribers=num_subscribers
-    )
-
-
-# Email newsletter subscribers
-
-@app.route("/dashboard/newsletter-subscribers")
-@login_required
-def email_newsletter_subscribers():
-    subscribers = Newsletter_Subscriber.query.order_by(
-        Newsletter_Subscriber.email_confirmed_at.desc()).all()
-    return render_template(
-        "admin/newsletter_subscribers.html",
-        title="Newsletter Subscribers",
-        subscribers=subscribers
     )
 
 
@@ -563,8 +993,7 @@ def newsletter_subscriber_compose_direct_email(email):
     """Write email to individual newsletter subscriber"""
     # Get the client (newsletter)
     subscriber = Newsletter_Subscriber.query.filter_by(email=email).first()
-    session['subscriber'] = subscriber.email
-    subscriber_username = session['subscriber'].split('@')[0].capitalize()
+    subscriber_username = subscriber.email.split('@')[0].capitalize()
 
     form = EmailForm()
     form.signature.choices = [
@@ -582,7 +1011,7 @@ def newsletter_subscriber_compose_direct_email(email):
         flash(f'Sample private email to {subscriber_username} saved')
         return redirect(url_for('newsletter_subscribers_email_sent_out'))
     return render_template(
-        'admin/email.html',
+        'admin/email_newsletter_subscriber.html',
         title='Compose Private Email',
         form=form,
         subscriber=subscriber)

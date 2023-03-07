@@ -26,7 +26,7 @@
                         {% if current_user.email == subscriber.email %}
                             <td>
                                 <a 
-                                    href=" {{ url_for('admin.compose_private_email', email=client.email) }} " 
+                                    href=" {{ url_for('newsletter_subscriber_compose_direct_email', email=subscriber.email) }} " 
                                     class="btn btn-light link_disabled">
                                         Send Private Email
                                 </a>

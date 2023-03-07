@@ -60,13 +60,18 @@
                                     <td>
                                         {% if admin.email == current_user.email %}
                                             <a 
-                                                href=" {{ url_for('compose_user_private_email', first_name=admin.first_name) }} " 
+                                                href=" {{ url_for('compose_direct_email_to_admin', email=admin.email) }} " 
                                                 class="btn link_disabled" 
                                                 style="background-color: #0d8a41; color: white;">
                                                 Send Private Email
                                             </a>
                                         {% else %}
-                                            <a href=" {{ url_for('compose_user_private_email', first_name=admin.first_name) }} " class="btn" style="background-color: #0d8a41; color: white;">Send private email</a>
+                                            <a 
+                                                href=" {{ url_for('compose_direct_email_to_admin', email=admin.email) }} " 
+                                                class="btn" 
+                                                style="background-color: #0d8a41; color: white;">
+                                                    Send private email
+                                            </a>
                                         {% endif %}
                                     </td>
                                     <!-- End of private email -->
@@ -103,7 +108,7 @@
                                                                 <p>
                                                                     This action is not permanent. It can be reversed. <br><br>
                                                                     <a 
-                                                                        href=" {{ url_for('delete_admin', username=admin.username) }} " 
+                                                                        href=" {{ url_for('deactivate_admin', username=admin.username) }} " 
                                                                         class="btn link_disabled" 
                                                                         style="background-color: red; color: white;">
                                                                             Deactivate admin
@@ -140,7 +145,7 @@
                                                                 <p>
                                                                     This action is not permanent. It can be reversed. <br><br>
                                                                     <a 
-                                                                        href=" {{ url_for('delete_admin', username=admin.username) }} " 
+                                                                        href=" {{ url_for('deactivate_admin', username=admin.username) }} " 
                                                                         class="btn" 
                                                                         style="background-color: red; color: white;">
                                                                             Deactivate admin
@@ -164,7 +169,7 @@
                                                     <a 
                                                         class="btn" 
                                                         style="background-color: orange; color: white;" 
-                                                        href=" {{ url_for('reactivate_account', username=parent.username) }} "> 
+                                                        href=" {{ url_for('reactivate_admin', username=admin.username) }} "> 
                                                         Reactivate
                                                     </a>
                                                 </span>
@@ -201,7 +206,7 @@
                                                                 <p>
                                                                     This action is permanent. It cannot be reversed. <br><br>
                                                                     <a 
-                                                                        href=" {{ url_for('approve_real_deletion', username=admin.username) }} " 
+                                                                        href=" {{ url_for('delete_admin', username=admin.username) }} " 
                                                                         class="btn link_disabled" 
                                                                         style="background-color: red; color: white;">
                                                                             Delete admin
@@ -237,7 +242,7 @@
                                                                     This action is permanent. It cannot be reversed. <br><br>
                                                                     {% if current_user.department != 'Superadmin' %}
                                                                         <a 
-                                                                            href=" {{ url_for('approve_real_deletion', username=admin.username) }} " 
+                                                                            href=" {{ url_for('delete_admin', username=admin.username) }} " 
                                                                             class="btn link_disabled" 
                                                                             style="background-color: red; color: white;">
                                                                                 Delete admin
@@ -245,7 +250,7 @@
                                                                     {% endif %}
                                                                     {% if current_user.department == 'Superadmin' %}
                                                                         <a 
-                                                                            href=" {{ url_for('approve_real_deletion', username=admin.username) }} " 
+                                                                            href=" {{ url_for('delete_admin', username=admin.username) }} " 
                                                                             class="btn" 
                                                                             style="background-color: red; color: white;">
                                                                                 Delete admin
@@ -272,7 +277,7 @@
                                                     <a 
                                                         class="btn" 
                                                         style="background-color: orange; color: white;" 
-                                                        href=" {{ url_for('approve_real_deletion', username=admin.username) }} "> 
+                                                        href=" {{ url_for('delete_admin', username=admin.username) }} "> 
                                                         Delete
                                                     </a>
                                                 </span>
@@ -292,7 +297,7 @@
         </div>
         <!-- End of list of all registered admins -->
 
-        {% else %}
+        {% if current_user.type != 'admin' %}
             <h1 class="mt-4">{{ title }}</h1>
             <div class="row">
                 <div class="col-md-6">
@@ -307,7 +312,7 @@
     </div>
 {% endblock %}
 
-{% block datatable_scripts %}
+{% block current_user_scripts %}
     <script>
         $(document).ready(function() {
             $('#data').DataTable();

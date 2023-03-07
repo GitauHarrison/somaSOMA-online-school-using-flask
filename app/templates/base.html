@@ -373,22 +373,32 @@
                         <a href="#allEmailsSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Emails</a>
                         <ul class="collapse list-unstyled" id="allEmailsSubmenu">
                             <li>
-                                <a href=" {{ url_for('newsletter_subscribers_email_sent_out') }} ">Subscribers Emails</a>
+                                <a href=" {{ url_for('newsletter_subscribers_email_sent_out') }} ">Individual Subscriber Emails</a>
                             </li>
                             <li>
-                              <a href=" # ">Individual User Emails</a>
-                          </li>
-                            <li>
-                                <a href=" # ">Emails To All Parents</a>
+                              <a href=" {{ url_for('emails_to_individual_parents') }} ">Individual Parent Emails</a>
                             </li>
                             <li>
-                                <a href=" # ">Emails To All Students</a>
+                              <a href=" {{ url_for('emails_to_individual_students') }} ">Individual Student Emails</a>
                             </li>
                             <li>
-                                <a href=" # ">Emails To All Teachers</a>
+                              <a href=" {{ url_for('emails_to_individual_teachers') }} ">Individual Teacher Emails</a>
                             </li>
                             <li>
-                                <a href=" # ">Emails To All Admins</a>
+                              <a href=" {{ url_for('emails_to_individual_admins') }} ">Individual Admin Emails</a>
+                            </li>
+                            <hr>
+                            <li>
+                                <a href=" {{ url_for('bulk_emails_parents') }} ">Emails To All Parents</a>
+                            </li>
+                            <li>
+                                <a href=" {{ url_for('bulk_emails_students') }} ">Emails To All Students</a>
+                            </li>
+                            <li>
+                                <a href=" {{ url_for('bulk_emails_teachers') }} ">Emails To All Teachers</a>
+                            </li>
+                            <li>
+                                <a href=" {{ url_for('bulk_emails_admins') }} ">Emails To All Admins</a>
                             </li>
                         </ul>   
                       </li>

@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% import 'bootstrap/wtf.html' as wtf %}
+
+
+{% block current_user_content %}
+  <!-- Compose email form -->
+  <div class="row align-items-center mb-1 gy-1">
+    <h2 class="mb-4">{{ title }}</h2>
+    <p>You are about to send an email to the teacher <strong>{{ teacher.email }}</strong></p>
+  </div>
+  <div class="row align-items-center mb-1 gy-1">
+    <div class="col-lg-6">      
+      <!-- form-->
+      <div class="my-form">
+        <p>{{ wtf.quick_form(form, button_map={"submit":"warning"}) }}</p>
+      </div>        
+      <!-- End of form -->
+    </div>
+    <div class="col-lg-6">
+      <!-- Empty col -->
+    </div>
+  </div>
+  <!-- End of login form -->
+{% endblock %}
