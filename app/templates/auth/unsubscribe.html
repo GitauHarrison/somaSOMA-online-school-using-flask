@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% import 'bootstrap/wtf.html' as wtf %}
+
+{% block anonymous_content %}
+    <div class="container py-5 unsubscribe-content">
+        <div class="row">
+            <div class="col-md-12 text-center">
+                <h1 class="text-center mb-4">{{ title }}</h1>
+                <p>It is sad to see you go! <br>Fill your email below to unsubscribe from our newsletters.</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4"><!-- Empty column --></div>
+            <div class="col-md-4">
+                <!-- Unsubscsribe form-->
+                <form action="{{ url_for('unsubscribe') }}" method="post" class="subscription-form mt-5">
+                    <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" name="email" placeholder="your@email.com" class="form-control" value="{{ request.form['email'] }}" required>
+                    <button type="submit" class="btn btn-primary">Unsubscsribe</button>
+                    </div>
+                </form>
+            </div>
+            <div class="col-md-4"><!-- Empty column --></div>
+        </div>
+        <div class="row text-center mt-4">
+            <div class="col-md-12">
+                <small>
+                    If you ever wish to come back again, simply reach out to us by clicking on 
+                    <a target="_blank" href="#">this link</a>.
+                </small>
+            </div>
+        </div>
+    </div>
+{% endblock %}
