@@ -6,7 +6,29 @@ _This is the third and final iteration of the somaSoma elearning app. The origin
 
 ## Overview
 
-Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.
+Built with love and from experience, this demo project summarizes the ideas that may be pivotal to any learning center, especially if conducted online. It covers the needs of four types of users:
+
+- Administrators:
+    - You control who uses the platform, by registering them, managing their data, temporarily deactivating users or permanently deleting them and their data.
+    - You get a bird's eye view of the entire business: what teachers are doing, what students are doing, what paretnts have to say
+    - You manage lesson contents by uploading them to the platform
+
+- Teachers:
+    - Tasked with guiding students through the lessons
+    - They mark students' attendance, compounded to ratify each student's participation.
+    - They assess their submitted lesson projects
+    - They grade students projects
+
+- Parents:
+    - They register their children once approved by the admin. Done so so that student information is accurate.
+    - They see how well their child's attendance has been
+    - They get to see how they perform in each chapter
+
+- Students:
+    - They have access to lessons
+    - They are required to complete the lessons in the order they appear
+    - Access to subsequent lessons is dependant on the performance on the current chapter/lesson
+
 
 ### Table of Contents
 
@@ -14,18 +36,37 @@ Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem
 - [Technologies Used](#technologies-used)
 - [Additional Details](#additional-details)
 - [Application Details](#application-details)
+    - [Newsletter](#newsletter)
 - [Testing It Locally](#testing-it-locally)
+- [Areas of Improvement](#areas-of-improvement)
 
 
 ## Features
 
-- Lorem Ipsum is simply dummy text
-- Lorem Ipsum is simply dummy text
+- Multi-user support
+- Newsletter
+- Basic user authentication
+- Two-factor authentication
+- Sending of emails from the app
+- Restricted access to subsequent lesson by students
 
 ## Technologies Used
 
-- Lorem Ipsum is simply dummy text
-- Lorem Ipsum is simply dummy text
+- Flask micro-framework
+- Python for programming
+- Sprinkles of JavaScript for front-end design
+- Twilio Verify API for two-factor authentication
+- Twilio SendGrid for email support
+- Gunicorn for live app deployment
+- Phonenumbers package for beautiful phone numbers
+- DatatableJS for interactive tables
+- Pytest and pytest-cov for testing
+- Psycopg2 for postgresql adaptability
+- Postgresql database or fallback to SQLite database
+- Flask-sqlalchemy ORM for database management
+- Flask-migrate for database migrations
+- Flask-moment for time formatting
+
 
 ## Additional Details
 
@@ -35,6 +76,16 @@ Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem
 
 
 ## Application Details
+
+### Newsletter:
+
+- A user interested in receiving periodic updates about somaSOMA can sign up for the newsletter service.
+- Registration is limited to those who verify their email addresses only
+![How newsletter works](/app/static/images/readme/how_newsletter_works.gif)
+- The application automatically sends pre-prepared emails to them at set intervals
+![Regular emails](/app/static/images/readme/periodic_emails.gif)
+- Admin can email an individual newsletter subscriber to enhance one-on-one communication (optional)
+![Admin talks with subscriber](/app/static/images/readme/admin_talks_with_subscriber.gif)
 
 
 
@@ -80,3 +131,8 @@ Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem
     ```
 
 - Check the application in your favourite browser by pasting http://127.0.0.1:5000.
+
+
+## Areas of Improvement
+
+- Notifications within the app of activities taking place
