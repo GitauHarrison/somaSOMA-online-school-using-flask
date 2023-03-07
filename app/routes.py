@@ -15,21 +15,6 @@ from app import app, db
 
 
 
-# Authenticated users redirection
-
-def authenticated_users_redirection():
-    """Redirect uses appropriately if accessing certain pages"""
-    if current_user.type == "parent":
-        return redirect(url_for("parent_profile"))
-    if current_user.type == "student":
-        return redirect(url_for("student_profile"))
-    if current_user.type == "teacher":
-        return redirect(url_for("teacher_profile"))
-    if current_user.type == "admin":
-        return redirect(url_for("admin_profile"))
-
-
-
 # =========================================
 # NEWSLETTER HOME PAGE
 # =========================================
@@ -45,7 +30,14 @@ def home():
     Seen by anonymous users
     """
     if current_user.is_authenticated:
-        authenticated_users_redirection()
+        if current_user.type == "parent":
+            return redirect(url_for("parent_profile"))
+        if current_user.type == "student":
+            return redirect(url_for("student_profile"))
+        if current_user.type == "teacher":
+            return redirect(url_for("teacher_profile"))
+        if current_user.type == "admin":
+            return redirect(url_for("admin_profile"))
     # Newsletter form
     if request.method == "POST":
         newsletter_client = request.form["email"]
@@ -69,6 +61,15 @@ def verify_email_token():
     Subscriber verifies their email address by
     providing token sent to their inbox
     """
+    if current_user.is_authenticated:
+        if current_user.type == "parent":
+            return redirect(url_for("parent_profile"))
+        if current_user.type == "student":
+            return redirect(url_for("student_profile"))
+        if current_user.type == "teacher":
+            return redirect(url_for("teacher_profile"))
+        if current_user.type == "admin":
+            return redirect(url_for("admin_profile"))
     form = VerifyForm()
     if form.validate_on_submit():
         email = session["email"]
@@ -106,7 +107,14 @@ def unsubscribe():
     """Client can stop receiving newsletters"""
     if current_user.is_authenticated:
         flash('You need to logout first to unsubscribe from our newsletters.')
-        authenticated_users_redirection()
+        if current_user.type == "parent":
+            return redirect(url_for("parent_profile"))
+        if current_user.type == "student":
+            return redirect(url_for("student_profile"))
+        if current_user.type == "teacher":
+            return redirect(url_for("teacher_profile"))
+        if current_user.type == "admin":
+            return redirect(url_for("admin_profile"))
     if request.method == 'POST':
         client = Newsletter_Subscriber.query.filter_by(email=request.form["email"]).first()
         if client is None:
@@ -136,8 +144,17 @@ def unsubscribe():
 
 
 @app.route('/dashboard')
+@login_required
 def dashboard():
-    authenticated_users_redirection()
+    if current_user.is_authenticated:
+        if current_user.type == "parent":
+            return redirect(url_for("parent_profile"))
+        if current_user.type == "student":
+            return redirect(url_for("student_profile"))
+        if current_user.type == "teacher":
+            return redirect(url_for("teacher_profile"))
+        if current_user.type == "admin":
+            return redirect(url_for("admin_profile"))
 
 
 
@@ -147,7 +164,14 @@ def dashboard():
 def login():
     """Login logic"""
     if current_user.is_authenticated:
-        authenticated_users_redirection()
+        if current_user.type == "parent":
+            return redirect(url_for("parent_profile"))
+        if current_user.type == "student":
+            return redirect(url_for("student_profile"))
+        if current_user.type == "teacher":
+            return redirect(url_for("teacher_profile"))
+        if current_user.type == "admin":
+            return redirect(url_for("admin_profile"))
     form = LoginForm()
     if form.validate_on_submit():
         user = User.query.filter_by(username=form.username.data).first()
@@ -156,7 +180,7 @@ def login():
             return redirect(url_for("login"))
         next_page = request.args.get("next")
         if not next_page or url_parse(next_page).netloc != '':
-            next_page = url_for("home")
+            next_page = url_for("dashboard")
         login_user(user, remember=form.remember_me.data)
         flash(f'Welcome {user.username}.')
         return redirect(next_page)
@@ -186,7 +210,14 @@ def request_password_reset():
     If not registered, the application will not tell the anonymous user why not
     """
     if current_user.is_authenticated:
-        authenticated_users_redirection()
+        if current_user.type == "parent":
+            return redirect(url_for("parent_profile"))
+        if current_user.type == "student":
+            return redirect(url_for("student_profile"))
+        if current_user.type == "teacher":
+            return redirect(url_for("teacher_profile"))
+        if current_user.type == "admin":
+            return redirect(url_for("admin_profile"))
     form = RequestPasswordResetForm()
     if form.validate_on_submit():
         user = User.query.filter_by(email=form.email.data).first()
@@ -211,7 +242,14 @@ def reset_password(token):
     Time-bound link to reset password requested by an active user sent to their inbox
     """
     if current_user.is_authenticated:
-        authenticated_users_redirection()
+        if current_user.type == "parent":
+            return redirect(url_for("parent_profile"))
+        if current_user.type == "student":
+            return redirect(url_for("student_profile"))
+        if current_user.type == "teacher":
+            return redirect(url_for("teacher_profile"))
+        if current_user.type == "admin":
+            return redirect(url_for("admin_profile"))
     user = User.verify_reset_password_token(token)
     if not user:
         return redirect(url_for("login"))
@@ -234,7 +272,14 @@ def reset_password(token):
 def register_parent():
     """Parent registration logic"""
     if current_user.is_authenticated:
-        authenticated_users_redirection()
+        if current_user.type == "parent":
+            return redirect(url_for("parent_profile"))
+        if current_user.type == "student":
+            return redirect(url_for("student_profile"))
+        if current_user.type == "teacher":
+            return redirect(url_for("teacher_profile"))
+        if current_user.type == "admin":
+            return redirect(url_for("admin_profile"))
     form = ParentRegistrationForm()
     if form.validate_on_submit():
         parent = Parent(
@@ -993,6 +1038,7 @@ def newsletter_subscriber_compose_direct_email(email):
     """Write email to individual newsletter subscriber"""
     # Get the client (newsletter)
     subscriber = Newsletter_Subscriber.query.filter_by(email=email).first()
+    session['subscriber'] = subscriber.email
     subscriber_username = subscriber.email.split('@')[0].capitalize()
 
     form = EmailForm()
@@ -1047,8 +1093,9 @@ def newsletter_subscribers_email_sent_out():
 @app.route('/newsletter/send-email/<id>')
 @login_required
 def send_email(id):
-    """Send email to user from the database"""
+    """Send email to subscriber from the database"""
     email = Email.query.filter_by(id=id).first()
+    subscriber_email = session['subscriber']
 
     # Update db so that the email is not sent again
     email.allow = True
@@ -1056,11 +1103,12 @@ def send_email(id):
     db.session.commit()
 
     # Send email to subscriber
-    subscriber_username = email.split('@')[0].capitalize()
-    send_subscriber_private_email(email, subscriber_username)
+    subscriber_username = session['subscriber'].split('@')[0].capitalize()
+    send_subscriber_private_email(email, subscriber_email, subscriber_username)
 
     # Notify user that email has been sent
-    flash(f'Email successfully sent to {email}')
+    flash(f'Email successfully sent to {subscriber_email}')
+    del session['subscriber']
     return redirect(url_for('newsletter_subscribers_email_sent_out'))
 
 
@@ -1087,7 +1135,7 @@ def edit_email(id):
         form.body.data = email.body
         form.signature.data = email.signature
     return render_template(
-        'admin/email.html', title='Edit Sample Email', form=form)
+        'admin/edit_email.html', title='Edit Sample Email', form=form)
 
 
 # Delete email from database
@@ -1100,6 +1148,7 @@ def delete_email(id):
     db.session.delete(email)
     db.session.commit()
     flash('Email successfully deleted')
+    del session['subscriber']
     return redirect(url_for('newsletter_subscribers_email_sent_out'))
 
 

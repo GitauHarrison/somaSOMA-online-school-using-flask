@@ -48,19 +48,21 @@ def thank_you_client(client, client_username):
 
 # Email subscriber individually
 
-def send_subscriber_private_email(email, subscriber_username):
+def send_subscriber_private_email(email, subscriber_email, subscriber_username):
     """Send newsletter subscriber a private email"""
     send_email(
         subject=email.subject,
         sender=app.config["MAIL_DEFAULT_SENDER"],
-        recipients=[email.email],
+        recipients=[subscriber_email],
         text_body=render_template(
-            "emails/newsletter_subscriber_private_email.txt",
+            "emails/private_email.txt",
             email=email,
+            subscriber_email=subscriber_email,
             subscriber_username=subscriber_username),
         html_body=render_template(
-            "emails/newsletter_subscriber_private_email.html",
+            "emails/private_email.html",
             email=email,
+            subscriber_email=subscriber_email,
             subscriber_username=subscriber_username))
 
 
