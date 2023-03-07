@@ -4,7 +4,7 @@
     <div class="container-fluid content">
         {% include '_flash_message.html' %}
         <h1 class="mb-4">{{ title }} ({{ emails }})</h1>
-        <p>These are all the individual emails your organization has sent to <strong>Newsletter Subscribers</strong>.</p>
+        <p>These are the emails your organization has sent to individual <strong>Newsletter Subscribers</strong>.</p>
         {% for email in emails_sent_to_newsletter_subscribers %}
             {% include '_email.html' %}
         {% endfor %}

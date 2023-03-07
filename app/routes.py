@@ -61,32 +61,32 @@ def home():
 
 
 
-# Client verifies email ownership
+# Subscriber verifies email ownership
 
 @app.route("/verify-email-token", methods=["GET", "POST"])
 def verify_email_token():
     """
-    Client verifies their email address by
+    Subscriber verifies their email address by
     providing token sent to their inbox
     """
     form = VerifyForm()
     if form.validate_on_submit():
         email = session["email"]
         if check_email_verification_token(email, form.token.data):
-            # Get the client's username
+            # Get the subscriber's username
             # It will be used to send a personalized thank you note for signing up
             client_email = session['email']
             client_username = client_email.split("@")[0].capitalize()
 
-            # Add client to the database
+            # Add subscriber to the database
             client = Newsletter_Subscriber(email=session["email"])
             client.num_newsletter = 0 # determines what newsletter to be sent
             db.session.add(client)
             db.session.commit()
-            # Remove the client from the session since they are now added to the database
+            # Remove the subscriber from the session since they are now added to the database
             del session["email"]
 
-            # Send client a thank you email
+            # Send subscriber a thank you email
             thank_you_client(client, client_username)
 
             flash("Thank you for subscribing to our newsletter. Please check you inbox.")
@@ -99,7 +99,7 @@ def verify_email_token():
 
 
 
-# Client can unsubscribe from the email newsletter
+# Subscriber can unsubscribe from the email newsletter
 
 @app.route('/unsubscribe', methods=['GET', 'POST'])
 def unsubscribe():
@@ -505,10 +505,12 @@ def private_emails():
 def newsletter_subscribers():
     subscribers = Newsletter_Subscriber.query.order_by(
         Newsletter_Subscriber.email_confirmed_at.desc()).all()
+    num_subscribers = len(subscribers)
     return render_template(
         "admin/newsletter_subscribers.html",
         title="Newsletter Subscribers",
-        subscribers=subscribers
+        subscribers=subscribers, 
+        num_subscribers=num_subscribers
     )
 
 

@@ -1,6 +1,10 @@
 from app import app, db
+from app import cli
 from app.models import User, Parent, Student, Teacher, Admin, Newsletter_Subscriber,\
     Email
+
+
+cli.register(app)
 
 
 @app.shell_context_processor
