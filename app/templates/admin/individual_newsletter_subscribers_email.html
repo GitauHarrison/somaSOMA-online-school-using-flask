@@ -2,10 +2,10 @@
 
 {% block current_user_content %}
     <div class="container-fluid content">
-        {% include '_flash_message.html' %}
         <h1 class="mb-4">{{ title }} ({{ emails }})</h1>
+        {% include '_flash_message.html' %}
         <p>These are the emails your organization has sent to individual <strong>Newsletter Subscribers</strong>.</p>
-        {% for email in emails_sent_to_individual_teachers %}
+        {% for email in emails_sent_to_newsletter_subscribers %}
             {% include '_email.html' %}
         {% endfor %}
         <!-- Pagination of comments -->
