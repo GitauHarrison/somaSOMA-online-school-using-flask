@@ -107,9 +107,8 @@ def unsubscribe():
     if current_user.is_authenticated:
         flash('You need to logout first to unsubscribe from our newsletters.')
         authenticated_users_redirection()
-    form = UnsubscribeForm()
-    if form.validate_on_submit():
-        client = Newsletter_Subscriber.query.filter_by(email=form.email.data).first()
+    if request.method == 'POST':
+        client = Newsletter_Subscriber.query.filter_by(email=request.form["email"]).first()
         if client is None:
             flash("Please enter the email used during subscription.")
             return redirect(url_for("unsubscribe"))
@@ -123,8 +122,7 @@ def unsubscribe():
             return redirect(url_for('home'))
     return render_template(
         "auth/unsubscribe.html",
-        title="Unsubscribe",
-        form=form)
+        title="Unsubscribe From Our Newsletters")
 
 # =========================================
 # END OF NEWSLETTER HOME PAGE
