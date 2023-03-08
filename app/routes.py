@@ -450,11 +450,9 @@ def register_admin():
 @app.route("/dashboard/teacher/profile")
 @login_required
 def teacher_profile():
-    teachers = Teacher.query.all()
     return render_template(
         "teacher/profile.html",
-        title="Teacher Profile",
-        teachers=teachers
+        title="Teacher Profile"
     )
 
 
@@ -513,9 +511,12 @@ def emails_to_individual_teachers():
 @app.route("/dashboard/all-teachers")
 @login_required
 def all_teachers():
+    teachers = Teacher.query.all()
+    all_registered_teachers = len(teachers)
     return render_template(
         "admin/all_teachers.html",
-        title="All Teachers"
+        title="All Teachers",
+        all_registered_teachers=all_registered_teachers
     )
 
 
@@ -633,10 +634,12 @@ def emails_to_individual_admins():
 @login_required
 def all_admins():
     admins = Admin.query.all()
+    all_registered_admins = len(admins)
     return render_template(
         "admin/all_admins.html",
         title="All Admins",
-        admins=admins
+        admins=admins,
+        all_registered_admins=all_registered_admins
     )
 
 
@@ -745,10 +748,12 @@ def emails_to_individual_parents():
 @login_required
 def all_parents():
     parents = Parent.query.all()
+    all_registered_parents = len(parents)
     return render_template(
         "admin/all_parents.html",
         title="All Parents",
-        parents=parents
+        parents=parents,
+        all_registered_parents=all_registered_parents
     )
 
 
@@ -856,10 +861,12 @@ def emails_to_individual_students():
 @login_required
 def all_students():
     students = Student.query.all()
+    all_registered_students = len(students)
     return render_template(
         "admin/all_students.html",
         title="All Students",
-        students=students
+        students=students,
+        all_registered_students=all_registered_students
     )
 
 
