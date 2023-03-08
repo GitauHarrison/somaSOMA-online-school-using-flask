@@ -1,0 +1,168 @@
+{% extends 'base.html' %}
+{% import 'bootstrap/wtf.html' as wtf %}
+
+{% block current_user_content %}
+    <div class="container-fluid content">
+        {% include '_flash_message.html' %}
+        <h1 class="mt-4">{{ title }}</h1><br>
+        <div class="row">
+            <div class="col-md-12 col-lg-7 col-sm-12 profile mr-4 mb-4">
+                <h3 class="mb-4">Personal Information</h3>
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Full Name</th>
+                                <th>Username</th>
+                                <th>Email</th>
+                                <th>Phone</th>
+                                <th>Age</th>
+                                <th>School</th>
+                                <th>Cooding Experience</th>
+                                <th>Program</th>
+                                <th>Program Schedule</th>
+                                <th>Cohort</th>
+                                <th>Parent</th>
+                                <th>Registration</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>{{ current_user.first_name }} {{ current_user.last_name }}</td>
+                                <td>
+                                    {{ current_user.username }}
+                                    <!-- Icon trigger modal -->
+                                    <a href="#" data-toggle="modal" data-target="#exampleModalCenter">Edit</a>
+                                    
+                                    <!-- Modal -->
+                                    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-centered" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                            <h3 class="modal-title" id="exampleModalLongTitle">Update Your Username</h3>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                            </div>
+                                            <div class="modal-body">
+                                            <p>
+                                                {{ wtf.quick_form(username_form) }}
+                                            </p>
+                                            </div>
+                                            <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                            </div>
+                                        </div>
+                                        </div>
+                                    </div>
+                                    <!-- End of username modal -->
+                                </td>
+                                <td>
+                                    {{ current_user.email }}
+                                    <!-- Icon trigger modal -->
+                                    <a href="#" data-toggle="modal" data-target="#emailModalCenter"></a>
+                                    
+                                    <!-- Modal -->
+                                    <div class="modal fade" id="emailModalCenter" tabindex="-1" role="dialog" aria-labelledby="emailModalCenterTitle" aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-centered" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                            <h3 class="modal-title" id="emailModalLongTitle">Update Your Email</h3>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                            </div>
+                                            <div class="modal-body">
+                                            <p>
+                                                {{ wtf.quick_form(email_form) }}
+                                            </p>
+                                            </div>
+                                            <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                            </div>
+                                        </div>
+                                        </div>
+                                    </div>
+                                    <!-- End of email modal -->
+                                </td>
+                                <td>
+                                    {{ current_user.phone_number }}
+                                    <!-- Icon trigger modal -->
+                                    <a href="#" class="fa-regular fa-pen-to-square" data-toggle="modal" data-target="#phoneModalCenter"></a>
+                                    
+                                    <!-- Modal -->
+                                    <div class="modal fade" id="phoneModalCenter" tabindex="-1" role="dialog" aria-labelledby="phoneModalCenterTitle" aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-centered" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                            <h3 class="modal-title" id="phoneModalLongTitle">Update Your Phone Number</h3>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                            </div>
+                                            <div class="modal-body">
+                                            <p>
+                                                {{ wtf.quick_form(phone_form) }}
+                                            </p>
+                                            </div>
+                                            <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                            </div>
+                                        </div>
+                                        </div>
+                                    </div>
+                                    <!-- End of phone modal -->
+                                </td>
+                                <td>{{ current_user.age }}</td>
+                                <td>{{ current_user.school }}</td>
+                                <td>{{ current_user.coding_experience }}</td>
+                                <td>{{ current_user.program }}</td>
+                                <td>{{ current_user.program_schedule }}</td>
+                                <td>{{ current_user.cohort }}</td>
+                                <td>{{ current_user.parent.first_name }} {{ current_user.parent.last_name }}</td>
+                                <td>{{ moment(current_user.registered_at).format('lll') }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>                
+            </div>
+        </div>
+        <!-- Deactivate account -->
+        <div class="row">
+            <h1>Danger</h1>
+            <div class="col-md-6 danger">
+                <p>
+                    Want to deactivate your account? <br>
+                    {% if not current_user.account_deletion() %}
+                        <a 
+                            class="btn" 
+                            style="background-color: red; color: white;" 
+                            href=" {{ url_for('student.delete_account') }} "> 
+                                Deactivate
+                        </a>
+                    {% else %}
+                        <a 
+                            class="btn link_disabled" 
+                            style="background-color: red; color: white;" 
+                            href=" {{ url_for('student.delete_account') }} "> 
+                                Deactivate 
+                        </a>
+                    {% endif %}
+                </p>
+            </div>
+            <div class="col-md-6">
+                <!-- Empty col -->
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block datatable_scripts %}
+    <script>
+        $(document).ready(function() {
+            $('#project_scores').DataTable();
+            $('#quiz_scores').DataTable();
+            $('#aggregate_scores').DataTable();
+        });
+    </script>
+{% endblock %}
