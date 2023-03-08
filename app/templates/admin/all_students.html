@@ -1,0 +1,348 @@
+{% extends 'base.html' %}
+
+{% block current_user_content %}
+    <div class="container-fluid content">
+        
+        <!-- Flash message -->
+        {% include '_flash_message.html' %}
+        <!-- End of flash message -->
+
+        <!-- Page title -->
+        <div class="row">
+            <div class="col-md-12">
+                <h1 class="mt-4 mb-4">{{ title }} ({{ all_registered_students }})</h1>
+            </div>
+        </div>
+        <!-- End of page title -->
+
+        <!-- List of all registered admins -->
+        <div class="row users">                
+            <div class="col-md-12">
+                <!-- Admin list -->
+                <div class="table-responsive">
+                    <table id="data" class="table table-hover table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Avatar</th>
+                                <th>Full Name</th>
+                                <th>Username</th>
+                                <th>Email</th>
+                                <th>Phone</th>
+                                <th>Age</th>
+                                <th>School</th>
+                                <th>Coding Experience</th>
+                                <th>Program</th>
+                                <th>Program Schedule</th>
+                                <th>Cohort</th>
+                                <th>Parent</th>
+                                <th>2FA Status</th>
+                                <th>Registration Date</th>
+                                <th>Email</th>
+                                <!-- Only accessible by admins -->
+                                {% if current_user.type == 'admin' %}                                    
+                                    <th>Deactivate</th>
+                                    <th>Delete</th>
+                                {% endif %}
+                                <!-- End of admin access -->
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Get all admins from the database -->
+                            {% for student in students %}
+                                <tr>
+                                    <td><img src="{{ student.avatar(25) }}"></td>
+                                    <td>{{ student.first_name }} {{ student.last_name }}</td>                                        
+                                    <td>{{ student.username }}</td>
+                                    <td>{{ student.email }}</td>
+                                    <td><a href="https://wa.me/{{ student.phone_number | replace('+', '') }}?text=Hello%20From%20Tinker%20Education" target="_blank">{{ student.phone_number }}</a></td>
+                                    <td>{{ student.age }}</td>
+                                    <td>{{ student.school }}</td>
+                                    <td>{{ student.program }}</td>
+                                    <td><strong>{{ student.parent.first_name }} {{ student.parent.last_name }}</strong></td>
+                                    <td>{{ moment(student.registered_at).format('MMMM Do YYYY, h:mm:ss a') }}</td>                                        
+                                    <td>{{ student.verification_phone }}</td>
+
+                                    <td><img src="{{ student.avatar(25) }}"></td>
+                                    <td>{{ student.first_name }} {{ student.last_name }}</td>
+                                    <td>{{ student.username }}</td>
+                                    <td>{{ student.email }}</td>
+                                    <td><a href="https://wa.me/{{ student.phone_number | replace('+', '') }}?text=Hello%20From%20somaSOMA" target="_blank">{{ parent.phone_number }}</a></td>
+                                    <td>{{ student.age }}</td>
+                                    <td>{{ student.school }}</td>
+                                    <td>{{ student.coding_experience }}</td>
+                                    <td>{{ student.program }}</td>
+                                    <td>{{ student.program_schedule }}</td>
+                                    <td>{{ student.cohort }}</td>
+                                    <td><strong>{{ student.parent.first_name }} {{ student.parent.last_name }}</strong></td>
+                                    {% if student.two_factor_enabled() %}
+                                        <td><span class="label label-info">{{ student.verification_phone }}</span></td>
+                                    {% else %}
+                                        <td><span class="label label-warning">{{ student.verification_phone }}</span></td>
+                                    {% endif %}
+                                    
+                                    <td>{{ moment(student.registered_at).format('MMMM Do YYYY, h:mm:ss a') }}</td>
+                                    
+                                    
+                                    <!-- Private email -->
+                                    <td>
+                                        {% if student.email == current_user.email %}
+                                            <a 
+                                                href=" {{ url_for('compose_direct_email_to_student', email=student.email) }} " 
+                                                class="btn link_disabled" 
+                                                style="background-color: #0d8a41; color: white;">
+                                                Send Private Email
+                                            </a>
+                                        {% else %}
+                                            <a 
+                                                href=" {{ url_for('compose_direct_email_to_student', email=student.email) }} " 
+                                                class="btn" 
+                                                style="background-color: #0d8a41; color: white;">
+                                                    Send private email
+                                            </a>
+                                        {% endif %}
+                                    </td>
+                                    <!-- End of private email -->
+
+                                    <!-- Only accessible by admins -->
+                                    {% if current_user.type == 'admin' %}
+
+                                        <!-- ========================= -->
+                                        <!-- Deactivate account -->
+                                        <!-- ========================= -->
+                                        <td>
+                                            <!-- If the admin is active -->
+                                            {% if student.active == True %}
+
+                                                <!-- If the parent is the same as the current user -->
+                                                <!-- They cannot deactivate themselves -->
+                                                <!-- Link is inactive -->
+                                                {% if current_user.username == student.username %}
+                                                    <button style="background-color: red; color: white;" class="btn" data-toggle="modal" data-target="#adminModalCenter">
+                                                        Deactivate
+                                                    </button>
+                                                    
+                                                    <!-- Modal -->
+                                                    <div class="modal fade" id="studentModalCenter" tabindex="-1" role="dialog" aria-labelledby="studentModalCenterTitle" aria-hidden="true">
+                                                        <div class="modal-dialog modal-dialog-centered" role="document">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                <h3 class="modal-title" id="studentModalLongTitle">Are You Sure?</h3>
+                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                    <span aria-hidden="true">&times;</span>
+                                                                </button>
+                                                                </div>
+                                                                <div class="modal-body">
+                                                                <p>
+                                                                    This action is not permanent. It can be reversed. <br><br>
+                                                                    <a 
+                                                                        href=" {{ url_for('deactivate_student', username=student.username) }} " 
+                                                                        class="btn link_disabled" 
+                                                                        style="background-color: red; color: white;">
+                                                                            Deactivate student
+                                                                    </a>
+                                                                </p>
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!-- End of delete admin modal -->
+
+                                                <!-- If the admin is not the same as the current user -->
+                                                <!-- They can deactivate this admin -->
+                                                <!-- Link is active -->
+                                                {% else %}                                            
+                                                    <button style="background-color: red; color: white;" class="btn" data-toggle="modal" data-target="#student2ModalCenter">
+                                                        Deactivate
+                                                    </button>
+                                                    
+                                                    <!-- Modal -->
+                                                    <div class="modal fade" id="student2ModalCenter" tabindex="-1" role="dialog" aria-labelledby="student2ModalCenterTitle" aria-hidden="true">
+                                                        <div class="modal-dialog modal-dialog-centered" role="document">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                <h3 class="modal-title" id="student2ModalLongTitle">Are You Sure?</h3>
+                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                    <span aria-hidden="true">&times;</span>
+                                                                </button>
+                                                                </div>
+                                                                <div class="modal-body">
+                                                                <p>
+                                                                    This action is not permanent. It can be reversed. <br><br>
+                                                                    <a 
+                                                                        href=" {{ url_for('deactivate_student', username=student.username) }} " 
+                                                                        class="btn" 
+                                                                        style="background-color: red; color: white;">
+                                                                            Deactivate student
+                                                                    </a>
+                                                                </p>
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!-- End of delete admin modal -->
+                                                {% endif %}
+                                            {% endif %}
+
+                                            <!-- If an parent's account is deactivated -->
+                                            <!-- Reactivate link is active -->
+                                            {% if student.active == False %}
+                                                <span>
+                                                    <a 
+                                                        class="btn" 
+                                                        style="background-color: orange; color: white;" 
+                                                        href=" {{ url_for('reactivate_student', username=student.username) }} "> 
+                                                        Reactivate
+                                                    </a>
+                                                </span>
+                                            {% endif %}
+                                        </td>
+                                        <!-- ========================= -->
+                                        <!-- End of reactivate account -->
+                                        <!-- ========================= -->
+
+                                        <!-- ============== -->
+                                        <!-- Delete account -->
+                                        <!-- ============== -->
+                                        <td>
+                                            <!-- A student's account status needs to be active to delete an account -->
+                                            {% if student.active == True %}
+
+                                                <!-- parent cannot delete self -->
+                                                {% if current_user.username == student.username %}
+                                                    <button style="background-color: red; color: white;" class="btn" data-toggle="modal" data-target="#{{student.username}}ModalCenter">
+                                                        Delete
+                                                    </button>
+                                                    
+                                                    <!-- Modal -->
+                                                    <div class="modal fade" id="{{student.username}}ModalCenter" tabindex="-1" role="dialog" aria-labelledby="studentModalCenterTitle" aria-hidden="true">
+                                                        <div class="modal-dialog modal-dialog-centered" role="document">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                <h3 class="modal-title" id="studentModalLongTitle">Are You Sure?</h3>
+                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                    <span aria-hidden="true">&times;</span>
+                                                                </button>
+                                                                </div>
+                                                                <div class="modal-body">
+                                                                <p>
+                                                                    This action is permanent. It cannot be reversed. <br><br>
+                                                                    <a 
+                                                                        href=" {{ url_for('delete_student', username=student.username) }} " 
+                                                                        class="btn link_disabled" 
+                                                                        style="background-color: red; color: white;">
+                                                                            Delete student
+                                                                    </a>
+                                                                </p>
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!-- End of delete student modal -->
+                                                
+                                                    <!-- parent can delete others -->
+                                                {% else %}                                            
+                                                    <button style="background-color: red; color: white;" class="btn" data-toggle="modal" data-target="#{{student.username}}2DeleteModalCenter">
+                                                        Delete
+                                                    </button>
+                                                    
+                                                    <!-- Modal -->
+                                                    <div class="modal fade" id="{{student.username}}2DeleteModalCenter" tabindex="-1" role="dialog" aria-labelledby="student2ModalCenterTitle" aria-hidden="true">
+                                                        <div class="modal-dialog modal-dialog-centered" role="document">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                <h3 class="modal-title" id="student2ModalLongTitle">Are You Sure?</h3>
+                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                    <span aria-hidden="true">&times;</span>
+                                                                </button>
+                                                                </div>
+                                                                <div class="modal-body">
+                                                                <p>
+                                                                    This action is permanent. It cannot be reversed. <br><br>
+                                                                    {% if current_user.department != 'Superadmin' %}
+                                                                        <a 
+                                                                            href=" {{ url_for('delete_student', username=student.username) }} " 
+                                                                            class="btn link_disabled" 
+                                                                            style="background-color: red; color: white;">
+                                                                                Delete student
+                                                                        </a>
+                                                                    {% endif %}
+                                                                    {% if current_user.department == 'Superadmin' %}
+                                                                        <a 
+                                                                            href=" {{ url_for('delete_student', username=student.username) }} " 
+                                                                            class="btn" 
+                                                                            style="background-color: red; color: white;">
+                                                                                Delete student
+                                                                        </a>
+                                                                    {% endif %}
+                                                                </p>
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!-- ========================= -->
+                                                    <!-- End of delete student modal -->
+                                                    <!-- ========================= -->
+
+                                                {% endif %}
+                                            {% endif %}
+
+                                            <!-- If an student's status is false -->
+                                            {% if student.active == False %}
+                                                <span>
+                                                    <a 
+                                                        class="btn" 
+                                                        style="background-color: orange; color: white;" 
+                                                        href=" {{ url_for('delete_student', username=student.username) }} "> 
+                                                        Delete
+                                                    </a>
+                                                </span>
+                                            {% endif %}
+                                        </td>
+                                        <!-- End of delete account -->
+                                    {% endif %}
+                                    <!-- End if student access -->
+                                </tr>
+                            {% endfor %}
+                            <!-- End of getting all student from the database -->
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <!-- End of list of all registered admins -->
+
+        {% if current_user.type != 'admin' %}
+            <h1 class="mt-4">{{ title }}</h1>
+            <div class="row">
+                <div class="col-md-6">
+                    <p>
+                        You do not have access to this page. 
+                        Return to the <a href=" {{ url_for('dashboard') }} ">dashboard page</a>
+                    </p>
+                    <div class="col-md-6"><!-- Empty col --></div>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}
+
+{% block current_user_scripts %}
+    <script>
+        $(document).ready(function() {
+            $('#data').DataTable();
+        });
+    </script>
+{% endblock %}
