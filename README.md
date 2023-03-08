@@ -97,7 +97,7 @@ Built with love and from experience, this demo project summarizes the ideas that
 >
 >To login as a superadmin, you can use this credentials:
 >
->- Visit: **https://somasoma.onrender.com//login**
+>- Visit: **https://somasoma.onrender.com/login**
 >- Username: **tastebolder**
 >- Password: **somaSOMA123**
 
@@ -112,11 +112,13 @@ Built with love and from experience, this demo project summarizes the ideas that
     ![Student login details](/app/static/images/readme/student_login_details.gif)
 
 - Teacher Registration (done only by a logged in admin - not necessarily the superadmin)
+    - Done from the logged-in admin's account **https://somasoma.onrender.com/register/teacher**
     ![Register teacher](/app/static/images/readme/register_teacher.gif)
     - An email will be sent to the teacher to check their login details
     ![Teacher login details](/app/static/images/readme/teacher_login_details.gif)
 
 - Other admin registration (done only by a logged in admin - not necessarily the superadmin)
+    - Done from the logged-in admin's account **https://somasoma.onrender.com/register/admin**
     ![Register admin](/app/static/images/readme/register_admin.gif)
     - An email will be sent to the admin to check their login details
     ![Teacher login details](/app/static/images/readme/admin_login_details.gif)
