@@ -52,7 +52,11 @@
                                     <td><a href="https://wa.me/{{ admin.phone_number | replace('+', '') }}?text=Hello%20From%20somaSOMA" target="_blank">{{ admin.phone_number }}</a></td>
                                     <td>{{ admin.department }}</td>
                                     <td>{{ admin.current_residence }}</td>
-                                    <td>{{ admin.verification_phone }}</td>
+                                    {% if admin.two_factor_enabled() %}
+                                        <td><span class="label label-info"> Enabled </span></td>
+                                    {% else %}
+                                        <td><span class="label label-info"> Disabled </span></td>
+                                    {% endif %}
                                     <td>{{ moment(admin.registered_at).format('MMMM Do YYYY, h:mm:ss a') }}</td>
                                     
                                     

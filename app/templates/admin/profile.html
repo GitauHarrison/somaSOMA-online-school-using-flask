@@ -28,12 +28,21 @@
                     <strong>Phone Number:</strong> {{ current_user.phone_number }} 
                     <a href="#">Edit</a>
                 </p>
+                <p>
+                    <strong>Current Residence:</strong> {{ current_user.current_residence }} 
+                    <a href="#">Edit</a>
+                </p>
+                <p>
+                    <strong>Department:</strong> {{ current_user.department }}
+                </p>
                 {% if current_user.two_factor_enabled() %}
-                    <p><strong>2FA Status: </strong><span class="label label-danger">True</span></p>
+                    <p><strong>2FA Status: </strong><span class="label label-info">Enabled</span></p>
                 {% else %}
-                    <p><strong>2FA Status: </strong><span class="label label-danger">False</span></p>
+                    <p><strong>2FA Status: </strong><span class="label label-danger">Disabled</span></p>
                 {% endif %}
-              </div>
+                {% if current_user.department == 'Superadmin' %}
+                    <a href="#" class="btn btn-danger link_disabled">Delete Own Account</a>
+                {% endif %}
             </div>
           </div>
     </div>

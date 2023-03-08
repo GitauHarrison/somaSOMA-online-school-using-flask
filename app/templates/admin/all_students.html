@@ -50,23 +50,12 @@
                             <!-- Get all admins from the database -->
                             {% for student in students %}
                                 <tr>
-                                    <td><img src="{{ student.avatar(25) }}"></td>
-                                    <td>{{ student.first_name }} {{ student.last_name }}</td>                                        
-                                    <td>{{ student.username }}</td>
-                                    <td>{{ student.email }}</td>
-                                    <td><a href="https://wa.me/{{ student.phone_number | replace('+', '') }}?text=Hello%20From%20Tinker%20Education" target="_blank">{{ student.phone_number }}</a></td>
-                                    <td>{{ student.age }}</td>
-                                    <td>{{ student.school }}</td>
-                                    <td>{{ student.program }}</td>
-                                    <td><strong>{{ student.parent.first_name }} {{ student.parent.last_name }}</strong></td>
-                                    <td>{{ moment(student.registered_at).format('MMMM Do YYYY, h:mm:ss a') }}</td>                                        
-                                    <td>{{ student.verification_phone }}</td>
 
                                     <td><img src="{{ student.avatar(25) }}"></td>
                                     <td>{{ student.first_name }} {{ student.last_name }}</td>
                                     <td>{{ student.username }}</td>
                                     <td>{{ student.email }}</td>
-                                    <td><a href="https://wa.me/{{ student.phone_number | replace('+', '') }}?text=Hello%20From%20somaSOMA" target="_blank">{{ parent.phone_number }}</a></td>
+                                    <td><a href="https://wa.me/{{ student.phone_number | replace('+', '') }}?text=Hello%20From%20somaSOMA" target="_blank">{{ student.phone_number }}</a></td>
                                     <td>{{ student.age }}</td>
                                     <td>{{ student.school }}</td>
                                     <td>{{ student.coding_experience }}</td>
@@ -75,9 +64,9 @@
                                     <td>{{ student.cohort }}</td>
                                     <td><strong>{{ student.parent.first_name }} {{ student.parent.last_name }}</strong></td>
                                     {% if student.two_factor_enabled() %}
-                                        <td><span class="label label-info">{{ student.verification_phone }}</span></td>
+                                        <td><span class="label label-info"> Enabled </span></td>
                                     {% else %}
-                                        <td><span class="label label-warning">{{ student.verification_phone }}</span></td>
+                                        <td><span class="label label-info"> Disabled </span></td>
                                     {% endif %}
                                     
                                     <td>{{ moment(student.registered_at).format('MMMM Do YYYY, h:mm:ss a') }}</td>

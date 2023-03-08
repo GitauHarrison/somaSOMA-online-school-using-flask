@@ -6,7 +6,8 @@ from app.forms import ParentRegistrationForm, StudentRegistrationForm, \
     UnsubscribeForm, EmailForm
 from app.models import User, Parent, Student, Teacher, Admin,\
     Newsletter_Subscriber, Email
-from app.email import send_subscriber_private_email, send_user_private_email
+from app.email import send_subscriber_private_email, send_login_details, \
+    send_user_private_email
 from app.email import send_password_reset_email, thank_you_client
 from werkzeug.urls import url_parse
 from app.twilio_verify_api import request_email_verification_token, \
@@ -289,11 +290,22 @@ def register_parent():
             email=form.email.data,
             phone_number=form.phone_number.data,
             current_residence=form.current_residence.data)
+
+        # Show actual student password in registration email
+        session['password'] = form.password.data
+        user_password = session['password']
+
+        # Update database
         parent.set_password(form.password.data)
         db.session.add(parent)
         db.session.commit()
+
         # Send parent and email with login credentials
-        # send_login_details(parent)
+        send_login_details(parent, user_password)
+
+        # Delete student password session
+        del session['password']
+
         flash(f"Successfully registered as {parent.username}! "
               "Check your email for further guidance.")
         return redirect(url_for('home'))
@@ -325,11 +337,22 @@ def register_student():
                 program_schedule=form.program_schedule.data,
                 cohort=form.cohort.data,
                 parent=current_user)
+
+            # Show actual teacher password in registration email
+            session['password'] = form.password.data
+            user_password = session['password']
+
+            # Update database
             student.set_password(form.password.data)
             db.session.add(student)
             db.session.commit()
-            # Send parent and email with login credentials
-            # send_login_details(student)
+
+            # Send student an email with login credentials
+            send_login_details(student,user_password)
+
+            # Delete student password session
+            del session['password']
+
             flash(f"Successfully registered your child as {student.username}! "
                 "An email has been sent to them on the next steps to take.")
             return redirect(url_for('parent_profile'))
@@ -357,7 +380,7 @@ def register_teacher():
     if current_user.type == "admin":
         form = TeacherRegistrationForm()
         if form.validate_on_submit():
-            teacher = Parent(
+            teacher = Teacher(
                 first_name=form.first_name.data,
                 last_name=form.last_name.data,
                 username=form.username.data,
@@ -365,11 +388,21 @@ def register_teacher():
                 phone_number=form.phone_number.data,
                 course=form.course.data,
                 current_residence=form.current_residence.data)
+
+            # Show actual teacher password in registration email
+            session['password'] = form.password.data
+            user_password = session['password']
+
             teacher.set_password(form.password.data)
             db.session.add(teacher)
             db.session.commit()
+
             # Send teacher an email with login credentials
-            # send_login_details(parent)
+            send_login_details(teacher, user_password)
+
+            # Delete teacher password session
+            del session['password']
+
             flash(f"Successfully registered your teacher {teacher.username}! "
                 "An email has been sent to the teacher on the next steps.")
             return redirect(url_for('all_teachers'))
@@ -396,7 +429,7 @@ def register_admin():
     if current_user.type == "admin":
         form = AdminRegistrationForm()
         if form.validate_on_submit():
-            admin = Parent(
+            admin = Admin(
                 first_name=form.first_name.data,
                 last_name=form.last_name.data,
                 username=form.username.data,
@@ -404,11 +437,22 @@ def register_admin():
                 phone_number=form.phone_number.data,
                 current_residence=form.current_residence.data,
                 department=form.department.data)
+
+            # Show actual admin password in registration email
+            session['password'] = form.password.data
+            user_password = session['password']
+
+            # Update the database
             admin.set_password(form.password.data)
             db.session.add(admin)
             db.session.commit()
+
             # Send admin an email with login credentials
-            # send_login_details(admin)
+            send_login_details(admin, user_password)
+
+            # Delete student password session
+            del session['password']
+
             flash(f"Successfully registered your teacher {admin.username}! "
                 "An email has been sent to the teacher on the next steps.")
             return redirect(url_for('all_admins'))
@@ -467,6 +511,8 @@ def compose_direct_email_to_teacher(email):
     # Get the teacher
     teacher = Teacher.query.filter_by(email=email).first()
     teacher_username = teacher.email.split('@')[0].capitalize()
+    session['teacher_email'] = teacher.email
+    session['teacher_first_name'] = teacher.first_name
 
     form = EmailForm()
     form.signature.choices = [
@@ -516,6 +562,7 @@ def all_teachers():
     return render_template(
         "admin/all_teachers.html",
         title="All Teachers",
+        teachers=teachers,
         all_registered_teachers=all_registered_teachers
     )
 
@@ -559,6 +606,72 @@ def delete_teacher(username):
     return redirect(url_for('all_teachers'))
 
 
+# Send email to individual teacher
+
+@app.route('/send-email-to-teacher/<id>')
+@login_required
+def send_teacher_email(id):
+    """Send email to teacher from the database"""
+    email = Email.query.filter_by(id=id).first()
+    teacher_email = session['teacher_email']
+    teacher_first_name = session['teacher_first_name']
+
+    # Update db so that the email is not sent again
+    email.allow = True
+    db.session.add(email)
+    db.session.commit()
+
+    # Send email to user
+    send_user_private_email(email, teacher_email, teacher_first_name)
+
+    # Notify user that email has been sent
+    flash(f'Email successfully sent to the teacher {teacher_email}')
+    del session['teacher_email']
+    del session['teacher_first_name']
+    return redirect(url_for('emails_to_individual_teachers'))
+
+
+# Edit sample email
+
+@app.route('/edit-teacher-email/<id>', methods=['GET', 'POST'])
+@login_required
+def edit_teacher_email(id):
+    """Edit email to teacher from the database"""
+    email = Email.query.filter_by(id=id).first()
+    form = EmailForm()
+    form.signature.choices = [
+        (current_user.first_name.capitalize(), current_user.first_name.capitalize())]
+    if form.validate_on_submit():
+        email.subject = form.subject.data
+        email.body = form.body.data
+        email.closing = form.closing.data
+        email.signature = form.signature.data
+        db.session.commit()
+        flash('Your changes have been saved')
+        return redirect(url_for('emails_to_individual_teachers'))
+    if request.method == 'GET':
+        form.subject.data = email.subject
+        form.body.data = email.body
+        form.signature.data = email.signature
+    return render_template(
+        'admin/edit_email.html', title='Edit Sample Email', form=form)
+
+
+# Delete email from database
+
+@app.route('/delete-email-sent-to-a-teacher/<id>')
+@login_required
+def delete_teacher_email(id):
+    """Delete email to user from the database"""
+    email = Email.query.filter_by(id=id).first()
+    db.session.delete(email)
+    db.session.commit()
+    flash('Email successfully deleted')
+    del session['teacher_email']
+    del session['teacher_first_name']
+    return redirect(url_for('emails_to_individual_teachers'))
+
+
 # --------------------------------------
 # End of teacher profile
 # --------------------------------------
@@ -589,6 +702,8 @@ def compose_direct_email_to_admin(email):
     # Get the teacher
     admin = Admin.query.filter_by(email=email).first()
     admin_username = admin.email.split('@')[0].capitalize()
+    session['admin_email'] = admin.email
+    session['admin_first_name'] = admin.first_name
 
     form = EmailForm()
     form.signature.choices = [
@@ -604,7 +719,7 @@ def compose_direct_email_to_admin(email):
         db.session.add(email)
         db.session.commit()
         flash(f'Sample private email to {admin_username} saved')
-        return redirect(url_for('emails_to_individual_admin'))
+        return redirect(url_for('emails_to_individual_admins'))
     return render_template(
         'admin/email_admin.html',
         title='Compose Private Email',
@@ -682,6 +797,72 @@ def delete_admin(username):
     return redirect(url_for('all_admins'))
 
 
+# Send email to individual admin
+
+@app.route('/send-email-to-admin/<id>')
+@login_required
+def send_admin_email(id):
+    """Send email to admin from the database"""
+    email = Email.query.filter_by(id=id).first()
+    admin_email = session['admin_email']
+    admin_first_name = session['admin_first_name']
+
+    # Update db so that the email is not sent again
+    email.allow = True
+    db.session.add(email)
+    db.session.commit()
+
+    # Send email to user
+    send_user_private_email(email, admin_email, admin_first_name)
+
+    # Notify user that email has been sent
+    flash(f'Email successfully sent to the teacher {admin_email}')
+    del session['admin_email']
+    del session['admin_first_name']
+    return redirect(url_for('emails_to_individual_admins'))
+
+
+# Edit sample email
+
+@app.route('/edit-admin-email/<id>', methods=['GET', 'POST'])
+@login_required
+def edit_admin_email(id):
+    """Edit email to admin from the database"""
+    email = Email.query.filter_by(id=id).first()
+    form = EmailForm()
+    form.signature.choices = [
+        (current_user.first_name.capitalize(), current_user.first_name.capitalize())]
+    if form.validate_on_submit():
+        email.subject = form.subject.data
+        email.body = form.body.data
+        email.closing = form.closing.data
+        email.signature = form.signature.data
+        db.session.commit()
+        flash('Your changes have been saved')
+        return redirect(url_for('emails_to_individual_admins'))
+    if request.method == 'GET':
+        form.subject.data = email.subject
+        form.body.data = email.body
+        form.signature.data = email.signature
+    return render_template(
+        'admin/edit_email.html', title='Edit Sample Email', form=form)
+
+
+# Delete email from database
+
+@app.route('/delete-email-sent-to-a-admin/<id>')
+@login_required
+def delete_admin_email(id):
+    """Delete email to user from the database"""
+    email = Email.query.filter_by(id=id).first()
+    db.session.delete(email)
+    db.session.commit()
+    flash('Email successfully deleted')
+    del session['admin_email']
+    del session['admin_first_name']
+    return redirect(url_for('emails_to_individual_admins'))
+
+
 # --------------------------------------
 # End of admin profile
 # --------------------------------------
@@ -690,6 +871,17 @@ def delete_admin(username):
 # --------------------------------------
 # All parents
 # --------------------------------------
+
+
+# Parent profile
+
+@app.route("/parent/profile")
+@login_required
+def parent_profile():
+    return render_template(
+        "parent/profile.html",
+        title="Parent Profile"
+    )
 
 
 # Compose direct email to parent
@@ -703,6 +895,8 @@ def compose_direct_email_to_parent(email):
     # Get the parent
     parent = Parent.query.filter_by(email=email).first()
     parent_username = parent.email.split('@')[0].capitalize()
+    session['parent_email'] = parent.email
+    session['parent_first_name'] = parent.first_name
 
     form = EmailForm()
     form.signature.choices = [
@@ -796,6 +990,72 @@ def delete_parent(username):
     return redirect(url_for('all_parents'))
 
 
+# Send email to individual parent
+
+@app.route('/send-email-to-parent/<id>')
+@login_required
+def send_parent_email(id):
+    """Send email to parent from the database"""
+    email = Email.query.filter_by(id=id).first()
+    parent_email = session['parent_email']
+    parent_first_name = session['parent_first_name']
+
+    # Update db so that the email is not sent again
+    email.allow = True
+    db.session.add(email)
+    db.session.commit()
+
+    # Send email to user
+    send_user_private_email(email, parent_email, parent_first_name)
+
+    # Notify user that email has been sent
+    flash(f'Email successfully sent to the teacher {parent_email}')
+    del session['parent_email']
+    del session['parent_first_name']
+    return redirect(url_for('emails_to_individual_parents'))
+
+
+# Edit sample email
+
+@app.route('/edit-parent-email/<id>', methods=['GET', 'POST'])
+@login_required
+def edit_parent_email(id):
+    """Edit email to parent from the database"""
+    email = Email.query.filter_by(id=id).first()
+    form = EmailForm()
+    form.signature.choices = [
+        (current_user.first_name.capitalize(), current_user.first_name.capitalize())]
+    if form.validate_on_submit():
+        email.subject = form.subject.data
+        email.body = form.body.data
+        email.closing = form.closing.data
+        email.signature = form.signature.data
+        db.session.commit()
+        flash('Your changes have been saved')
+        return redirect(url_for('emails_to_individual_parents'))
+    if request.method == 'GET':
+        form.subject.data = email.subject
+        form.body.data = email.body
+        form.signature.data = email.signature
+    return render_template(
+        'admin/edit_email.html', title='Edit Sample Email', form=form)
+
+
+# Delete email from database
+
+@app.route('/delete-email-sent-to-a-parent/<id>')
+@login_required
+def delete_parent_email(id):
+    """Delete email to parent from the database"""
+    email = Email.query.filter_by(id=id).first()
+    db.session.delete(email)
+    db.session.commit()
+    flash('Email successfully deleted')
+    del session['parent_email']
+    del session['parent_first_name']
+    return redirect(url_for('emails_to_individual_parents'))
+
+
 # --------------------------------------
 # End of all parents
 # --------------------------------------
@@ -804,6 +1064,17 @@ def delete_parent(username):
 # --------------------------------------
 # All students
 # --------------------------------------
+
+
+# Student profile
+
+@app.route("/student/profile")
+@login_required
+def student_profile():
+    return render_template(
+        "student/profile.html",
+        title="Student Profile"
+    )
 
 
 # Compose direct email to student
@@ -817,6 +1088,8 @@ def compose_direct_email_to_student(email):
     # Get the parent
     student = Student.query.filter_by(email=email).first()
     student_username = student.email.split('@')[0].capitalize()
+    session['student_email'] = student.email
+    session['student_first_name'] = student.first_name
 
     form = EmailForm()
     form.signature.choices = [
@@ -899,14 +1172,80 @@ def reactivate_student(username):
 
 # Delete student
 
-@app.route("/dashboard/delete-parent/<username>")
+@app.route("/dashboard/delete-student/<username>")
 @login_required
-def delete_students(username):
+def delete_student(username):
     student = Student.query.filter_by(username=username).first_or_404()
     db.session.delete(student)
     db.session.commit()
     flash(f'{student.username} has been deleted as a student')
     return redirect(url_for('all_students'))
+
+
+# Send email to individual student
+
+@app.route('/send-email-to-student/<id>')
+@login_required
+def send_student_email(id):
+    """Send email to student from the database"""
+    email = Email.query.filter_by(id=id).first()
+    student_email = session['student_email']
+    student_first_name = session['student_first_name']
+
+    # Update db so that the email is not sent again
+    email.allow = True
+    db.session.add(email)
+    db.session.commit()
+
+    # Send email to user
+    send_user_private_email(email, student_email, student_first_name)
+
+    # Notify user that email has been sent
+    flash(f'Email successfully sent to the teacher {student_email}')
+    del session['student_email']
+    del session['student_first_name']
+    return redirect(url_for('emails_to_individual_students'))
+
+
+# Edit sample email
+
+@app.route('/edit-student-email/<id>', methods=['GET', 'POST'])
+@login_required
+def edit_student_email(id):
+    """Edit email to student from the database"""
+    email = Email.query.filter_by(id=id).first()
+    form = EmailForm()
+    form.signature.choices = [
+        (current_user.first_name.capitalize(), current_user.first_name.capitalize())]
+    if form.validate_on_submit():
+        email.subject = form.subject.data
+        email.body = form.body.data
+        email.closing = form.closing.data
+        email.signature = form.signature.data
+        db.session.commit()
+        flash('Your changes have been saved')
+        return redirect(url_for('emails_to_individual_students'))
+    if request.method == 'GET':
+        form.subject.data = email.subject
+        form.body.data = email.body
+        form.signature.data = email.signature
+    return render_template(
+        'admin/edit_email.html', title='Edit Sample Email', form=form)
+
+
+# Delete email from database
+
+@app.route('/delete-email-sent-to-a-student/<id>')
+@login_required
+def delete_student_email(id):
+    """Delete email to student from the database"""
+    email = Email.query.filter_by(id=id).first()
+    db.session.delete(email)
+    db.session.commit()
+    flash('Email successfully deleted')
+    del session['student_email']
+    del session['student_first_name']
+    return redirect(url_for('emails_to_individual_students'))
 
 
 # --------------------------------------
@@ -994,14 +1333,14 @@ def bulk_emails_students():
 # ----------------------------------------
 
 
-@app.route("/dashboard/newsletter-subscribers")
+@app.route("/dashboard/all-newsletter-subscribers")
 @login_required
 def newsletter_subscribers():
     subscribers = Newsletter_Subscriber.query.order_by(
         Newsletter_Subscriber.email_confirmed_at.desc()).all()
     num_subscribers = len(subscribers)
     return render_template(
-        "admin/newsletter_subscribers.html",
+        "admin/all_newsletter_subscribers.html",
         title="Newsletter Subscribers",
         subscribers=subscribers, 
         num_subscribers=num_subscribers

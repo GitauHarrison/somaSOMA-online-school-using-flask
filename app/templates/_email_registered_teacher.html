@@ -1,0 +1,26 @@
+<div class="email">
+    <div class="row">
+        <div class="col-md-3 col-lg-2">
+            <img src="{{ email.author.avatar(45) }}"><br>
+            <small>Created by <strong>{{ email.author.username }}</strong> on <br> {{ moment(email.timestamp).format('lll') }}: <br><br></small>
+        </div>
+        <div class="col-md-9 col-lg-10">
+            <p><strong>{{ email.subject }}</strong><br></p>
+            <p>{{ email.body }}<br></p>
+            <p>{{ email.closing }}, <br> {{ email.signature }}</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            {% if email.allow == False %}
+                <a href=" {{ url_for('edit_teacher_email', id=email.id) }} " class="label label-info">Edit</a>
+                 | <a href=" {{ url_for('send_teacher_email', id=email.id) }} " class="label label-warning">Send</a>
+            {% else %}
+                <a class="link_disabled label label-success" href=" {{ url_for('send_teacher_email', id=email.id) }} " >Sent</a>
+            {% endif %}
+            {% if current_user.type == 'admin' %}
+                 | <a href=" {{ url_for('delete_teacher_email', id=email.id) }} " class="label label-danger">Delete</a>
+            {% endif %}
+        </div>
+    </div>
+</div>

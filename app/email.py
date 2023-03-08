@@ -12,6 +12,31 @@ def send_email(subject, sender, recipients, text_body, html_body):
     mail.send(msg)
 
 
+
+# Email user individually
+
+def send_user_private_email(email, user_email, user_first_name):
+    """Send user a private email"""
+    send_email(
+        subject=email.subject,
+        sender=app.config["MAIL_DEFAULT_SENDER"],
+        recipients=[user_email],
+        text_body=render_template(
+            "emails/private_email.txt",
+            email=email,
+            user_first_name=user_first_name),
+        html_body=render_template(
+            "emails/private_email.html",
+            email=email,
+            user_first_name=user_first_name))
+
+
+
+# ================================================
+# Authentication
+# ================================================
+
+
 # Password reset email
 
 def send_password_reset_email(user):
@@ -26,6 +51,33 @@ def send_password_reset_email(user):
         html_body=render_template(
                     "emails/reset_password.html", user=user, token=token))
 
+
+
+def send_login_details(user, user_password):
+    """Once registered, users (teacher, parent, admin) will be notified via email"""
+    send_email(
+        '[somaSOMA] You have been registered!',
+        sender=app.config['MAIL_DEFAULT_SENDER'],
+        recipients=[user.email],
+        text_body=render_template(
+            '/emails/auth/send_login_details.txt',
+            user=user,
+            user_password=user_password),
+        html_body=render_template(
+            '/emails/auth/send_login_details.html',
+            user=user,
+            user_password=user_password))
+
+
+# ================================================
+# Authentication
+# ================================================
+
+
+
+# ================================================
+# Newsletter subscriber email
+# ================================================
 
 
 # Thank client for signing up for the newsletter
@@ -66,23 +118,9 @@ def send_subscriber_private_email(email, subscriber_email, subscriber_username):
             subscriber_username=subscriber_username))
 
 
-# Email user individually
-
-def send_user_private_email(email, user_username):
-    """Send user a private email"""
-    send_email(
-        subject=email.subject,
-        sender=app.config["MAIL_DEFAULT_SENDER"],
-        recipients=[email.email],
-        text_body=render_template(
-            "emails/private_email.txt",
-            email=email,
-            user_username=user_username),
-        html_body=render_template(
-            "emails/private_email.html",
-            email=email,
-            user_username=user_username))
-
+# ================================================
+# End of newsletter subscriber email
+# ================================================
 
 
 # ==================================================

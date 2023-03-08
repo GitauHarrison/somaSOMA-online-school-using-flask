@@ -1,0 +1,25 @@
+Dear {{ user.username }},
+
+Congratulations! You have been added as a user to the somaSOMA eLearning App. 
+
+There are a few things you need to get started:
+
+Visit this link to log in: {{ url_for('login', _external=True) }}
+
+Enter your username: {{ user.username }}
+
+Enter your temporary password: {{ user_password }}
+
+Please ensure that you change the password as soon as possible. It is temporary.
+
+To change the password,
+
+Visit: {{ url_for('request_password_reset', _external=True) }}
+
+Enter your email address: {{ user.email }}
+
+Check your inbox for further instructions.
+
+Sincerely,
+
+somaSOMA Support

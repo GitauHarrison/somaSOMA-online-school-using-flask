@@ -49,13 +49,13 @@
                                     <td>{{ teacher.first_name }} {{ teacher.last_name }}</td>
                                     <td>{{ teacher.username }}</td>
                                     <td>{{ teacher.email }}</td>
-                                    <td><a href="https://wa.me/{{ teacher.phone_number | replace('+', '') }}?text=Hello%20From%20somaSOMA" target="_blank">{{ parent.phone_number }}</a></td>
+                                    <td><a href="https://wa.me/{{ teacher.phone_number | replace('+', '') }}?text=Hello%20From%20somaSOMA" target="_blank">{{ teacher.phone_number }}</a></td>
                                     <td>{{ teacher.course }}</td>
                                     <td>{{ teacher.current_residence }}</td>
                                     {% if teacher.two_factor_enabled() %}
-                                        <td><span class="label label-info">{{ teacher.verification_phone }}</span></td>
+                                        <td><span class="label label-info"> Enabled </span></td>
                                     {% else %}
-                                        <td><span class="label label-warning">{{ teacher.verification_phone }}</span></td>
+                                        <td><span class="label label-warning"> Disabled </span></td>
                                     {% endif %}
                                     
                                     <td>{{ moment(teacher.registered_at).format('MMMM Do YYYY, h:mm:ss a') }}</td>

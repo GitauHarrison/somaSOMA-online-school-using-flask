@@ -57,9 +57,9 @@
                                         {% endfor %}
                                     </td>
                                     {% if parent.two_factor_enabled() %}
-                                        <td><span class="label label-info">{{ parent.verification_phone }}</span></td>
+                                        <td><span class="label label-info"> Enabled </span></td>
                                     {% else %}
-                                        <td><span class="label label-warning">{{ parent.verification_phone }}</span></td>
+                                        <td><span class="label label-info"> Disabled </span></td>
                                     {% endif %}
                                     
                                     <td>{{ moment(parent.registered_at).format('MMMM Do YYYY, h:mm:ss a') }}</td>

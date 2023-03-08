@@ -341,7 +341,7 @@
                           <a href=" # ">Student Analysis</a>
                       </li>
                       <li>
-                          <a href=" # ">Profile</a>
+                          <a href=" {{ url_for('parent_profile') }} ">Profile</a>
                       </li>
                   {% endif %}
                   {% if current_user.type == 'admin' %}

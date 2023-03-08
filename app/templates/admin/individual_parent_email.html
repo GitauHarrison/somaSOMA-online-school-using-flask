@@ -6,7 +6,7 @@
         <h1 class="mb-4">{{ title }} ({{ emails }})</h1>
         <p>These are the emails your organization has sent to individual <strong>Parents</strong>.</p>
         {% for email in emails_sent_to_individual_parents %}
-            {% include '_email.html' %}
+            {% include '_email_registered_parent.html' %}
         {% endfor %}
         <!-- Pagination of comments -->
         <div class="row text-center">
