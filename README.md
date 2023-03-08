@@ -44,11 +44,11 @@ Built with love and from experience, this demo project summarizes the ideas that
 ## Features
 
 - Multi-user support
-- Newsletter
+- Newsletter subscription
 - Basic user authentication
 - Two-factor authentication
 - Sending of emails from the app
-- Restricted access to subsequent lesson by students
+- Restricted access to subsequent lessons by students unless passmark achieved
 
 ## Technologies Used
 
@@ -88,6 +88,38 @@ Built with love and from experience, this demo project summarizes the ideas that
 ![Admin talks with subscriber](/app/static/images/readme/admin_talks_with_subscriber.gif)
 
 
+### Multi-user Support
+
+>The application features a **superadmin**, who cannot be deleted. This superadmin is the source of all activities in the app. For example:
+>
+>- All teachers are added by the superadmin
+>- Other admins, with limited powers, are also added by the superadmin
+>
+>To login as a superadmin, you can use this credentials:
+>
+>- Visit: **https://somasoma.onrender.com//login**
+>- Username: **tastebolder**
+>- Password: **somaSOMA123**
+
+- Parent Registration (anonymous user can register as a parent)
+    - Done from the home page **https://somasoma.onrender.com/register**
+    ![Register parent](/app/static/images/readme/register_parent.gif)
+
+- Student Registration (done ONLY by a registered parent - designed so to allow for their association)
+    - Done from the logged-in parent's account **https://somasoma.onrender.com/register/student**
+    ![Register student](/app/static/images/readme/register_student.gif)
+    - An email will be sent to the student to check their login details
+    ![Student login details](/app/static/images/readme/student_login_details.gif)
+
+- Teacher Registration (done only by a logged in admin - not necessarily the superadmin)
+    ![Register teacher](/app/static/images/readme/register_teacher.gif)
+    - An email will be sent to the teacher to check their login details
+    ![Teacher login details](/app/static/images/readme/teacher_login_details.gif)
+
+- Other admin registration (done only by a logged in admin - not necessarily the superadmin)
+    ![Register admin](/app/static/images/readme/register_admin.gif)
+    - An email will be sent to the admin to check their login details
+    ![Teacher login details](/app/static/images/readme/admin_login_details.gif)
 
 ## Testing It Locally
 
@@ -135,4 +167,6 @@ Built with love and from experience, this demo project summarizes the ideas that
 
 ## Areas of Improvement
 
-- Notifications within the app of activities taking place
+- Notifications of activities taking place within the app
+- Capture user gender during registration to help define how to send an email(Mr. or Ms.)
+- Other user's can request to delete their own accounts
