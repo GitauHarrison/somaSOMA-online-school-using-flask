@@ -6,7 +6,7 @@
         {% include '_flash_message.html' %}
         <h1 class="mt-4">{{ title }}</h1><br>
         <div class="row">
-            <div class="col-md-12 col-lg-7 col-sm-12 profile mr-4 mb-4">
+            <div class="col-md-12 profile mb-4">
                 <h3 class="mb-4">Personal Information</h3>
                 <div class="table-responsive">
                     <table class="table table-striped">
@@ -60,7 +60,7 @@
                                 <td>
                                     {{ current_user.email }}
                                     <!-- Icon trigger modal -->
-                                    <a href="#" data-toggle="modal" data-target="#emailModalCenter"></a>
+                                    <a href="#" data-toggle="modal" data-target="#emailModalCenter">Edit</a>
                                     
                                     <!-- Modal -->
                                     <div class="modal fade" id="emailModalCenter" tabindex="-1" role="dialog" aria-labelledby="emailModalCenterTitle" aria-hidden="true">
@@ -88,7 +88,7 @@
                                 <td>
                                     {{ current_user.phone_number }}
                                     <!-- Icon trigger modal -->
-                                    <a href="#" class="fa-regular fa-pen-to-square" data-toggle="modal" data-target="#phoneModalCenter"></a>
+                                    <a href="#" data-toggle="modal" data-target="#phoneModalCenter">Edit</a>
                                     
                                     <!-- Modal -->
                                     <div class="modal fade" id="phoneModalCenter" tabindex="-1" role="dialog" aria-labelledby="phoneModalCenterTitle" aria-hidden="true">
@@ -137,14 +137,14 @@
                         <a 
                             class="btn" 
                             style="background-color: red; color: white;" 
-                            href=" {{ url_for('student.delete_account') }} "> 
+                            href=" {{ url_for('student_deactivate_account') }} "> 
                                 Deactivate
                         </a>
                     {% else %}
                         <a 
                             class="btn link_disabled" 
                             style="background-color: red; color: white;" 
-                            href=" {{ url_for('student.delete_account') }} "> 
+                            href=" {{ url_for('student_deactivate_account') }} "> 
                                 Deactivate 
                         </a>
                     {% endif %}
@@ -155,14 +155,4 @@
             </div>
         </div>
     </div>
-{% endblock %}
-
-{% block datatable_scripts %}
-    <script>
-        $(document).ready(function() {
-            $('#project_scores').DataTable();
-            $('#quiz_scores').DataTable();
-            $('#aggregate_scores').DataTable();
-        });
-    </script>
 {% endblock %}

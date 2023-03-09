@@ -3,12 +3,13 @@ from flask_login import current_user, login_user, logout_user, login_required
 from app.forms import ParentRegistrationForm, StudentRegistrationForm, \
     TeacherRegistrationForm, AdminRegistrationForm, LoginForm, \
     ResetPasswordForm, RequestPasswordResetForm, VerifyForm,\
-    UnsubscribeForm, EmailForm
+    UnsubscribeForm, EmailForm, EditEmailForm, EditPhoneForm, EditUsernameForm
 from app.models import User, Parent, Student, Teacher, Admin,\
     Newsletter_Subscriber, Email
 from app.email import send_subscriber_private_email, send_login_details, \
     send_user_private_email
-from app.email import send_password_reset_email, thank_you_client
+from app.email import send_password_reset_email, thank_you_client, \
+    request_account_deletion
 from werkzeug.urls import url_parse
 from app.twilio_verify_api import request_email_verification_token, \
     check_email_verification_token
@@ -1068,14 +1069,56 @@ def delete_parent_email(id):
 
 # Student profile
 
-@app.route("/student/profile")
+@app.route("/student/profile", methods=['GET', 'POST'])
 @login_required
 def student_profile():
+    # Profile edits
+    username_form = EditUsernameForm()
+    email_form = EditEmailForm()
+    phone_form = EditPhoneForm()
+
+    if request.method == 'GET':
+        username_form.username.data = current_user.username
+        email_form.email.data = current_user.email
+        phone_form.phone.data = current_user.phone_number
+    if username_form.validate_on_submit() and username_form.username.data:
+        current_user.username = username_form.username.data
+        db.session.commit()
+        flash('Username updated.')
+        return redirect(url_for('student_profile'))
+    if email_form.validate_on_submit() and email_form.email.data:
+        current_user.email = email_form.email.data
+        db.session.commit()
+        flash('Email updated.')
+        return redirect(url_for('student_profile'))
+    if phone_form.validate_on_submit() and phone_form.phone.data:
+        current_user.phone_number = phone_form.phone.data
+        db.session.commit()
+        flash('Phone number updated.')
+        return redirect(url_for('student_profile'))
     return render_template(
         "student/profile.html",
-        title="Student Profile"
+        title="Student Profile",
+        username_form=username_form,
+        email_form=email_form,
+        phone_form=phone_form
     )
 
+
+@app.route('/student/deactivate-account')
+@login_required
+def student_deactivate_account():
+    # Get current user
+    student = Student.query.filter_by(username=current_user.username).first()
+
+   # Send email to all admins about the request to delete account
+    admins = Admin.query.all()
+    for admin in admins:
+        request_account_deletion(admin, student)
+
+    flash('Your request has been sent to the admins.'
+          ' You will receive an email notification if approved')
+    return redirect(url_for('student_profile'))
 
 # Compose direct email to student
 

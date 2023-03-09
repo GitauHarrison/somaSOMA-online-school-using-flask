@@ -51,6 +51,9 @@ class User(db.Model, UserMixin):
     def check_password(self, password):
         return check_password_hash(self.password_hash, password)
 
+    def account_deletion(self):
+        return self.delete_account is not True
+
     @property
     def is_active(self):
         # override UserMixin property which always returns true

@@ -261,15 +261,12 @@ class VerifyForm(FlaskForm):
 
 
 
-# Unsubscribe from newsletter
+# Disable 2fa
 
+class DisableForm(FlaskForm):
+    """User can disable 2FA"""
+    submit = SubmitField('Disable')
 
-class UnsubscribeForm(FlaskForm):
-    email = StringField(
-        'Email',
-        validators=[DataRequired(), Email()],
-        render_kw={'autofocus': True, 'placeholder': 'Your subscription email'})
-    submit = SubmitField('Unsubscribe')
 
 
 # ========================================
@@ -305,3 +302,74 @@ class EmailForm(FlaskForm):
 # ========================================
 # END OF EMAIL
 # ========================================
+
+
+# Unsubscribe from newsletter
+
+
+class UnsubscribeForm(FlaskForm):
+    email = StringField(
+        'Email',
+        validators=[DataRequired(), Email()],
+        render_kw={'autofocus': True, 'placeholder': 'Your subscription email'})
+    submit = SubmitField('Unsubscribe')
+
+# =============
+# Profile Edits
+# =============
+
+class EditUsernameForm(FlaskForm):
+    username = StringField(
+        'Username',
+        validators=[DataRequired(), Length(min=2, max=30)])
+    submit = SubmitField('Update')
+
+    def validate_username(self, username):
+        user = User.query.filter_by(username=username.data).first()
+        if user is not None:
+            raise ValidationError('Please use a different username.')
+
+
+class EditEmailForm(FlaskForm):
+    email = StringField(
+        'Email',
+        validators=[DataRequired(), Email(), Length(min=2, max=64)],
+        render_kw={'placeholder': 'You have access to this email address'})
+    submit = SubmitField('Update')
+
+    def validate_email(self, email):
+        user = User.query.filter_by(email=email.data).first()
+        if user is not None:
+            raise ValidationError('Please use a different email.')
+
+
+class EditPhoneForm(FlaskForm):
+    phone = StringField(
+        'Phone Number',
+        validators=[DataRequired(), Length(min=2, max=30)])
+    submit = SubmitField('Update')
+
+    def validate_phone(self, phone):
+        p = phonenumbers.parse(phone.data)
+        try:
+            if not phonenumbers.is_valid_number(p):
+                raise ValueError()
+        except (phonenumbers.phonenumberutil.NumberParseException, ValueError):
+            raise ValidationError('Invalid phone number.')
+
+# Parent
+
+class EditResidenceForm(FlaskForm):
+    residence = StringField(
+        'Residence',
+        validators=[DataRequired(), Length(min=2, max=30)])
+    submit = SubmitField('Update')
+
+
+# Student
+
+class EditSchoolForm(FlaskForm):
+    school = StringField(
+        'School',
+        validators=[DataRequired(), Length(min=2, max=30)])
+    submit = SubmitField('Update')

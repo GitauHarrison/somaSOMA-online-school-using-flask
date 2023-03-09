@@ -250,3 +250,28 @@ def send_third_newsletter():
 # ==================================================
 # END OF SENDING NEWSLETTERS
 # ==================================================
+
+
+# ==================================================
+# DEACTIVATE OWN ACCOUNT
+# ==================================================
+
+
+def request_account_deletion(admin, student):
+    """Request to delete student account sent to all admins"""
+    send_email(
+        subject='[somaSOMA] Request to Deactivate Account',
+        sender=app.config['MAIL_DEFAULT_SENDER'],
+        recipients=[admin.email],
+        text_body=render_template(
+            '/emails/deactivate_account/student_email.txt',
+            admin=admin,
+            student=student),
+        html_body=render_template(
+            '/emails/deactivate_account/student_email.html',
+            admin=admin,
+            student=student))
+
+# ==================================================
+# END OF DEACTIVATE OWN ACCOUNT
+# ==================================================
