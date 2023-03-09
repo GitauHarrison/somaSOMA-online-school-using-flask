@@ -501,6 +501,26 @@ def teacher_profile():
     )
 
 
+# Deactivate own account
+
+@app.route('/teacher/deactivate-account')
+@login_required
+def teacher_deactivate_account():
+    # Get current user
+    teacher = Teacher.query.filter_by(username=current_user.username).first()
+
+   # Send email to all admins about the request to delete account
+    admins = Admin.query.all()
+    for admin in admins:
+        request_account_deletion(admin, teacher)
+
+    flash('Your request has been sent to the admins.'
+          ' You will receive an email notification if approved')
+    return redirect(url_for('teacher_profile'))
+
+
+
+
 # Compose direct email to teacher
 
 @app.route(
@@ -885,6 +905,26 @@ def parent_profile():
     )
 
 
+# Deactivate own account
+
+@app.route('/parent/deactivate-account')
+@login_required
+def parent_deactivate_account():
+    # Get current user
+    parent = Teacher.query.filter_by(username=current_user.username).first()
+
+   # Send email to all admins about the request to delete account
+    admins = Admin.query.all()
+    for admin in admins:
+        request_account_deletion(admin, parent)
+
+    flash('Your request has been sent to the admins.'
+          ' You will receive an email notification if approved')
+    return redirect(url_for('parent_profile'))
+
+
+
+
 # Compose direct email to parent
 
 @app.route(
@@ -1119,6 +1159,8 @@ def student_deactivate_account():
     flash('Your request has been sent to the admins.'
           ' You will receive an email notification if approved')
     return redirect(url_for('student_profile'))
+
+
 
 # Compose direct email to student
 

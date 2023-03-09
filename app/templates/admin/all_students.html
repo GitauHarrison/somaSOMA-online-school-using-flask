@@ -312,19 +312,6 @@
             </div>
         </div>
         <!-- End of list of all registered admins -->
-
-        {% if current_user.type != 'admin' %}
-            <h1 class="mt-4">{{ title }}</h1>
-            <div class="row">
-                <div class="col-md-6">
-                    <p>
-                        You do not have access to this page. 
-                        Return to the <a href=" {{ url_for('dashboard') }} ">dashboard page</a>
-                    </p>
-                    <div class="col-md-6"><!-- Empty col --></div>
-                </div>
-            </div>
-        {% endif %}
     </div>
 {% endblock %}
 

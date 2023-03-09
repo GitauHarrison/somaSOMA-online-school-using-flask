@@ -37,6 +37,24 @@
                 {% else %}
                     <p><strong>2FA Status: </strong><span class="label label-danger">Disabled</span></p>
                 {% endif %}
+                <p>
+                    Want to deactivate your account? 
+                    {% if current_user.delete_account == False %}
+                        <a 
+                            class="btn" 
+                            style="background-color: red; color: white;" 
+                            href=" {{ url_for('parent_deactivate_account') }} "> 
+                                Deactivate
+                        </a>
+                    {% else %}
+                        <a 
+                            class="btn link_disabled" 
+                            style="background-color: red; color: white;" 
+                            href=" {{ url_for('parent_deactivate_account') }} "> 
+                                Deactivate 
+                        </a>
+                    {% endif %}
+                </p>
               </div>
             </div>
           </div>
