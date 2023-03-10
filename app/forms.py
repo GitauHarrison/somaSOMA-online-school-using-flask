@@ -373,3 +373,163 @@ class EditSchoolForm(FlaskForm):
         'School',
         validators=[DataRequired(), Length(min=2, max=30)])
     submit = SubmitField('Update')
+
+# =============
+# End of Profile Edits
+# =============
+
+
+# =================================
+# Lesson Quizes
+# =================================
+
+# ------
+# Flask
+# ------
+
+class FlaskChapter2QuizForm(FlaskForm):
+    question1 = SelectField(
+        'Which of the following tags is used to create a link in HTML?',
+        choices=[
+            ('<a>', '<a>'),
+            ('<body>', '<body>'),
+            ('<p>', '<p>'),
+            ('<em>', '<em>')
+            ],
+        validators=[DataRequired()])
+    question2 = SelectField(
+        'Where within an HTML structure do you link a CSS file?',
+         choices=[
+            ('<footer>', '<footer>'),
+            ('<body>', '<body>'),
+            ('<head>', '<head>'),
+            ('<title>', '<title>')
+            ],
+        validators=[DataRequired()])
+    question3 = SelectField(
+     'Which option below is the correct way to style a <p>(paragraph) element?',
+         choices=[
+            ('p{color = orange;}', 'p{color = orange;}'),
+            ('p{color = orange}', 'p{color = orange}'),
+            ('p{color: orange;}', 'p{color: orange;}'),
+            ('p{color == orange;}', 'p{color == orange;}')
+            ],
+        validators=[DataRequired()])
+    question4 = SelectField(
+        'How do you remove any decoration from a link (<a>) using CSS?',
+            choices=[
+                ('a{text-decoration: underline;}', 'a{text-decoration: underline;}'),
+                ('a{text-decoration: none;}', 'a{text-decoration: none;}'),
+                ('a{text-decoration: strikethrough;}', 'a{text-decoration: strikethrough;}'),
+                ('a{text-decoration: all;}', 'a{text-decoration: all;}')
+                ],
+            validators=[DataRequired()])
+    submit = SubmitField('Submit')
+
+
+class FlaskChapter3QuizForm(FlaskForm):
+    question1 = SelectField(
+        'What is used to track changes in a repository?',
+        choices=[
+            ('Python', 'Python'),
+            ('Tracker', 'Tracker'),
+            ('Git', 'Git'),
+            ('VS Code', 'VS Code')
+            ],
+        validators=[DataRequired()])
+    question2 = SelectField(
+        'What command is used to check if there has been changes to a git repository?',
+         choices=[
+            ('git status', 'git status'),
+            ('Install github', 'Install github'),
+            ('git branch -M main', 'git branch -M main'),
+            ('git push origin -u main', 'git push origin -u main')
+            ],
+        validators=[DataRequired()])
+    question3 = SelectField(
+     'How do you add the changes in a file to version control?',
+         choices=[
+            ('git install <you-filename.ext>', 'git install <you-filename.ext>'),
+            ('git add <you-filename.ext>', 'git add <you-filename.ext>'),
+            ('git status <you-filename.ext>', 'git status <you-filename.ext>'),
+            ('git init <you-filename.ext>', 'git init <you-filename.ext>')
+            ],
+        validators=[DataRequired()])
+    question4 = SelectField(
+        'How do you make a repository trackable by git?',
+            choices=[
+                ('flask run git', 'flask run git'),
+                ('git init', 'git init'),
+                ('git push origin main', 'git push origin main'),
+                ('git status', 'git status')
+                ],
+            validators=[DataRequired()])
+    question5 = SelectField(
+        'How can a repository be downloaded from GitHub?',
+            choices=[
+                ('download <repo-name>', 'download <repo-name>'),
+                ('pip3 download <repo-name>', 'pip3 download <repo-name>'),
+                ('source venv/bin/download', 'source venv/bin/download'),
+                ('git clone <link-to-repo>', 'git clone <link-to-repo>')
+                ],
+            validators=[DataRequired()])
+    submit = SubmitField('Submit')
+
+
+
+class FlaskChapter4QuizForm(FlaskForm):
+    question1 = SelectField(
+        'Which programming language has been used to create the flask framework?',
+        choices=[
+            ('HTML', 'HTML'),
+            ('CSS', 'CSS'),
+            ('Flask', 'Flask'),
+            ('Python', 'Python')
+            ],
+        validators=[DataRequired()])
+    question2 = SelectField(
+        'Which command is used to create a virtual environment?',
+         choices=[
+            ('touch venv', 'touch venv'),
+            ('python3 -m venv venv', 'python3 -m venv venv'),
+            ('pip3 install flask', 'pip3 install flask'),
+            ('flask run', 'flask run')
+            ],
+        validators=[DataRequired()])
+    question3 = SelectField(
+     'Which file is used to list select files to be ignored by git?',
+         choices=[
+            ('git', 'git'),
+            ('main.py', 'main.py'),
+            ('.gitignore', '.gitignore'),
+            ('requirements.txt', 'requirements.txt')
+            ],
+        validators=[DataRequired()])
+    question4 = SelectField(
+        'How would you initialize a repository using git?',
+            choices=[
+                ('flask run git', 'flask run git'),
+                ('git init', 'git init'),
+                ('git push origin main', 'git push origin main'),
+                ('git status', 'git status')
+                ],
+            validators=[DataRequired()])
+    question5 = SelectField(
+        'What is a README.md file used for?',
+            choices=[
+                ('To explain a project more', 'To explain a project more'),
+                ('To read code', 'To read code'),
+                ('To talk about your skills', 'To talk about your skills'),
+                ('To push to GitHub', 'To push to GitHub')
+                ],
+            validators=[DataRequired()])
+    submit = SubmitField('Submit')
+
+
+# ------
+# End of Flask
+# ------
+
+# =================================
+# End of Profile Edits
+# =================================

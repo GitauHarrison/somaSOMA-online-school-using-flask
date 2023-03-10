@@ -1,0 +1,121 @@
+{% extends 'base.html' %}
+{% import 'bootstrap/wtf.html' as wtf %}
+
+{% block current_user_content %}
+    <div class="row">
+        <div class="col-md-12">
+            <h1 class="heading-articles" >{{title}}</h1>
+
+<p>Working on a python project in an isolated python environment is recommended so that python modules and packages don’t meddle with that of other projects or even that of the operating system. Thus, a virtual environment is needed eminently.</p>
+<p>I will show you how to set up your python environment to use virtualenvironment wrapper in Ubuntu 20.04. In this simple tutorial, we will do four things:</p>
+<ul>
+<li>Install <code>pip3</code></li>
+<li>Install <code>virtualenv</code></li>
+<li>Install <code>virtualenvwrapper</code></li>
+<li>Edit <code>.bashrc/</code> file or <code>.bash_profile</code> file, or both</li>
+</ul>
+<h2 id="setting-up-a-virtual-environment">Setting Up a Virtual Environment</h2>
+<p>
+    We will use <code>pip3</code>, the default python package installer for Python3. 
+    Open your terminal in your home directory (or any other directory you may choose). 
+</p>
+<p>
+    First, you need to create a special directory which will be hidden that will store 
+    all your virtual environments. We will do so as follows:
+</p>
+<pre style="margin: 0; line-height: 125%"><span style="color: #FF0000; ">$</span> mkdir <span style="color: #333333">.</span>virtualenv 
+<span style="color: #888888"># the dot(.) denotes that the file is hidden</span>
+</pre>
+<p>Install <code>pip3</code>:</p>
+<pre style="margin: 0; line-height: 125%"><span style="color: #FF0000; ">$</span> sudo apt install python3<span style="color: #333333">-</span>pip
+</pre>
+<p>Confirm installation of <code>pip3</code>:</p>
+<pre style="margin: 0; line-height: 125%"><span style="color: #FF0000; ">$</span> pip3 <span style="color: #333333">--</span>version <span style="color: #888888"># checks for the version of pip3</span>
+<span style="color: #FF0000; ">$</span> which pip3 <span style="color: #888888"># shows you the location of pip3 in your system</span>
+</pre>
+<p>Install <code>virtualenv</code> using <code>pip3</code>:</p>
+<pre style="margin: 0; line-height: 125%"><span style="color: #FF0000; ">$</span> pip3 install virtualenv <span style="color: #888888"># install virtualenv</span>
+<span style="color: #FF0000; ">$</span> which virtualenv <span style="color: #888888"># find where it is located</span>
+</pre>
+<p>Now, it is time to install <code>virtualenvwrapper</code>:</p>
+<pre style="margin: 0; line-height: 125%"><span style="color: #FF0000; ">$</span> pip3 install virtualenvwrapper
+</pre>
+<p>We will modify our <code>.bashrc</code> file by adding a row that will adjust every new virtual environment to use Python3. We will need to point virtual environments to the directory we created above (.virtualenv)</p>
+<p>Open the <code>.bashrc</code> file using your <code>vim</code> editor:</p>
+<pre style="margin: 0; line-height: 125%"><span style="color: #FF0000; ">$</span> vim <span style="color: #333333">.</span>bashrc
+</pre>
+<p>If you notice that you do not have <code>vim</code> in your system, make sure you install it through <code>$ sudo apt install vim</code></p>
+<p><code>.bashrc</code> file will open in your terminal. Something you should note about the <code>vim</code> editor is that it does not use the conventional editing commands such as <code>ctrl + C</code> etc. Rather, it uses its own special commands to allow you interact with it. Learn how to navigate the <code>vim</code> editor <a href="https://www.linux.com/training-tutorials/vim-101-beginners-guide-vim/">here</a>. </p>
+<p>For now, there are two basic commands you need to know:</p>
+<ul>
+<li>How to enter into <code>insert</code> mode so you can make edits</li>
+<li>How to save and quit</li>
+</ul>
+<p>Now that your editor is open, we need to start making changes. Scroll to the bottom of the file by pressing the down arrow key. At the very bottom of your editor, press the letter <em>i</em> to enter into <em>insert</em> mode (<em>i</em> could mean &#39;insert&#39;).</p>
+<h3 id="insert-mode">Insert Mode</h3>
+<p>Add these rows:</p>
+<pre style="margin: 0; line-height: 125%"><span style="color: #888888">#Virtualenvwrapper settings:</span>
+export WORKON_HOME<span style="color: #333333">=</span><span style="color: #FF0000; ">$</span>HOME<span style="color: #333333">/.</span>virtualenvs
+VIRTUALENVWRAPPER_PYTHON<span style="color: #333333">=/</span>usr<span style="color: #333333">/</span><span style="color: #007020">bin</span><span style="color: #333333">/</span>python3
+<span style="color: #333333">.</span> <span style="color: #333333">/</span>usr<span style="color: #333333">/</span>local<span style="color: #333333">/</span><span style="color: #007020">bin</span><span style="color: #333333">/</span>virtualenvwrapper<span style="color: #333333">.</span>sh
+</pre><br>
+<h3 id="save-and-quit">Save and Quit</h3>
+<p>Press <strong>esc</strong> and type <code>:wq</code> then press <code>Enter</code> This will allow you to save your changes and quit the editor. Close your terminal and reopen it.</p>
+<p>Now you need to reload the <em>bashrc</em> script. There are two ways to do it:</p>
+<ol>
+<li>Close and reopen the terminal</li>
+<li>Execute this command in the terminal: <code>source ~/.bashrc</code></li>
+</ol>
+<p>You have completed setting up your virtual environment. </p>
+<h2 id="create-your-virtual-environment">Create Your Virtual Environment</h2>
+<p><code>virtualenvwrapper</code> allows you to create and activate your virtual environment at the same time. To create your virtual environment, use the command <code>mkvirtualenv</code>:</p>
+<pre style="margin: 0; line-height: 125%"><span style="color: #FF0000; ">$</span> mkvirtualenv <span style="color: #333333">&lt;</span>name<span style="color: #333333">-</span>of<span style="color: #333333">-</span>your<span style="color: #333333">-</span>virtual<span style="color: #333333">-</span>environment<span style="color: #333333">&gt;</span> 
+<span style="color: #888888"># for example mkvirtualenv chatapp</span>
+</pre>
+<p>Your terminal will change from:</p>
+<pre style="margin: 0; line-height: 125%">gitau<span style="color: #555555; font-weight: bold">@harry</span>:<span style="color: #333333">~/</span>software_development<span style="color: #333333">/</span>python<span style="color: #333333">/</span>flask_lesson_notes<span style="color: #FF0000; ">$</span>
+</pre>
+<p>To something like:</p>
+<pre style="margin: 0; line-height: 125%">(chatapp) gitau<span style="color: #555555; font-weight: bold">@harry</span>:<span style="color: #333333">~/</span>software_development<span style="color: #333333">/</span>python<span style="color: #333333">/</span>flask_lesson_notes<span style="color: #FF0000; ">$</span>
+</pre>
+<p>To deactivate your virtual environment, run:</p>
+<pre style="margin: 0; line-height: 125%"><span style="color: #FF0000; ">$</span> deactivate
+</pre><br>
+<h2 id="reactivate-your-virtual-environment">Reactivate Your Virtual Environment</h2>
+<p>If you want to activate the virtual evironment you just created, run:</p>
+<pre style="margin: 0; line-height: 125%"><span style="color: #FF0000; ">$</span> workon chatapp
+</pre>
+<p><code>workon</code> command allows you to activate an already created virtualenvironment. You can also use the same command to list all available virtual environments in your system by running:</p>
+<pre style="margin: 0; line-height: 125%"><span style="color: #FF0000; ">$</span> workon
+</pre><br>
+<h2 id="remove-your-virtual-environment">Remove Your Virtual Environment</h2>
+<p>At some point, if you want to delete your virtual environment, simply use the <code>rmvirtualenv</code> command:</p>
+<pre style="margin: 0; line-height: 125%"><span style="color: #FF0000; ">$</span> rmvirtualenv chatapp
+</pre><br>
+<h2 id="copy-your-virtual-environment">Copy Your Virtual Environment</h2>
+<p>To copy an existing virtualevironment, use <code>cpvirtualenv</code>:</p>
+<pre style="margin: 0; line-height: 125%"><span style="color: #FF0000; ">$</span> cpvirtualenv chatapp
+</pre>
+
+
+
+            
+            <hr>
+                                    
+            <!-- Quiz Section -->
+
+            <div class="row"  id="comments">
+                <div class="col-sm-12">
+                    <h2>Quiz</h2>
+                </div>
+            </div>
+            <!-- Flash message appears here -->
+            {% include '_flash_message.html' %}
+            <!-- End of flash message -->
+
+            <!-- form-->
+            <p>{{ wtf.quick_form(form, button_map={"submit":"warning"}) }}</p>
+            <!-- End of form -->
+        </div>
+    </div>
+{% endblock %}

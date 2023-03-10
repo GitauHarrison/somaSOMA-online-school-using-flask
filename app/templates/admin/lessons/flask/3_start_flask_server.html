@@ -1,0 +1,307 @@
+{% extends 'base.html' %}
+{% import 'bootstrap/wtf.html' as wtf %}
+
+{% block current_user_content %}
+    <div class="row">
+        <div class="col-md-12">
+            <h1 class="heading-articles" >{{title}}</h1>
+
+<p>Before we can start a Flask server, we need to understand what Flask is. <a href="https://flask.palletsprojects.com/en/2.0.x/">Flask</a> is a micro-framework for the web. A framework is a collection of code (software) that can be used to build web applications. As a developer, you don&#39;t need to start from scratch (all the time) when you can make good use of tools designed to help you with your projects.</p>
+<p>The &#39;micro&#39; in Flask may be a bit misleading, but the good folks at Flask have taken their time to clarify this:</p>
+<blockquote>
+<p>“Micro” does not mean that your whole web application has to fit into a single Python file (although it certainly can), nor does it mean that Flask is lacking in functionality. The “micro” in microframework means Flask aims to keep the core simple but extensible. Flask won’t make many decisions for you, such as what database to use. Those decisions that it does make, such as what templating engine to use, are easy to change. Everything else is up to you, so that Flask can be everything you need and nothing you don’t.</p>
+</blockquote>
+<h2 id="creating-a-flask-application">Create a Flask Application</h2>
+<p>We need to create an application before we can start a Flask server. The application is the main object that holds all the information about what we want to build. </p>
+<p>You can browse the completed project on the GitHub repository <a href="https://github.com/GitauHarrison/starting-a-flask-server">Start a flask server</a>.</p>
+<h3 id="project-strucutre">Project Structure</h3>
+<p>Principally, I will employ the concept of <em>seperation of concerns</em> when building our flask application. What this principle means is that we will categorize our application into modules. We will have several modules that will be responsible for different parts of our application. For example, we will have a module that will be responsible for the routes, and another module that will be responsible for the errors.</p>
+<p>Let us create this application structure:</p>
+<pre style="margin: 0; line-height: 125%">project_name
+    <span style="color: #333333">|</span> <span style="color: #333333">---</span> test<span style="color: #333333">.</span>py
+    <span style="color: #333333">|</span> <span style="color: #333333">---</span> config<span style="color: #333333">.</span>py
+    <span style="color: #333333">|</span> <span style="color: #333333">---</span> requirements<span style="color: #333333">.</span>txt
+    <span style="color: #333333">|</span> <span style="color: #333333">---</span> <span style="color: #333333">.</span>gitignore
+    <span style="color: #333333">|</span> <span style="color: #333333">---</span> <span style="color: #333333">.</span>flaskenv
+    <span style="color: #333333">|</span> <span style="color: #333333">---</span> app<span style="color: #333333">/</span>
+            <span style="color: #333333">|</span> <span style="color: #333333">---</span> __init__<span style="color: #333333">.</span>py
+            <span style="color: #333333">|</span> <span style="color: #333333">---</span> routes<span style="color: #333333">.</span>py
+            <span style="color: #333333">|</span> <span style="color: #333333">---</span> errors<span style="color: #333333">.</span>py
+            <span style="color: #333333">|</span> <span style="color: #333333">---</span> templates<span style="color: #333333">/</span>
+                     <span style="color: #333333">|</span> <span style="color: #333333">---</span> base<span style="color: #333333">.</span>html
+                     <span style="color: #333333">|</span> <span style="color: #333333">---</span> index<span style="color: #333333">.</span>html
+            <span style="color: #333333">|</span> <span style="color: #333333">---</span> static<span style="color: #333333">/</span>
+                    <span style="color: #333333">|</span> <span style="color: #333333">---</span> css<span style="color: #333333">/</span>
+                            <span style="color: #333333">|</span> <span style="color: #333333">---</span> main<span style="color: #333333">.</span>css
+                    <span style="color: #333333">|</span> <span style="color: #333333">---</span> js<span style="color: #333333">/</span>
+                    <span style="color: #333333">|</span> <span style="color: #333333">---</span> img<span style="color: #333333">/</span>
+</pre>
+
+<p>You can use the commands <code>mkdir</code> and <code>touch</code> to create this project structure as seen below:</p>
+<pre style="margin: 0; line-height: 125%"><span style="color: #888888"># Create the project directory</span>
+mkdir project_name 
+    
+<span style="color: #888888"># Change to the project directory</span>
+cd project_name 
+    
+<span style="color: #888888"># Create all the files in the top-level directory</span>
+touch requirements<span style="color: #333333">.</span>txt config<span style="color: #333333">.</span>py  
+    
+<span style="color: #888888"># Create the app sub directory in the current directory</span>
+mkdir app 
+    
+<span style="color: #888888"># Create the files in the app directory</span>
+touch app<span style="color: #333333">/</span>__init__<span style="color: #333333">.</span>py app<span style="color: #333333">/</span>routes<span style="color: #333333">.</span>py app<span style="color: #333333">/</span>errors<span style="color: #333333">.</span>py 
+    
+<span style="color: #888888"># Create the templates and static sub-directories and their contents</span>
+</pre>
+<p>The <code>.gitignore</code> file is used to ignore the files that we don&#39;t want to be tracked by <code>git</code>. Find out what Python files you won't need to be tracked by <code>git</code> by looking at this <a href="https://github.com/github/gitignore/blob/master/Python.gitignore">gitignore</a> file on GitHub.</p>
+<h3 id="create-and-activate-a-virtual-environment">Create and Activate a Virtual Environment</h3>
+<p>
+    During the development of this simple Flask application, we will need to install a few packages. 
+    To begin, we will create and activate a virtual environment. Virtual environments help isolate 
+    the needs of your application from that of your system. It also helps isolate one project&#39;s 
+    needs from another. Run the command below in your terminal to create a virtual environment:
+</p>
+<pre style="margin: 0; line-height: 125%"><span style="color: #FF0000; ">$</span> mkvirtualenv flask_project <span style="color: #888888"># Create a virtual environment</span>
+
+<span style="color: #888888"># Output:</span>
+    
+(flask_project) <span style="color: #FF0000; ">$</span> 
+</pre>
+<p>I am using the virtual environment <code>flask_project</code> to develop this application. The command <code>mkvirtualenv</code> is used to both <em>create</em> and <em>activate</em> a virtual environment for me. All the project&#39;s dependencies will be installed in this virtual environment.</p>
+<p>If you are not aware of what the <code>virtualenvwrapper</code> is and would like to use it during your development, learn how to configure your machine and set it up <a href="https://gitauharrison.com/articles/virtualenvwrapper">here</a>.</p>
+<h3 id="install-dependencies">Install Dependencies</h3>
+<p>One package we will definitely need to install is Flask. We will do so using the <code>pip</code> package manager in our terminal:</p>
+<pre style="margin: 0; line-height: 125%">(flask_project) <span style="color: #FF0000; ">$</span> pip3 install flask
+</pre><br>
+<h3 id="create-application-instance">Create Application Instance</h3>
+<p>Within our <code>__init__.py</code> file, we will create an instance of the Flask application. We will also import the <code>Flask</code> class from the <code>flask</code> module.</p>
+<p class="code-title"><code style="background-color: #e6e6e6;">app/__init__.py</code>: Create application instance</p>
+<pre style="margin: 0; line-height: 125%"><span style="color: #008800; font-weight: bold">from</span> <span style="color: #0e84b5; font-weight: bold">flask</span> <span style="color: #008800; font-weight: bold">import</span> Flask
+
+app <span style="color: #333333">=</span> Flask(__name__)
+    
+<span style="color: #008800; font-weight: bold">from</span> <span style="color: #0e84b5; font-weight: bold">app</span> <span style="color: #008800; font-weight: bold">import</span> routes, errors
+</pre><br>
+<h3 id="create-routes">Create Routes</h3>
+<p>Routes direct us to a resource we may request. Each route is built using a view function. The view function is responsible for returning the response to the request. For now, let us simply return a string, the classic &#39;Hello, World&#39;.</p>
+<p class="code-title"><code style="background-color: #e6e6e6;">routes.py</code>: Create home route</p>
+<pre style="margin: 0; line-height: 125%"><span style="color: #008800; font-weight: bold">from</span> <span style="color: #0e84b5; font-weight: bold">app</span> <span style="color: #008800; font-weight: bold">import</span> app
+
+<span style="color: #555555; font-weight: bold">@app.route</span>(<span style="background-color: #fff0f0">&#39;/&#39;</span>)
+<span style="color: #555555; font-weight: bold">@app.route</span>(<span style="background-color: #fff0f0">&#39;/index&#39;</span>)
+<span style="color: #008800; font-weight: bold">def</span> <span style="color: #0066BB; font-weight: bold">index</span>():
+    <span style="color: #008800; font-weight: bold">return</span> <span style="background-color: #fff0f0">&#39;Hello, World!&#39;</span>
+</pre><br>
+<h3 id="create-entry-point-for-the-application">Create Entry Point for the Application</h3>
+<p>When we start our Flask server, we need to tell it what place to start from. This point will act as an entry point to our application.</p>
+<p class="code-title"><code style="background-color: #e6e6e6;">test.py</code>: Create entry point for the application</p>
+<pre style="margin: 0; line-height: 125%"><span style="color: #008800; font-weight: bold">from</span> <span style="color: #0e84b5; font-weight: bold">app</span> <span style="color: #008800; font-weight: bold">import</span> app
+</pre><br>
+<h3 id="add-environment-variables">Add Environment Variables</h3>
+<p>Flask expects certain environment variables to be set. These run time environment are needed by Flask to run. I created a file called <code>.flaskenv</code> which we will use to set these environment variables.</p>
+<p class="code-title"><code style="background-color: #e6e6e6;">.flaskenv</code>: Set environment variables</p>
+<pre style="margin: 0; line-height: 125%">FLASK_APP<span style="color: #333333">=</span>test<span style="color: #333333">.</span>py
+FLASK_ENV<span style="color: #333333">=</span>development
+FLASK_DEBUG<span style="color: #333333">=</span><span style="color: #0000DD; font-weight: bold">1</span>
+</pre><br>
+<h3 id="run-the-application">Run the Application</h3>
+<p>With the environment variables set, we can now run our application. In the terminal, we can run the following command:</p>
+<pre style="margin: 0; line-height: 125%">(flask_project) <span style="color: #FF0000; ">$</span> flask run
+</pre>
+<p>Navigate to the URL <a href="http://127.0.0.1:5000/">http://127.0.0.1:5000/</a> in your browser. You should see the following output:</p>
+<p>
+    <img class="img-fluid img-template" style="max-width: 100%; height: auto;" src="{{ url_for('static', filename='images/lessons/flask/start_flask_server/hello_world.png') }}" alt="Hello World">
+    
+</p>
+<p>You probably have also noted that in your terminal there is a soft warning.</p>
+<p>
+    <img class="img-fluid img-template" style="max-width: 100%; height: auto;" src="{{ url_for('static', filename='images/lessons/flask/start_flask_server/terminal_warning.png') }}" alt="Terminal Warning">
+</p>
+<p>This is because when we started our Flask server, the environment variables we set were not read. To ensure that these runtime variable are available on startup, we will need another extension called <code>python-dotenv</code>. Let us install this extension:</p>
+<pre style="margin: 0; line-height: 125%">(flask_project) <span style="color: #FF0000; ">$</span> pip3 install python<span style="color: #333333">-</span>dotenv
+</pre>
+<p>Stop the Flask server by pressing <code>Ctrl + C</code> in your terminal. Then restart the server using <code>flask run</code>. All the environment variables should now be set.</p>
+<p>
+    <img class="img-fluid img-template" style="max-width: 100%; height: auto;" src="{{ url_for('static', filename='images/lessons/flask/start_flask_server/restart_flask_server.png') }}" alt="Restart Flask Server">
+</p>
+<h3 id="improve-application-design">Improve Application Design</h3>
+<p>Our application is looking so flat at the moment. We can improve its design by installing the <code>flask-bootstrap</code> package to help us create a beautiful and responsive web application.</p>
+<pre style="margin: 0; line-height: 125%">(flask_project) <span style="color: #FF0000; ">$</span> pip3 install flask<span style="color: #333333">-</span>bootstrap
+</pre>
+<p>Instantiate the <code>bootstrap</code> variable from the <code>flask_bootstrap</code> package.</p>
+<p class="code-title"><code style="background-color: #e6e6e6;">app/__init.py__</code>: Instantiate bootstrap package in application</p>
+<pre style="margin: 0; line-height: 125%"><span style="color: #008800; font-weight: bold">from</span> <span style="color: #0e84b5; font-weight: bold">flask</span> <span style="color: #008800; font-weight: bold">import</span> Flask
+<span style="color: #008800; font-weight: bold">from</span> <span style="color: #0e84b5; font-weight: bold">flask_bootstrap</span> <span style="color: #008800; font-weight: bold">import</span> Bootstrap <span style="color: #888888"># &lt; ---- update</span>
+    
+app <span style="color: #333333">=</span> Flask(__name__)
+    
+boostrap <span style="color: #333333">=</span> Bootstrap(app) <span style="color: #888888"># &lt; ---- update</span>
+    
+<span style="color: #008800; font-weight: bold">from</span> <span style="color: #0e84b5; font-weight: bold">app</span> <span style="color: #008800; font-weight: bold">import</span> routes, errors
+</pre><br>
+<h3 id="working-with-templates">Working With Templates</h3>
+<p>Templates are basicaly HTML files which we will use to display content. We will use the <code>jinja2</code> templating engine to render our templates. At the moment, we have <code>index.html</code> and <code>base.html</code> templates. The <code>base.html</code> template is the parent template for all the other templates (currently we have only <code>index.html</code>). It will define all the base features of our application.</p>
+<p class="code-title"><code style="background-color: #e6e6e6;">base.html</code>: Parent template</p>
+<pre style="margin: 0; line-height: 125%"><span style="color: #557799">&#123;%</span> <span style="color: #008800; font-weight: bold">extends</span> <span style="background-color: #fff0f0">&#39;bootstrap/base.html&#39;</span> <span style="color: #557799">%&#125;</span>
+
+<span style="color: #888888">&lt;!-- Link all style files here --&gt;</span>
+<span style="color: #557799">&#123;%</span> <span style="color: #008800; font-weight: bold">block</span> <span style="color: #996633">head</span> <span style="color: #557799">%&#125;</span>
+    <span style="color: #557799">&#123;&#123;</span>  <span style="color: #007020">super</span><span style="color: #333333">()</span> <span style="color: #557799">&#125;&#125;</span>
+    <span style="color: #007700">&lt;link</span> <span style="color: #0000CC">rel=</span><span style="background-color: #fff0f0">&quot;stylesheet&quot;</span> <span style="color: #0000CC">type=</span><span style="background-color: #fff0f0">&quot;text/css&quot;</span> <span style="color: #0000CC">href=</span><span style="background-color: #fff0f0">&quot;</span><span style="color: #557799">&#123;&#123;</span> <span style="color: #996633">url_for</span><span style="color: #333333">(</span><span style="background-color: #fff0f0">&#39;static&#39;</span><span style="color: #333333">,</span> <span style="color: #996633">filename</span><span style="color: #333333">=</span><span style="background-color: #fff0f0">&#39;css/main.css&#39;</span><span style="color: #333333">)</span> <span style="color: #557799">&#125;&#125;</span><span style="background-color: #fff0f0">&quot;</span><span style="color: #007700">&gt;</span>
+<span style="color: #557799">&#123;%</span> <span style="color: #008800; font-weight: bold">endblock</span> <span style="color: #557799">%&#125;</span>
+    
+<span style="color: #888888">&lt;!-- The title of our application is defined here --&gt;</span>
+<span style="color: #557799">&#123;%</span> <span style="color: #008800; font-weight: bold">block</span> <span style="color: #996633">title</span> <span style="color: #557799">%&#125;</span>
+    <span style="color: #557799">&#123;%</span> <span style="color: #008800; font-weight: bold">if</span> <span style="color: #996633">title</span> <span style="color: #557799">%&#125;</span>
+        <span style="color: #557799">&#123;&#123;</span> <span style="color: #996633">title</span> <span style="color: #557799">&#125;&#125;</span> - Flask Server
+    <span style="color: #557799">&#123;%</span> <span style="color: #008800; font-weight: bold">else</span> <span style="color: #557799">%&#125;</span>
+        Welcome to Flask Server
+    <span style="color: #557799">&#123;%</span> <span style="color: #008800; font-weight: bold">endif</span> <span style="color: #557799">%&#125;</span>
+<span style="color: #557799">&#123;%</span> <span style="color: #008800; font-weight: bold">endblock</span> <span style="color: #557799">%&#125;</span>
+    
+<span style="color: #888888">&lt;!-- This is the navbar --&gt;</span>
+<span style="color: #557799">&#123;%</span> <span style="color: #008800; font-weight: bold">block</span> <span style="color: #996633">navbar</span> <span style="color: #557799">%&#125;</span>
+    <span style="color: #007700">&lt;nav</span> <span style="color: #0000CC">class=</span><span style="background-color: #fff0f0">&quot;navbar navbar-default&quot;</span><span style="color: #007700">&gt;</span>
+        <span style="color: #007700">&lt;div</span> <span style="color: #0000CC">class=</span><span style="background-color: #fff0f0">&quot;container&quot;</span><span style="color: #007700">&gt;</span>
+            <span style="color: #007700">&lt;div</span> <span style="color: #0000CC">class=</span><span style="background-color: #fff0f0">&quot;navbar-header&quot;</span><span style="color: #007700">&gt;</span>
+                <span style="color: #007700">&lt;button</span> <span style="color: #0000CC">type=</span><span style="background-color: #fff0f0">&quot;button&quot;</span> <span style="color: #0000CC">class=</span><span style="background-color: #fff0f0">&quot;navbar-toggle collapsed&quot;</span> <span style="color: #0000CC">data-toggle=</span><span style="background-color: #fff0f0">&quot;collapse&quot;</span> <span style="color: #0000CC">data-target=</span><span style="background-color: #fff0f0">&quot;#bs-example-navbar-collapse-1&quot;</span> <span style="color: #0000CC">aria-expanded=</span><span style="background-color: #fff0f0">&quot;false&quot;</span><span style="color: #007700">&gt;</span>
+                    <span style="color: #007700">&lt;span</span> <span style="color: #0000CC">class=</span><span style="background-color: #fff0f0">&quot;sr-only&quot;</span><span style="color: #007700">&gt;</span>Toggle navigation<span style="color: #007700">&lt;/span&gt;</span>
+                    <span style="color: #007700">&lt;span</span> <span style="color: #0000CC">class=</span><span style="background-color: #fff0f0">&quot;icon-bar&quot;</span><span style="color: #007700">&gt;&lt;/span&gt;</span>
+                    <span style="color: #007700">&lt;span</span> <span style="color: #0000CC">class=</span><span style="background-color: #fff0f0">&quot;icon-bar&quot;</span><span style="color: #007700">&gt;&lt;/span&gt;</span>
+                    <span style="color: #007700">&lt;span</span> <span style="color: #0000CC">class=</span><span style="background-color: #fff0f0">&quot;icon-bar&quot;</span><span style="color: #007700">&gt;&lt;/span&gt;</span>
+                <span style="color: #007700">&lt;/button&gt;</span>
+                <span style="color: #007700">&lt;a</span> <span style="color: #0000CC">class=</span><span style="background-color: #fff0f0">&quot;navbar-brand&quot;</span> <span style="color: #0000CC">href=</span><span style="background-color: #fff0f0">&quot; # &quot;</span><span style="color: #007700">&gt;</span>Flask Server<span style="color: #007700">&lt;/a&gt;</span>
+            <span style="color: #007700">&lt;/div&gt;</span>
+            <span style="color: #007700">&lt;div</span> <span style="color: #0000CC">class=</span><span style="background-color: #fff0f0">&quot;collapse navbar-collapse&quot;</span> <span style="color: #0000CC">id=</span><span style="background-color: #fff0f0">&quot;bs-example-navbar-collapse-1&quot;</span><span style="color: #007700">&gt;</span>            
+                <span style="color: #007700">&lt;ul</span> <span style="color: #0000CC">class=</span><span style="background-color: #fff0f0">&quot;nav navbar-nav navbar-right&quot;</span><span style="color: #007700">&gt;</span>
+                    <span style="color: #007700">&lt;li&gt;&lt;a</span> <span style="color: #0000CC">href=</span><span style="background-color: #fff0f0">&quot; # &quot;</span><span style="color: #007700">&gt;</span>Documentation<span style="color: #007700">&lt;/a&gt;&lt;/li&gt;</span>
+                <span style="color: #007700">&lt;/ul&gt;</span>                       
+            <span style="color: #007700">&lt;/div&gt;</span>
+        <span style="color: #007700">&lt;/div&gt;</span>
+    <span style="color: #0c2b0c">&lt;/nav&gt;</span>
+<span style="color: #557799">&#123;%</span> <span style="color: #008800; font-weight: bold">endblock</span> <span style="color: #557799">%&#125;</span>
+    
+<span style="color: #888888">&lt;!-- Contents of all our pages will go here --&gt;</span>
+<span style="color: #557799">&#123;%</span> <span style="color: #008800; font-weight: bold">block</span> <span style="color: #996633">content</span> <span style="color: #557799">%&#125;</span>
+    <span style="color: #007700">&lt;div</span> <span style="color: #0000CC">class=</span><span style="background-color: #fff0f0">&quot;container&quot;</span><span style="color: #007700">&gt;</span>
+        <span style="color: #557799">&#123;%</span> <span style="color: #008800; font-weight: bold">block</span> <span style="color: #996633">app_context</span> <span style="color: #557799">%&#125;&#123;%</span> <span style="color: #008800; font-weight: bold">endblock</span> <span style="color: #557799">%&#125;</span>
+    <span style="color: #007700">&lt;/div&gt;</span>
+<span style="color: #557799">&#123;%</span> <span style="color: #008800; font-weight: bold">endblock</span> <span style="color: #557799">%&#125;</span>
+    
+<span style="color: #888888">&lt;!-- All scripts will go here --&gt;</span>
+<span style="color: #557799">&#123;%</span> <span style="color: #008800; font-weight: bold">block</span> <span style="color: #996633">scripts</span> <span style="color: #557799">%&#125;</span>
+    <span style="color: #557799">&#123;&#123;</span>  <span style="color: #007020">super</span><span style="color: #333333">()</span> <span style="color: #557799">&#125;&#125;</span>
+        
+<span style="color: #557799">&#123;%</span> <span style="color: #008800; font-weight: bold">endblock</span> <span style="color: #557799">%&#125;</span>
+</pre>
+<p>Take your time to go through this template. There are several new things that I have used that you may not be familiar with. One addition that I would like to point out is in the <code>title</code> block. I have used a conditional statement to find out if the view function that will render <code>index.html</code> has a <code>title</code> variable. If it does, then we will use that title. If not, we will use the default title.</p>
+<h3 id="template-inheritance">Template Inheritance</h3>
+<p>Our <code>index.html</code> template is a child of the <code>base.html</code> template. We can use the <code>extends</code> keyword to inherit the parent template.</p>
+<p class="code-title"><code style="background-color: #e6e6e6;">index.html</code>: Child template</p>
+<pre style="margin: 0; line-height: 125%"><span style="color: #557799">&#123;%</span> <span style="color: #008800; font-weight: bold">extends</span> <span style="background-color: #fff0f0">&#39;base.html&#39;</span> <span style="color: #557799">%&#125;</span>
+
+<span style="color: #557799">&#123;%</span> <span style="color: #008800; font-weight: bold">block</span> <span style="color: #996633">app_context</span> <span style="color: #557799">%&#125;</span>
+    <span style="color: #007700">&lt;div</span> <span style="color: #0000CC">class=</span><span style="background-color: #fff0f0">&quot;row&quot;</span><span style="color: #007700">&gt;</span>
+        <span style="color: #007700">&lt;div</span> <span style="color: #0000CC">class=</span><span style="background-color: #fff0f0">&quot;col-md-12&quot;</span><span style="color: #007700">&gt;</span>
+            <span style="color: #007700">&lt;h1&gt;</span>Hello, world!<span style="color: #007700">&lt;/h1&gt;</span>
+        <span style="color: #007700">&lt;/div&gt;</span>  
+    <span style="color: #007700">&lt;/div&gt;</span>
+<span style="color: #557799">&#123;%</span> <span style="color: #008800; font-weight: bold">endblock</span> <span style="color: #557799">%&#125;</span>
+</pre><br>
+<h3 id="rendering-templates">Rendering Templates</h3>
+<p>Our view function <code>index()</code> will render the <code>index.html</code> template. We can use the <code>render_template</code> function to render a template.</p>
+<p class="code-title"><code style="background-color: #e6e6e6;">routes.py</code>: Render a template</p>
+<pre style="margin: 0; line-height: 125%"><span style="color: #008800; font-weight: bold">from</span> <span style="color: #0e84b5; font-weight: bold">app</span> <span style="color: #008800; font-weight: bold">import</span> app
+<span style="color: #008800; font-weight: bold">from</span> <span style="color: #0e84b5; font-weight: bold">flask</span> <span style="color: #008800; font-weight: bold">import</span> render_template
+    
+    
+<span style="color: #555555; font-weight: bold">@app</span><span style="color: #333333">.</span>route(<span style="background-color: #fff0f0">&#39;/&#39;</span>)
+<span style="color: #555555; font-weight: bold">@app</span><span style="color: #333333">.</span>route(<span style="background-color: #fff0f0">&#39;/index&#39;</span>)
+<span style="color: #008800; font-weight: bold">def</span> <span style="color: #0066BB; font-weight: bold">index</span>():
+    <span style="color: #008800; font-weight: bold">return</span> render_template(<span style="background-color: #fff0f0">&#39;index.html&#39;</span>)    
+</pre>
+<p>If you reload your Flask server, you should see the following output:</p>
+<p>
+    <img class="img-fluid img-template" style="max-width: 100%; height: auto;" src="{{ url_for('static', filename='images/lessons/flask/start_flask_server/flask_server_reload.png') }}" alt="Flask Server Reload">
+</p>
+<h2 id="error-handling">Error Handling</h2>
+<p>If you try to access the URL <a href="http://127.0.0.1:5000/index1">http://127.0.0.1:5000/index1</a>, you will get a <code>404 Not Found</code> error. This is because we have not created a view function for the URL <code>/index1</code>. </p>
+<p>To handle this error, I will update our <code>errors</code> module</p>
+<p class="code-title"><code style="background-color: #e6e6e6;">errors.py</code>: Error Handling</p>
+<pre style="margin: 0; line-height: 125%"><span style="color: #008800; font-weight: bold">from</span> <span style="color: #0e84b5; font-weight: bold">app</span> <span style="color: #008800; font-weight: bold">import</span> app, db
+<span style="color: #008800; font-weight: bold">from</span> <span style="color: #0e84b5; font-weight: bold">flask</span> <span style="color: #008800; font-weight: bold">import</span> render_template
+    
+    
+<span style="color: #555555; font-weight: bold">@app</span><span style="color: #333333">.</span>errorhandler(<span style="color: #0000DD; font-weight: bold">404</span>)
+<span style="color: #008800; font-weight: bold">def</span> <span style="color: #0066BB; font-weight: bold">not_found</span>(error):
+    <span style="color: #008800; font-weight: bold">return</span> render_template(<span style="background-color: #fff0f0">&#39;404.html&#39;</span>), <span style="color: #0000DD; font-weight: bold">404</span>
+</pre>
+<p>I have used the <code>app.errorhandler</code> decorator to register the error handlers. We need to render the 404 error template (you can add more). In the terminal, let us run the following command:</p>
+<pre style="margin: 0; line-height: 125%">(flask_project) <span style="color: #FF0000; ">$</span> touch app<span style="color: #333333">/</span>templates<span style="color: #333333">/</span><span style="color: #6600EE; font-weight: bold">404.</span>html
+</pre>
+<p>This will create an empty <code>404.html</code> template. We will populate it as follows:</p>
+<p class="code-title"><code style="background-color: #e6e6e6;">404.html</code>: 404 Not Found</p>
+<pre style="margin: 0; line-height: 125%">&#123;% extends &#39;base.html&#39; %&#125;
+
+&#123;% block app_context %&#125;
+    <span style="color: #007700">&lt;div</span> <span style="color: #0000CC">class=</span><span style="background-color: #fff0f0">&quot;row&quot;</span><span style="color: #007700">&gt;</span>
+        <span style="color: #007700">&lt;div</span> <span style="color: #0000CC">class=</span><span style="background-color: #fff0f0">&quot;col-md-12&quot;</span><span style="color: #007700">&gt;</span>
+            <span style="color: #007700">&lt;h1&gt;</span>Page Not Found<span style="color: #007700">&lt;/h1&gt;</span>
+            <span style="color: #007700">&lt;p&gt;</span>
+                <span style="color: #007700">&lt;a</span> <span style="color: #0000CC">href=</span><span style="background-color: #fff0f0">&quot;/index&quot;</span><span style="color: #007700">&gt;</span>Return to the home page<span style="color: #007700">&lt;/a&gt;</span>
+            <span style="color: #007700">&lt;/p&gt;</span>
+        <span style="color: #007700">&lt;/div&gt;</span>  
+    <span style="color: #007700">&lt;/div&gt;</span>
+&#123;% endblock %&#125;
+</pre>
+<p>You should have a nicer looking page with a redirect link to the home page.</p>
+<p>
+    <img class="img-fluid img-template" style="max-width: 100%; height: auto;" src="{{ url_for('static', filename='images/lessons/flask/start_flask_server/404_page.png') }}" alt="404 Page">
+</p>
+<h3 id="update-project-dependancies">Update Project Dependancies</h3>
+<p>Once you are done, we can update our <code>requirements.txt</code> file. This file contains all the dependencies that we have installed. Anyone who wished to install the application will need to install the same dependencies.</p>
+<pre style="margin: 0; line-height: 125%">(flask_project) <span style="color: #FF0000; ">$</span> pip3 freeze <span style="color: #333333">&gt;</span> requirements<span style="color: #333333">.</span>txt
+</pre><br>
+<h2 id="brief-on-the-flask-server">Brief on the Flask Server</h2>
+<p>The <code>flask run</code> command is used to start the flask application in a development server. This server provides an interactive debugger and reloads when it notices changes in code. It is intended for local use only since it is not designed to be particularly efficient, stable or secure.</p>
+<blockquote>
+<p>Prior to Flask 1.0 the FLASK_ENV environment variable was not supported and you needed to enable debug mode by exporting FLASK_DEBUG=1. This can still be used to control debug mode, but it is now preferred to set it as an evironment variable.</p>
+</blockquote>
+<p>To stop your flask server, you can hit <code>ctrl + C</code>. However, when you hit <code>ctrl + Z</code>, you will notice a <em>traceback</em> when you try restarting your flask server. You will be informed that the address you are trying to connect to is <em>already in use</em>.</p>
+<pre style="margin: 0; line-height: 125%"><span style="color: #333333">*</span> Serving Flask app <span style="background-color: #fff0f0">&#39;blog.py&#39;</span> (lazy loading)
+<span style="color: #333333">*</span> Environment: development
+<span style="color: #333333">*</span> Debug mode: on
+Traceback (most recent call last):
+<span style="color: #888888"># ...</span>
+<span style="color: #FF0000; font-weight: bold">OSError</span>: [Errno <span style="color: #0000DD; font-weight: bold">98</span>] Address already <span style="color: #000000; font-weight: bold">in</span> use
+</pre>
+<p>To fix it, you need to identify and stop the other program or use the command <code>flask run --port 50001</code> to pick a different port.</p>
+<h2 id="going-further">Going Further</h2>
+<p>This is a good starting point as you learn flask. You can build on this project by adding more routes, and templates. You can even learn how to use web forms and a database with Flask. Things you can do:</p>
+<ul>
+<li>Learn how to work with Flask web forms</li>
+<li>Add a database to your Flask application</li>
+</ul>
+
+            
+            <hr>
+                                                
+            <!-- Quiz Section -->
+
+            <div class="row"  id="comments">
+                <div class="col-sm-12">
+                    <h2>Quiz</h2>
+                </div>
+            </div>
+            <!-- Flash message appears here -->
+            {% include '_flash_message.html' %}
+            <!-- End of flash message -->
+
+            <!-- form-->
+            <p>{{ wtf.quick_form(form, button_map={"submit":"warning"}) }}</p>
+            <!-- End of form -->
+        </div>
+    </div>
+{% endblock %}

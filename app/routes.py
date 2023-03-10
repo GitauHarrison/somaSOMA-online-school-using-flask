@@ -3,7 +3,8 @@ from flask_login import current_user, login_user, logout_user, login_required
 from app.forms import ParentRegistrationForm, StudentRegistrationForm, \
     TeacherRegistrationForm, AdminRegistrationForm, LoginForm, \
     ResetPasswordForm, RequestPasswordResetForm, VerifyForm,\
-    UnsubscribeForm, EmailForm, EditEmailForm, EditPhoneForm, EditUsernameForm
+    EmailForm, EditEmailForm, EditPhoneForm, EditUsernameForm, FlaskChapter2QuizForm,\
+    FlaskChapter3QuizForm, FlaskChapter4QuizForm
 from app.models import User, Parent, Student, Teacher, Admin,\
     Newsletter_Subscriber, Email
 from app.email import send_subscriber_private_email, send_login_details, \
@@ -1592,4 +1593,98 @@ def delete_email(id):
 
 # =========================================
 # END OF AUTHENTICATED USERS
+# =========================================
+
+
+# =========================================
+# LESSONS
+# =========================================
+
+# ----------------
+# Flask
+# ----------------
+
+
+@app.route('/dashboard/flask/chapter-1/install-configure-git')
+@login_required
+def flask_chapter1():
+    return render_template(
+        'admin/lessons/flask/1_install_configure_git.html',
+        title='Install and Configure Git In Ubuntu'
+    )
+
+
+
+@app.route('/dashboard/flask/chapter-2/virtualenvwrapper')
+@login_required
+def flask_chapter2():
+    form = FlaskChapter2QuizForm()
+    return render_template(
+        'admin/lessons/flask/2_virtualenvwrapper.html',
+        title='Work With Virtualenvwrapper',
+        form=form
+    )
+
+
+
+@app.route('/dashboard/flask/chapter-3/start-flas-server')
+@login_required
+def flask_chapter3():
+    form = FlaskChapter3QuizForm()
+    return render_template(
+        'admin/lessons/flask/3_start_flask_server.html',
+        title='Start Flask Server',
+        form=form
+    )
+
+
+
+@app.route('/dashboard/flask/chapter-4/connect-to-github')
+@login_required
+def flask_chapter4():
+    form = FlaskChapter4QuizForm()
+    return render_template(
+        'admin/lessons/flask/4_connect_to_github.html',
+        title='Connect To GitHub',
+        form=form
+    )
+
+
+# ----------------
+# End of Flask
+# ----------------
+
+
+# ----------------
+# React
+# ----------------
+
+
+@app.route('/dashboard/react/chapter-1/lorem-ipsum')
+@login_required
+def react_chapter1():
+    return render_template(
+        'admin/lessons/react/1_lorem_ipsum.html',
+        title='Chapter 1 React'
+    )
+
+
+
+@app.route('/dashboard/react/chapter-2/lorem-ipsum')
+@login_required
+def react_chapter2():
+    return render_template(
+        'admin/lessons/react/2_lorem_ipsum.html',
+        title='Chapter 2 React'
+    )
+
+
+# ----------------
+# End of React
+# ----------------
+
+
+
+# =========================================
+# END OF LESSONS
 # =========================================

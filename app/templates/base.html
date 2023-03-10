@@ -261,65 +261,56 @@
                       <li>
                           <a href="#pySubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Python</a>
                           <ul class="collapse list-unstyled" id="pySubmenu"> 
-                              <li><a href=" # ">Chapter 1: Syntax</a></li>
-                              <li><a href=" # ">Chapter 2: Print Statements</a></li>
+                              <li><a href=" {{ url_for('flask_chapter1') }} ">Chapter 1: Install/Configure Git</a></li>
+                              <li><a href=" {{ url_for('flask_chapter2') }} ">Chapter 2: Virtualenvwrapper</a></li>
                               {% for score in scores2 %}
                                   {% if score.chapter2 < 3 %}
-                                      <li><a class="link_disabled" href=" # ">Chapter 3: Loops</a></li>
+                                      <li><a class="link_disabled" href=" {{ url_for('flask_chapter3') }} ">Chapter 3: Start Flask Server</a></li>
                                   {% endif %}
                                   {% if score.chapter2 >= 3 %}
-                                      <li><a href=" # ">Chapter 3: Loops</a></li>
+                                      <li><a href=" {{ url_for('flask_chapter3') }} ">Chapter 3: Start Flask Server</a></li>
                                   {% endif %}
                               {% endfor %}
                               {% for score in scores3 %}
                                   {% if score.chapter3 < 4 %}
-                                      <li><a class="link_disabled" href=" # ">Chapter 4: Conditional Statements</a></li>
+                                      <li><a class="link_disabled" href=" {{ url_for('flask_chapter4') }} ">Chapter 4: Connect to GitHub</a></li>
                                   {% endif %}
                                   {% if score.chapter3 >= 4 %}
-                                      <li><a href=" # ">Chapter 4: Conditional Statements</a></li>
+                                      <li><a href=" {{ url_for('flask_chapter4') }} ">Chapter 4: Connect to GitHub</a></li>
                                   {% endif %}
-                              {% endfor %}
-                              {% for score in scores4 %}
-                                  {% if score.chapter4 < 4 %}
-                                  <li><a class="link_disabled" href=" # ">Chapter 5: Functions</a></li>
-                                  {% endif %}
-                                  {% if score.chapter4 >= 4 %}
-                                  <li><a href=" {{ url_for('admin.backend_chapter5') }} ">Chapter 5: Functions</a></li>
-                                  {% endif %}
-                              {% endfor %}                            
+                              {% endfor %}                           
                           </ul>   
                       </li>
                       <li class="active">
                           <a href="#jsSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">JavaScript</a>
                           <ul class="collapse list-unstyled" id="jsSubmenu">
-                            <li><a href=" # ">Chapter 1: Syntax</a></li>
-                            <li><a href=" # ">Chapter 2: Print Statements</a></li>
-                            <li><a href=" # ">Chapter 3: Loops</a></li>
+                            <li><a href=" {{ url_for('react_chapter1') }} ">Chapter 1: Lorem Ipsum</a></li>
+                            <li><a href=" {{ url_for('react_chapter2') }} ">Chapter 2: Lorem Ipsum</a></li>
                           </ul>   
                       </li>
-                      {% endif %}
+                    {% endif %}
 
                       <!-- Accessible by teachers and admins only -->
                       <!-- There are no conditions set to view any of the lessons' chapters -->
-                      {% if current_user.type != "student" and current_user.type == "parent" %}                                    
+                    {% if current_user.type != "student" %}                                    
                           <li>
-                              <a href="#pySubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Python</a>
+                              <a href="#pySubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Flask Lessons</a>
                               <ul class="collapse list-unstyled" id="pySubmenu">
-                                  <li><a href=" # ">Chapter 1: Syntax</a></li>
-                                  <li><a href=" # ">Chapter 2: Print Statements</a></li>
-                                  <li><a href=" # ">Chapter 3: Loops</a></li>                                
+                                  <li><a href=" {{ url_for('flask_chapter1') }} ">Chapter 1: Install/Configure Git</a></li>
+                                  <li><a href=" {{ url_for('flask_chapter2') }} ">Chapter 2: Virtualenvwrapper</a></li>
+                                  <li><a href=" {{ url_for('flask_chapter3') }} ">Chapter 3: Start Flask Server</a></li>
+                                  <li><a href=" {{ url_for('flask_chapter4') }} ">Chapter 4: Connect to GitHub </a></li>
                               </ul>   
                           </li>
                           <li class="active">
-                              <a href="#jsSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">JavaScript</a>
+                              <a href="#jsSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">React Lessons</a>
                               <ul class="collapse list-unstyled" id="jsSubmenu">
-                                  <li><a href=" # ">Chapter 1: Syntax</a></li>
-                                  <li><a href=" # ">Chapter 2: Print Statements</a></li>
-                                  <li><a href=" # ">Chapter 3: Loops</a></li>
+                                  <li><a href=" {{ url_for('react_chapter1') }} ">Chapter 1: Lorem Ipsum</a></li>
+                                  <li><a href=" {{ url_for('react_chapter2') }} ">Chapter 2: Lorem Ipsum</a></li>
                               </ul>   
                           </li>
-                      {% endif %}
                     {% endif %}
+                  {% endif %}
 
                   <!-- Each user has their own profile page -->
                   {% if current_user.type == 'student' %}
@@ -370,7 +361,7 @@
                           </ul>   
                       </li> 
                       <li class="active">
-                        <a href="#allEmailsSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Emails</a>
+                        <a href="#allEmailsSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">In-app Emails</a>
                         <ul class="collapse list-unstyled" id="allEmailsSubmenu">
                             <li>
                                 <a href=" {{ url_for('newsletter_subscribers_email_sent_out') }} ">Individual Subscriber Emails</a>

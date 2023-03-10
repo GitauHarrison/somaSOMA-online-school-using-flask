@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% import 'bootstrap/wtf.html' as wtf %}
+
+{% block current_user_content %}
+    <div class="row">
+        <div class="col-md-12">
+            <h1 class="heading-articles" >{{title}}</h1>
+
+
+
+            <hr>
+            
+            <!-- Quiz Section -->
+            
+            <div class="row"  id="comments">
+                <div class="col-sm-12">
+                    <h2>Quiz</h2>
+                </div>
+            </div>
+            <!-- Flash message appears here -->
+            {% include '_flash_message.html' %}
+            <!-- End of flash message -->
+
+            <!-- form-->
+            <p>{{ wtf.quick_form(form, button_map={"submit":"warning"}) }}</p>
+            <!-- End of form -->
+        </div>
+    </div>
+{% endblock %}

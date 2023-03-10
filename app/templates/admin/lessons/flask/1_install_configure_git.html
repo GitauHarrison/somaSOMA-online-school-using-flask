@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% import 'bootstrap/wtf.html' as wtf %}
+
+{% block current_user_content %}
+    <div class="row">
+        <div class="col-md-12">
+            <h1 class="heading-articles" >{{title}}</h1>
+
+<h2 id="overview">Overview</h2>
+<blockquote>
+<p>Git is a free and open source distributed version control system designed to handle everything from small to very large projects with speed and efficiency.</p>
+</blockquote>
+<p>Every Git clone is a full-fledged repository with complete history and full revision tracking capabilities, not dependent on network access or a central server. Branching and merging are fast and easy to do.</p>
+<p>Typically, Git is used with hosting services such as GitHub, GitLab, Bitbucket, among others. They all offer distributed version control services. Unlike Git, which is strictly a commandline tool, GitHub, and the likes, provides a web-based graphical interface for &#39;version control&#39;. This allows for collaboration and sharing of projects among people or groups of people.</p>
+<h2 id="installation">Installation</h2>
+<p>Before you start using Git, you have to make it available on your computer. Even if it’s already installed, it’s probably a good idea to update to the latest version. You can either install it as a package or via another installer, or download the source code and compile it yourself.</p>
+<p>In this tutorial, I will recommend installing <code>git</code> from the Ubuntu Software repository. This tutorial is based on <strong>Ubuntu 20.04</strong>. Run the following commands in your terminal following the order below.
+<br></p>
+<h3 id="step-1">Step 1</h3>
+<pre style="margin: 0; line-height: 125%"><span style="color: #888888"># Update your system</span>
+
+<span style="color: #FF0000; ">$</span> sudo apt update
+<span style="color: #FF0000; ">$</span> sudo apt upgrade
+</pre>
+<p>It is important to always update and upgrage your <a href="https://guide.ubuntu-fr.org/server/apt.html#:~:text=The%20apt%20command%20is%20a,upgrading%20the%20entire%20Ubuntu%20system.">APT</a>. Since you are running as root, you will be asked to enter your password. Do so and the installation will continue.</p>
+<h3 id="step-2">Step 2</h3>
+<pre style="margin: 0; line-height: 125%"><span style="color: #FF0000; ">$</span> sudo apt install git
+</pre>
+<p>This downloads and installs <code>git</code> on your system.</p>
+<h3 id="step-3">Step 3</h3>
+<pre style="margin: 0; line-height: 125%"><span style="color: #FF0000; ">$</span> git <span style="color: #333333">--</span>version
+</pre>
+<p>This command checks what version of <code>git</code> has been installed in your system.</p>
+<h2 id="configuration">Configuration</h2>
+<p>We will use the terminal to configure <code>git</code>. You will need to provide your <em>username</em> and <em>email address</em>.</p>
+<h3 id="step-1">Step 1</h3>
+<pre style="margin: 0; line-height: 125%"><span style="color: #FF0000; ">$</span> git config <span style="color: #333333">--</span><span style="color: #008800; font-weight: bold">global</span> user<span style="color: #333333">.</span>username <span style="background-color: #fff0f0">&quot;&lt;put here your username&gt;&quot;</span>
+</pre>
+<p>This will add your username to the git configurations.</p>
+<h3 id="step-2">Step 2</h3>
+<pre style="margin: 0; line-height: 125%"><span style="color: #FF0000; ">$</span> git config <span style="color: #333333">--</span><span style="color: #008800; font-weight: bold">global</span> user<span style="color: #333333">.</span>email <span style="background-color: #fff0f0">&quot;&lt;put here your email@example.com&gt;&quot;</span>
+</pre>
+<p>This will add your email to the git configurations.</p>
+<h3 id="step-3">Step 3</h3>
+<pre style="margin: 0; line-height: 125%"><span style="color: #FF0000; ">$</span> git config <span style="color: #333333">--</span><span style="color: #007020">list</span>
+</pre>
+<p>This step confirms all the changes you just made in the <code>git</code> configuration file. If at any point you want to edit your changes, run: <br><code>$ git config</code></p>
+<p><em>Read more on <code>git</code> in their <a href="https://git-scm.com/">documentation</a>.</em></p>
+
+
+        </div>
+    </div>
+{% endblock %}

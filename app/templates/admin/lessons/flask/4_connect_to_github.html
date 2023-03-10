@@ -1,0 +1,173 @@
+{% extends 'base.html' %}
+{% import 'bootstrap/wtf.html' as wtf %}
+
+{% block current_user_content %}
+    <div class="row">
+        <div class="col-md-12">
+            <h1 class="heading-articles" >{{title}}</h1>
+
+<h2 id="what-is-ssh-">What is SSH?</h2>
+<p>You can connect and authenticate to remote serves such as GitHub without supplying your <em>username</em> and <em>password</em> during each visit. It is recommended that you review your <code>SSH</code> key regularly and revoke any that may be invalid or compromised, just as you would your email account.
+<br></p>
+<h2 id="check-for-existing-ssh-keys">Check for existing <code>SSH</code> Keys</h2>
+<pre style="margin: 0; line-height: 125%"><span style="color: #FF0000; ">$</span> ls <span style="color: #333333">-</span>al <span style="color: #333333">~/.</span>ssh
+</pre>
+<p>This lists all your available <code>SSH</code> keys. Check to see if you have a public <code>SSH</code> key. The file naming, by default, could be as follows:</p>
+<pre style="margin: 0; line-height: 125%">id_rsa<span style="color: #333333">.</span>pub
+</pre><br>
+<h2 id="generate-a-new-ssh-key">Generate a  new <code>SSH</code> key</h2>
+<p>If you have none listed from the step above, you may want to generate a public and a private key pair:</p>
+<pre style="margin: 0; line-height: 125%"><span style="color: #FF0000; ">$</span> ssh<span style="color: #333333">-</span>keygen <span style="color: #333333">-</span>t rsa <span style="color: #333333">-</span>b <span style="color: #0000DD; font-weight: bold">4096</span> <span style="color: #333333">-</span>C <span style="background-color: #fff0f0">&quot;&lt;your GitHub email address goes here&gt;&quot;</span>
+</pre>
+<p>This will create a new <code>ssh</code> key using the email you have provided. When prompted to enter a file to save your <code>ssh</code> key, just press <code>Enter</code> to save it in the default file location.</p>
+<pre style="margin: 0; line-height: 125%">Enter a <span style="color: #007020">file</span> <span style="color: #000000; font-weight: bold">in</span> which to save the key (<span style="color: #333333">/</span>home<span style="color: #333333">/</span>you<span style="color: #333333">/.</span>ssh<span style="color: #333333">/</span>id_rsa): [Press enter]
+</pre>
+<p>Type a secure <em>passphrase</em> when prompted.<br></p>
+<h2 id="adding-your-ssh-key-to-the-ssh-agent">Adding your <code>SSH</code> key to the ssh-agent</h2>
+<p>In the background, you can start your ssh-agent as below:</p>
+<pre style="margin: 0; line-height: 125%"><span style="color: #FF0000; ">$</span> <span style="color: #007020">eval</span> <span style="background-color: #fff0f0">&quot;$(ssh-agent -s)&quot;</span>
+
+<span style="color: #FF0000; ">$</span> ssh<span style="color: #333333">-</span>add <span style="color: #333333">~/.</span>ssh<span style="color: #333333">/</span>id_rsa
+</pre>
+<p><code>id_rsa</code> is the file that holds your key. Check how to list your files above. This file is hidden hence the use of <code>~/.</code><br></p>
+<h2 id="adding-your-ssh-key-to-your-github-account">Adding your <code>SSH</code> key to your GitHub account</h2>
+<p>Copy your <code>ssh</code> key to your clipboard (ctrl + shift + C from your terminal). <strong>Make sure not to add newlines or whitespaces while you copy to the clipboard</strong> by running the commands shown below:</p>
+<pre style="margin: 0; line-height: 125%"><span style="color: #FF0000; ">$</span> sudo apt install xclip
+</pre>
+<p>This downloads and install xclip.</p>
+<pre style="margin: 0; line-height: 125%"><span style="color: #FF0000; ">$</span> xclip <span style="color: #333333">-</span>sel clip <span style="color: #333333">&lt;</span> <span style="color: #333333">~/.</span>ssh<span style="color: #333333">/</span>id_rsa<span style="color: #333333">.</span>pub
+</pre>
+<p>This copies the content of the _id<em>rsa.pub</em> file to your clipboard. You can substitute the file name to match the exact name in your system.</p>
+<h2 id="short-and-easy-method">Short and Easy Method</h2>
+<blockquote>
+    <p>If the method above does not work very well for you, consider doing the following:</p>
+<ol>
+    <li><p>Generate SSH key using:</p>
+        <pre><code class="lang-python"><span style="color: #FF0000; ">$</span> ssh-keygen -t rsa -b <span class="hljs-number">4096</span> -<span class="hljs-type">C</span> <span class="hljs-comment">"your email"</span>.</code></pre>
+    </li>
+    <li><p>Copy the output of the command below to your clipboard: </p>
+<pre><code class="lang-python"><span style="color: #FF0000; ">$</span> cat ~<span class="hljs-regexp">/.ssh/id</span>_rsa.pub
+
+<span class="hljs-comment"># This will display the key in your terminal</span>
+<span class="hljs-comment"># Make sure not to add newlines or whitespaces</span>
+</code></pre>
+    </li>
+    <li>Paste the above-copied output to the form at <a href="https://github.com/settings/ssh/new">https://github.com/settings/ssh/new</a>.
+        <p>
+            <img class="img-fluid img-template" style="max-width: 100%; height: auto;" src="{{ url_for('static', filename='images/lessons/flask/github_ssh/ssh_key.png') }}">
+        </p>
+    </li>
+</ol>
+</blockquote>
+<br>
+<h2 id="update-your-github-ssh-key">Update Your GitHub SSH Key</h2>
+<ul>
+<li>Log into your GitHub account. Click on settings as shown in the image below:<br></li>
+</ul>
+<p>
+    <img class="img-fluid img-template" style="max-width: 100%; height: auto;" src="{{ url_for('static', filename='images/lessons/flask/github_ssh/github_settings.png') }}" alt="GitHub Settings">
+</p>
+<br>
+<ul>
+<li>Click on <em>SSH and GPG keys</em> from the left menu with <em>Settings</em><br></li>
+</ul>
+<p>
+    <img class="img-fluid img-template" style="max-width: 100%; height: auto;" src="{{ url_for('static', filename='images/lessons/flask/github_ssh/ssh_gpa_keys.png') }}" alt="SSH and GPG keys">
+</p>
+<br>
+<ul>
+<li>Click the green <em>New SSH key</em> or <em>Add SSH key</em> button<br></li>
+</ul>
+<p>
+    <img class="img-fluid img-template" style="max-width: 100%; height: auto;" src="{{ url_for('static', filename='images/lessons/flask/github_ssh/new_ssh.png') }}" alt="New SSH key">
+</p>
+<ul>
+<li>Paste your valid <code>ssh</code> key into the <em>Key</em> field
+<br></li>
+</ul>
+<h2 id="https-and-ssh-remote-s-url">HTTPS and SSH remote&#39;s URL</h2>
+<p>
+    If you look at one of your GitHub repository, you will see a green <em>Code</em> button . Click on the drop down menu to locate <code>HTTPS</code>, <code>SSH</code> and <code>GitHub CLI</code><br><br>
+    <img class="img-fluid img-template" style="max-width: 100%; height: auto;" src="{{ url_for('static', filename='images/lessons/flask/github_ssh/https_ssh.png') }}" alt="Code">
+</p>
+<ul>
+    <li>
+        <p>If you are updating to <code>https</code>, your URL will look as below:</p>
+<pre><code class="lang-python">https:<span class="hljs-regexp">//gi</span>thub.com<span class="hljs-regexp">/GitauHarrison/</span>work_gossip_chat_app.git
+</code></pre>
+    </li>
+    <li>
+        <p>If you are updating to <code>ssh</code>, your URL will look as below:</p>
+<pre><code class="lang-python">git<span class="hljs-meta">@github</span>.<span class="hljs-string">com:</span>GitauHarrison/work_gossip_chat_app.git
+</code></pre>
+    </li>
+    <li>
+        <p>If you are updating to <code>GitHub CLI</code>, your URL will look as below:</p>
+<pre><code class="lang-python">gh repo <span class="hljs-keyword">clone</span> <span class="hljs-title">GitauHarrison</span>/work_gossip_chat_app
+</code></pre>
+    <br></li>
+</ul>
+<h2 id="testing-your-ssh-connection">Testing your <code>SSH</code> connection</h2>
+<pre style="margin: 0; line-height: 125%"><span style="color: #FF0000; ">$</span> ssh <span style="color: #333333">-</span>T git<span style="color: #555555; font-weight: bold">@github.com</span>
+</pre>
+<p>This command will attempt to <code>ssh</code> to GitHub. You may see a warning.</p>
+<ul>
+    <li>Verify the fingerprint  and then type <em>yes</em></li>
+    <li>Verify that the resulting message contains your <em>username</em></li>
+</ul>
+<br>
+<h2 id="working-with-ssh-passphrases">Working with <code>ssh</code> passphrases</h2>
+<p>To add extra layer of security, you will need a passphrase to your <code>ssh</code>. The reason behind this is because whenever someone gains access to your computer, they also gain access to every system that uses that key. <code>ssh-agents</code> are used to securely save your passphrases so you don&#39;t have to enter it all over again.</p>
+<p>To add or change your passphrases for your existing private key without generating a new keypair, run the command below:</p>
+<pre style="margin: 0; line-height: 125%"><span style="color: #FF0000; ">$</span> ssh<span style="color: #333333">-</span>keygen <span style="color: #333333">-</span>p
+</pre>
+<p>Press <code>Enter</code> to save your file in the default location, type in your new passphrase and press <code>Enter</code> again.
+<br></p>
+<h2 id="additional-notes">Additional Notes</h2>
+<h3 id="switching-remote-url-from-ssh-to-https-">Switching remote URL from <code>SSH</code> to <code>HTTPS</code></h3>
+<p>As ealier noted, whenever you use <code>https</code>, you will be prompted to provide your GitHub <em>username</em> and <em>password</em></p>
+<ol>
+<li><p>List all your remotes to know what remote name you want to change:</p>
+<pre><code class="lang-python"> <span class="hljs-variable">$ </span>git remote -V
+</code></pre>
+</li>
+<li><p>Change to <code>HTTPS</code>:</p>
+<pre><code class="lang-python"> $ <span class="hljs-string">git </span><span class="hljs-string">remote </span><span class="hljs-built_in">set-url</span> <span class="hljs-string">origin </span><span class="hljs-string">https:</span>//<span class="hljs-string">github.</span><span class="hljs-string">com/</span><span class="hljs-string">GitauHarrison/</span><span class="hljs-string">work_gossip_chat_app.</span><span class="hljs-string">git</span>
+</code></pre>
+<p>Replace <code>https://github.com/GitauHarrison/work_gossip_chat_app.git</code> with your own repo link.</p>
+</li>
+<li><p>Verify remote URL has changed:</p>
+<pre><code class="lang-python"> <span class="hljs-variable">$ </span>git remote -V
+</code></pre>
+</li>
+</ol><br>
+<h3 id="switching-remote-url-from-https-to-ssh-">Switching remote URL from <code>HTTPS</code> to <code>SSH</code></h3>
+<p>The commands needed for this are similar as those above. Run each at a time:</p>
+<pre style="margin: 0; line-height: 125%"><span style="color: #FF0000; ">$</span> git remote <span style="color: #333333">-</span>v
+
+<span style="color: #FF0000; ">$</span> git remote <span style="color: #007020">set</span><span style="color: #333333">-</span>url origin git<span style="color: #555555; font-weight: bold">@github.com</span>:GitauHarrison<span style="color: #333333">/</span>work_gossip_chat_app<span style="color: #333333">.</span>git
+    
+<span style="color: #FF0000; ">$</span> git remote <span style="color: #333333">-</span>v
+</pre>
+<p>You can refer to <a href="https://docs.github.com/en/authentication/connecting-to-github-with-ssh">GitHub's documentation</a> to learn more.</p>
+
+
+            <hr>
+                                                            
+            <!-- Quiz Section -->
+
+            <div class="row"  id="comments">
+                <div class="col-sm-12">
+                    <h2>Quiz</h2>
+                </div>
+            </div>
+            <!-- Flash message appears here -->
+            {% include '_flash_message.html' %}
+            <!-- End of flash message -->
+
+            <!-- form-->
+            <p>{{ wtf.quick_form(form, button_map={"submit":"warning"}) }}</p>
+            <!-- End of form -->
+        </div>
+    </div>
+{% endblock %}
