@@ -5,16 +5,28 @@
     <div class="row">
         <div class="col-md-12">
             <h1 class="heading-articles" >{{title}}</h1>
-
+            <br>
+            <p>
+                Below are the chapters in the Flask series:
+                <ul>
+                    <li class="chapter"><a href=" {{  url_for('flask_chapter1')}} ">Chapter 1: Install and Configure Git</a></li>
+                    <li class="chapter"><a href="  {{  url_for('flask_chapter2')}} ">Chapter 2: Working With Virtualenvwrapper</a></li>
+                    <li class="chapter"><a href="  {{  url_for('flask_chapter3')}} ">Chapter 3: Start A Flask Server</a></li>
+                    <li class="chapter"><a href="  {{  url_for('flask_chapter4')}} ">Chapter 4: Connect To GitHub Using SSH</a></li>
+                </ul>
+            </p>
+<br><br>
 <h2 id="what-is-ssh-">What is SSH?</h2>
 <p>You can connect and authenticate to remote serves such as GitHub without supplying your <em>username</em> and <em>password</em> during each visit. It is recommended that you review your <code>SSH</code> key regularly and revoke any that may be invalid or compromised, just as you would your email account.
 <br></p>
+<br><br>
 <h2 id="check-for-existing-ssh-keys">Check for existing <code>SSH</code> Keys</h2>
 <pre style="margin: 0; line-height: 125%"><span style="color: #FF0000; ">$</span> ls <span style="color: #333333">-</span>al <span style="color: #333333">~/.</span>ssh
 </pre>
 <p>This lists all your available <code>SSH</code> keys. Check to see if you have a public <code>SSH</code> key. The file naming, by default, could be as follows:</p>
 <pre style="margin: 0; line-height: 125%">id_rsa<span style="color: #333333">.</span>pub
 </pre><br>
+<br><br>
 <h2 id="generate-a-new-ssh-key">Generate a  new <code>SSH</code> key</h2>
 <p>If you have none listed from the step above, you may want to generate a public and a private key pair:</p>
 <pre style="margin: 0; line-height: 125%"><span style="color: #FF0000; ">$</span> ssh<span style="color: #333333">-</span>keygen <span style="color: #333333">-</span>t rsa <span style="color: #333333">-</span>b <span style="color: #0000DD; font-weight: bold">4096</span> <span style="color: #333333">-</span>C <span style="background-color: #fff0f0">&quot;&lt;your GitHub email address goes here&gt;&quot;</span>
@@ -23,6 +35,7 @@
 <pre style="margin: 0; line-height: 125%">Enter a <span style="color: #007020">file</span> <span style="color: #000000; font-weight: bold">in</span> which to save the key (<span style="color: #333333">/</span>home<span style="color: #333333">/</span>you<span style="color: #333333">/.</span>ssh<span style="color: #333333">/</span>id_rsa): [Press enter]
 </pre>
 <p>Type a secure <em>passphrase</em> when prompted.<br></p>
+<br><br>
 <h2 id="adding-your-ssh-key-to-the-ssh-agent">Adding your <code>SSH</code> key to the ssh-agent</h2>
 <p>In the background, you can start your ssh-agent as below:</p>
 <pre style="margin: 0; line-height: 125%"><span style="color: #FF0000; ">$</span> <span style="color: #007020">eval</span> <span style="background-color: #fff0f0">&quot;$(ssh-agent -s)&quot;</span>
@@ -30,6 +43,7 @@
 <span style="color: #FF0000; ">$</span> ssh<span style="color: #333333">-</span>add <span style="color: #333333">~/.</span>ssh<span style="color: #333333">/</span>id_rsa
 </pre>
 <p><code>id_rsa</code> is the file that holds your key. Check how to list your files above. This file is hidden hence the use of <code>~/.</code><br></p>
+<br><br>
 <h2 id="adding-your-ssh-key-to-your-github-account">Adding your <code>SSH</code> key to your GitHub account</h2>
 <p>Copy your <code>ssh</code> key to your clipboard (ctrl + shift + C from your terminal). <strong>Make sure not to add newlines or whitespaces while you copy to the clipboard</strong> by running the commands shown below:</p>
 <pre style="margin: 0; line-height: 125%"><span style="color: #FF0000; ">$</span> sudo apt install xclip
@@ -38,6 +52,7 @@
 <pre style="margin: 0; line-height: 125%"><span style="color: #FF0000; ">$</span> xclip <span style="color: #333333">-</span>sel clip <span style="color: #333333">&lt;</span> <span style="color: #333333">~/.</span>ssh<span style="color: #333333">/</span>id_rsa<span style="color: #333333">.</span>pub
 </pre>
 <p>This copies the content of the _id<em>rsa.pub</em> file to your clipboard. You can substitute the file name to match the exact name in your system.</p>
+<br><br>
 <h2 id="short-and-easy-method">Short and Easy Method</h2>
 <blockquote>
     <p>If the method above does not work very well for you, consider doing the following:</p>
@@ -59,7 +74,7 @@
     </li>
 </ol>
 </blockquote>
-<br>
+<br><br>
 <h2 id="update-your-github-ssh-key">Update Your GitHub SSH Key</h2>
 <ul>
 <li>Log into your GitHub account. Click on settings as shown in the image below:<br></li>
@@ -85,6 +100,7 @@
 <li>Paste your valid <code>ssh</code> key into the <em>Key</em> field
 <br></li>
 </ul>
+<br><br>
 <h2 id="https-and-ssh-remote-s-url">HTTPS and SSH remote&#39;s URL</h2>
 <p>
     If you look at one of your GitHub repository, you will see a green <em>Code</em> button . Click on the drop down menu to locate <code>HTTPS</code>, <code>SSH</code> and <code>GitHub CLI</code><br><br>
@@ -107,6 +123,7 @@
 </code></pre>
     <br></li>
 </ul>
+<br><br>
 <h2 id="testing-your-ssh-connection">Testing your <code>SSH</code> connection</h2>
 <pre style="margin: 0; line-height: 125%"><span style="color: #FF0000; ">$</span> ssh <span style="color: #333333">-</span>T git<span style="color: #555555; font-weight: bold">@github.com</span>
 </pre>
@@ -115,7 +132,7 @@
     <li>Verify the fingerprint  and then type <em>yes</em></li>
     <li>Verify that the resulting message contains your <em>username</em></li>
 </ul>
-<br>
+<br><br>
 <h2 id="working-with-ssh-passphrases">Working with <code>ssh</code> passphrases</h2>
 <p>To add extra layer of security, you will need a passphrase to your <code>ssh</code>. The reason behind this is because whenever someone gains access to your computer, they also gain access to every system that uses that key. <code>ssh-agents</code> are used to securely save your passphrases so you don&#39;t have to enter it all over again.</p>
 <p>To add or change your passphrases for your existing private key without generating a new keypair, run the command below:</p>
@@ -123,7 +140,9 @@
 </pre>
 <p>Press <code>Enter</code> to save your file in the default location, type in your new passphrase and press <code>Enter</code> again.
 <br></p>
+<br><br>
 <h2 id="additional-notes">Additional Notes</h2>
+<br><br>
 <h3 id="switching-remote-url-from-ssh-to-https-">Switching remote URL from <code>SSH</code> to <code>HTTPS</code></h3>
 <p>As ealier noted, whenever you use <code>https</code>, you will be prompted to provide your GitHub <em>username</em> and <em>password</em></p>
 <ol>
@@ -141,6 +160,7 @@
 </code></pre>
 </li>
 </ol><br>
+<br>
 <h3 id="switching-remote-url-from-https-to-ssh-">Switching remote URL from <code>HTTPS</code> to <code>SSH</code></h3>
 <p>The commands needed for this are similar as those above. Run each at a time:</p>
 <pre style="margin: 0; line-height: 125%"><span style="color: #FF0000; ">$</span> git remote <span style="color: #333333">-</span>v

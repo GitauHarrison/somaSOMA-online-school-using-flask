@@ -5,7 +5,16 @@
     <div class="row">
         <div class="col-md-12">
             <h1 class="heading-articles" >{{title}}</h1>
-
+            <br>
+            <p>
+                Below are the chapters in the Flask series:
+                <ul>
+                    <li class="chapter"><a href=" {{  url_for('flask_chapter1')}} ">Chapter 1: Install and Configure Git</a></li>
+                    <li class="chapter"><a href="  {{  url_for('flask_chapter2')}} ">Chapter 2: Working With Virtualenvwrapper</a></li>
+                    <li class="chapter"><a href="  {{  url_for('flask_chapter3')}} ">Chapter 3: Start A Flask Server</a></li>
+                    <li class="chapter"><a href="  {{  url_for('flask_chapter4')}} ">Chapter 4: Connect To GitHub Using SSH</a></li>
+                </ul>
+            </p>
 <p>Working on a python project in an isolated python environment is recommended so that python modules and packages don’t meddle with that of other projects or even that of the operating system. Thus, a virtual environment is needed eminently.</p>
 <p>I will show you how to set up your python environment to use virtualenvironment wrapper in Ubuntu 20.04. In this simple tutorial, we will do four things:</p>
 <ul>

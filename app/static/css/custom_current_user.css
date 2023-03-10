@@ -314,7 +314,7 @@ a.article:hover {
     }
     p {
         padding-top: 10px;
-        font-size: 30px;
+        font-size: 20px;
     }
     small {
         font-size: 15px;
@@ -486,3 +486,30 @@ a.article:hover {
 /* =========================================== */
 /* DASHBOARD */
 /* =========================================== */
+
+
+blockquote {
+    background-color: #e7e7e7;
+    padding: 10px;
+    border-radius: 5px;
+}
+pre {
+    margin-top: 10px;
+    margin-bottom: 10pxx;
+    padding: 10px;
+    background-color: #f2f2f2;
+    border-radius: 5px;
+}
+.chapter a {
+    text-decoration: none;
+    margin-bottom: 10px;
+}
+.code-title{
+    margin-bottom: -4px;
+    background-color: #e6e6e6;
+    padding-left: 10px;
+    padding-bottom: 4px;
+}
+img {
+    box-shadow: #63636333 0px 2px 8px 0px;
+}
