@@ -88,6 +88,11 @@ class Student(User):
     program_schedule = db.Column(db.String(64), default='Crash')
     cohort = db.Column(db.Integer, default=1)
 
+    quiz1 = db.relationship('Chapter1Quiz', backref='author', lazy='dynamic')
+    quiz2 = db.relationship('Chapter2Quiz', backref='author', lazy='dynamic')
+    quiz3 = db.relationship('Chapter3Quiz', backref='author', lazy='dynamic')
+    quiz4 = db.relationship('Chapter4Quiz', backref='author', lazy='dynamic')
+
     # Multiple join conditions where more than one foreign key is used
     parent_id = db.Column(db.Integer, db.ForeignKey('parent.id', ondelete='CASCADE'))
     parent = db.relationship(
@@ -154,19 +159,42 @@ class Admin(User):
 # =================
 
 
-class StudentAttendance(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    student_first_name = db.Column(db.String(64), index=True, default='Student', nullable=False)
-    program = db.Column(db.String(64))
-    cohort = db.Column(db.String(64))
-    program_schedule = db.Column(db.String(64))
-    lesson_number = db.Column(db.Integer, default=1)
-    hours = db.Column(db.Integer, default=0)
-    lesson_date = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
-    teacher_id = db.Column(db.Integer, db.ForeignKey('teacher.id', ondelete='CASCADE'))
 
-    def as_dict(self):
-        return {item.name: getattr(self, item.name) for item in self.__table__.columns}
+class Chapter2Quiz(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    question1 = db.Column(db.String(64), nullable=False)
+    question2 = db.Column(db.String(64), nullable=False)
+    question3 = db.Column(db.String(64), nullable=False)
+    question4 = db.Column(db.String(64), nullable=False)
+    student_id = db.Column(db.Integer, db.ForeignKey('student.id', ondelete='CASCADE'))
+
+    def __repr__(self):
+        return f'Chapter 2 Quiz: {self.question1} by {self.student_id}'
+
+
+class Chapter3Quiz(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    question1 = db.Column(db.String(64), nullable=False)
+    question2 = db.Column(db.String(64), nullable=False)
+    question3 = db.Column(db.String(64), nullable=False)
+    question4 = db.Column(db.String(64), nullable=False)
+    student_id = db.Column(db.Integer, db.ForeignKey('student.id', ondelete='CASCADE'))
+
+    def __repr__(self):
+        return f'Chapter 3 Quiz: {self.question1} by {self.student_id}'
+
+
+class Chapter4Quiz(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    question1 = db.Column(db.String(64), nullable=False)
+    question2 = db.Column(db.String(64), nullable=False)
+    question3 = db.Column(db.String(64), nullable=False)
+    question4 = db.Column(db.String(64), nullable=False)
+    student_id = db.Column(db.Integer, db.ForeignKey('student.id', ondelete='CASCADE'))
+
+    def __repr__(self):
+        return f'Chapter 4 Quiz: {self.question1} by {self.student_id}'
+
 
 
 # =================

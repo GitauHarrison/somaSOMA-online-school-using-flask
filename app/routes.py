@@ -6,7 +6,7 @@ from app.forms import ParentRegistrationForm, StudentRegistrationForm, \
     EmailForm, EditEmailForm, EditPhoneForm, EditUsernameForm, FlaskChapter2QuizForm,\
     FlaskChapter3QuizForm, FlaskChapter4QuizForm
 from app.models import User, Parent, Student, Teacher, Admin,\
-    Newsletter_Subscriber, Email
+    Newsletter_Subscriber, Email, Chapter2Quiz, Chapter3Quiz, Chapter4Quiz
 from app.email import send_subscriber_private_email, send_login_details, \
     send_user_private_email
 from app.email import send_password_reset_email, thank_you_client, \
@@ -1619,6 +1619,17 @@ def flask_chapter1():
 @login_required
 def flask_chapter2():
     form = FlaskChapter2QuizForm()
+    if form.validate_on_submit():
+        quiz = Chapter2Quiz(
+            question1=form.question1.data,
+            question2=form.question2.data,
+            question3=form.question3.data,
+            question4=form.question4.data,
+            author=current_user
+        )
+        db.session.add(quiz)
+        db.session.commit()
+        flash('Your answers have been assessed successfully!')
     return render_template(
         'admin/lessons/flask/2_virtualenvwrapper.html',
         title='Work With Virtualenvwrapper',
@@ -1631,6 +1642,17 @@ def flask_chapter2():
 @login_required
 def flask_chapter3():
     form = FlaskChapter3QuizForm()
+    if form.validate_on_submit():
+        quiz = Chapter3Quiz(
+            question1=form.question1.data,
+            question2=form.question2.data,
+            question3=form.question3.data,
+            question4=form.question4.data,
+            author=current_user
+        )
+        db.session.add(quiz)
+        db.session.commit()
+        flash('Your answers have been assessed successfully!')
     return render_template(
         'admin/lessons/flask/3_start_flask_server.html',
         title='Start Flask Server',
@@ -1643,6 +1665,17 @@ def flask_chapter3():
 @login_required
 def flask_chapter4():
     form = FlaskChapter4QuizForm()
+    if form.validate_on_submit():
+        quiz = Chapter4Quiz(
+            question1=form.question1.data,
+            question2=form.question2.data,
+            question3=form.question3.data,
+            question4=form.question4.data,
+            author=current_user
+        )
+        db.session.add(quiz)
+        db.session.commit()
+        flash('Your answers have been assessed successfully!')
     return render_template(
         'admin/lessons/flask/4_connect_to_github.html',
         title='Connect To GitHub',

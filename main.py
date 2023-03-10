@@ -1,7 +1,7 @@
 from app import app, db
 from app import cli
 from app.models import User, Parent, Student, Teacher, Admin, Newsletter_Subscriber,\
-    Email
+    Email, Chapter2Quiz, Chapter3Quiz, Chapter4Quiz
 
 
 cli.register(app)
@@ -17,5 +17,8 @@ def make_shell_context():
         Parent=Parent,
         Student=Student,
         Newsletter_Subscriber=Newsletter_Subscriber,
-        Email=Email
+        Email=Email,
+        Chapter2Quiz=Chapter2Quiz,
+        Chapter3Quiz=Chapter3Quiz,
+        Chapter4Quiz=Chapter4Quiz
         )

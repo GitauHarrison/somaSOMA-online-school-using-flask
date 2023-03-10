@@ -464,15 +464,6 @@ class FlaskChapter3QuizForm(FlaskForm):
                 ('git status', 'git status')
                 ],
             validators=[DataRequired()])
-    question5 = SelectField(
-        'How can a repository be downloaded from GitHub?',
-            choices=[
-                ('download <repo-name>', 'download <repo-name>'),
-                ('pip3 download <repo-name>', 'pip3 download <repo-name>'),
-                ('source venv/bin/download', 'source venv/bin/download'),
-                ('git clone <link-to-repo>', 'git clone <link-to-repo>')
-                ],
-            validators=[DataRequired()])
     submit = SubmitField('Submit')
 
 
@@ -512,15 +503,6 @@ class FlaskChapter4QuizForm(FlaskForm):
                 ('git init', 'git init'),
                 ('git push origin main', 'git push origin main'),
                 ('git status', 'git status')
-                ],
-            validators=[DataRequired()])
-    question5 = SelectField(
-        'What is a README.md file used for?',
-            choices=[
-                ('To explain a project more', 'To explain a project more'),
-                ('To read code', 'To read code'),
-                ('To talk about your skills', 'To talk about your skills'),
-                ('To push to GitHub', 'To push to GitHub')
                 ],
             validators=[DataRequired()])
     submit = SubmitField('Submit')
