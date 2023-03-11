@@ -37,6 +37,7 @@ Built with love and from experience, this demo project summarizes the ideas that
 - [Additional Details](#additional-details)
 - [Application Details](#application-details)
     - [Newsletter](#newsletter)
+    - [Multi-user Support](#multi-user-support)
 - [Testing It Locally](#testing-it-locally)
 - [Areas of Improvement](#areas-of-improvement)
 
@@ -48,7 +49,7 @@ Built with love and from experience, this demo project summarizes the ideas that
 - Basic user authentication
 - Two-factor authentication
 - Sending of emails from the app
-- Restricted access to subsequent lessons by students unless passmark achieved
+
 
 ## Technologies Used
 
@@ -172,3 +173,7 @@ Built with love and from experience, this demo project summarizes the ideas that
 - Notifications of activities taking place within the app
 - Capture user gender during registration to help define how to send an email(Mr. or Ms.)
 - Other user's can request to delete their own accounts
+- Restricted access to subsequent chapters by students unless passmark is achieved
+- Marking of students attendance by teachers
+- Addition of student project quizzes to be assessed by teachers
+- Display of student performance in each chapter on students and parents' profile pages
