@@ -1615,11 +1615,17 @@ def flask_chapter1():
 
 
 
-@app.route('/dashboard/flask/chapter-2/virtualenvwrapper')
+@app.route('/dashboard/flask/chapter-2/virtualenvwrapper', methods=['GET', 'POST'])
 @login_required
 def flask_chapter2():
     form = FlaskChapter2QuizForm()
     if form.validate_on_submit():
+
+        # Frst, delete everything from the db to remove duplicate
+        Chapter2Quiz.query.delete()
+        db.session.commit()
+
+        # Then, add new response
         quiz = Chapter2Quiz(
             question1=form.question1.data,
             question2=form.question2.data,
@@ -1630,17 +1636,38 @@ def flask_chapter2():
         db.session.add(quiz)
         db.session.commit()
         flash('Your answers have been assessed successfully!')
+        return redirect(url_for('flask_chapter2', _anchor='quiz'))
+
+    # Get correct answer and present it to the student
+    correct_answers = []
+    answers = Chapter2Quiz.query.all()
+    for answer in answers:
+        if answer.question1 == '<a>':
+            correct_answers.append(answer.question1)
+        if answer.question2 == '<head>':
+            correct_answers.append(answer.question2)
+        if answer.question3 == 'p{color: orange;}':
+            correct_answers.append(answer.question3)
+        if answer.question4 == 'a{text-decoration: none;}':
+            correct_answers.append(answer.question3)
+    score = len(correct_answers)
     return render_template(
         'admin/lessons/flask/2_virtualenvwrapper.html',
         title='Work With Virtualenvwrapper',
-        form=form
+        form=form,
+        score=score
     )
 
 
 
-@app.route('/dashboard/flask/chapter-3/start-flas-server')
+@app.route('/dashboard/flask/chapter-3/start-flas-server', methods=['GET', 'POST'])
 @login_required
 def flask_chapter3():
+
+    # Frst, delete everything from the db to remove duplicate
+    Chapter2Quiz.query.delete()
+    db.session.commit()
+
     form = FlaskChapter3QuizForm()
     if form.validate_on_submit():
         quiz = Chapter3Quiz(
@@ -1653,17 +1680,37 @@ def flask_chapter3():
         db.session.add(quiz)
         db.session.commit()
         flash('Your answers have been assessed successfully!')
+
+    # Get correct answer and present it to the student
+    correct_answers = []
+    answers = Chapter3Quiz.query.all()
+    for answer in answers:
+        if answer.question1 == 'Git':
+            correct_answers.append(answer.question1)
+        if answer.question2 == 'git status':
+            correct_answers.append(answer.question2)
+        if answer.question3 == 'git add <you-filename.ext>':
+            correct_answers.append(answer.question3)
+        if answer.question4 == 'git init':
+            correct_answers.append(answer.question3)
+    score = len(correct_answers)
     return render_template(
         'admin/lessons/flask/3_start_flask_server.html',
         title='Start Flask Server',
-        form=form
+        form=form,
+        score=score
     )
 
 
 
-@app.route('/dashboard/flask/chapter-4/connect-to-github')
+@app.route('/dashboard/flask/chapter-4/connect-to-github', methods=['GET', 'POST'])
 @login_required
 def flask_chapter4():
+
+    # Frst, delete everything from the db to remove duplicate
+    Chapter2Quiz.query.delete()
+    db.session.commit()
+
     form = FlaskChapter4QuizForm()
     if form.validate_on_submit():
         quiz = Chapter4Quiz(
@@ -1676,10 +1723,25 @@ def flask_chapter4():
         db.session.add(quiz)
         db.session.commit()
         flash('Your answers have been assessed successfully!')
+
+    # Get correct answer and present it to the student
+    correct_answers = []
+    answers = Chapter4Quiz.query.all()
+    for answer in answers:
+        if answer.question1 == 'Python':
+            correct_answers.append(answer.question1)
+        if answer.question2 == 'python3 -m venv venv':
+            correct_answers.append(answer.question2)
+        if answer.question3 == '.gitignore':
+            correct_answers.append(answer.question3)
+        if answer.question4 == 'git init':
+            correct_answers.append(answer.question3)
+    score = len(correct_answers)
     return render_template(
         'admin/lessons/flask/4_connect_to_github.html',
         title='Connect To GitHub',
-        form=form
+        form=form,
+        score=score
     )
 
 

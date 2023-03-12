@@ -176,14 +176,20 @@
                                                             
             <!-- Quiz Section -->
 
-            <div class="row"  id="comments">
+            <!-- Flash message appears here -->
+            {% include '_flash_message.html' %}
+            <!-- End of flash message -->
+
+            <div class="row"  id="quiz">
                 <div class="col-sm-12">
                     <h2>Quiz</h2>
                 </div>
             </div>
-            <!-- Flash message appears here -->
-            {% include '_flash_message.html' %}
-            <!-- End of flash message -->
+            <div class="row">
+                <div class="col-md-12">
+                    <p>Your current score is <strong><span style="color: green;">{{ score }}/4</span></strong></p>
+                </div>
+            </div>
 
             <!-- form-->
             <p>{{ wtf.quick_form(form, button_map={"submit":"warning"}) }}</p>

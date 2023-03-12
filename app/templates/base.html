@@ -263,22 +263,8 @@
                           <ul class="collapse list-unstyled" id="pySubmenu"> 
                               <li><a href=" {{ url_for('flask_chapter1') }} ">Chapter 1: Install/Configure Git</a></li>
                               <li><a href=" {{ url_for('flask_chapter2') }} ">Chapter 2: Virtualenvwrapper</a></li>
-                              {% for score in scores2 %}
-                                  {% if score.chapter2 < 3 %}
-                                      <li><a class="link_disabled" href=" {{ url_for('flask_chapter3') }} ">Chapter 3: Start Flask Server</a></li>
-                                  {% endif %}
-                                  {% if score.chapter2 >= 3 %}
-                                      <li><a href=" {{ url_for('flask_chapter3') }} ">Chapter 3: Start Flask Server</a></li>
-                                  {% endif %}
-                              {% endfor %}
-                              {% for score in scores3 %}
-                                  {% if score.chapter3 < 4 %}
-                                      <li><a class="link_disabled" href=" {{ url_for('flask_chapter4') }} ">Chapter 4: Connect to GitHub</a></li>
-                                  {% endif %}
-                                  {% if score.chapter3 >= 4 %}
-                                      <li><a href=" {{ url_for('flask_chapter4') }} ">Chapter 4: Connect to GitHub</a></li>
-                                  {% endif %}
-                              {% endfor %}                           
+                              <li><a href=" {{ url_for('flask_chapter3') }} ">Chapter 3: Start Flask Server</a></li>
+                              <li><a href=" {{ url_for('flask_chapter4') }} ">Chapter 4: Connect to GitHub</a></li>                                                     
                           </ul>   
                       </li>
                       <li class="active">
