@@ -177,3 +177,6 @@ Built with love and from experience, this demo project summarizes the ideas that
 - Marking of students attendance by teachers
 - Addition of student project quizzes to be assessed by teachers
 - Display of student performance in each chapter on students and parents' profile pages
+- Display of graphs to indicate student performance, student enrollment, account activities etc
+
+**NOTE**: The above mentioned features are things I have implemented in other live and in-use applications
