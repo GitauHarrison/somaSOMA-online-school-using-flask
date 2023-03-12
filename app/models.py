@@ -88,7 +88,6 @@ class Student(User):
     program_schedule = db.Column(db.String(64), default='Crash')
     cohort = db.Column(db.Integer, default=1)
 
-    quiz1 = db.relationship('Chapter1Quiz', backref='author', lazy='dynamic')
     quiz2 = db.relationship('Chapter2Quiz', backref='author', lazy='dynamic')
     quiz3 = db.relationship('Chapter3Quiz', backref='author', lazy='dynamic')
     quiz4 = db.relationship('Chapter4Quiz', backref='author', lazy='dynamic')
@@ -112,8 +111,6 @@ class Teacher(User):
     id = db.Column(db.Integer, db.ForeignKey('user.id', ondelete='CASCADE'), primary_key=True)
     course = db.Column(db.String(64), default='Flask')
     current_residence = db.Column(db.String(64), default='Roselyn, Nairobi')
-    attendance = db.relationship(
-        'StudentAttendance', backref='teacher', lazy='dynamic', passive_deletes=True)
 
     __mapper_args__ = {
         'polymorphic_identity': 'teacher',
