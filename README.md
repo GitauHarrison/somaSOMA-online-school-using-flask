@@ -1,3 +1,5 @@
+![GitHub Open Issues](https://img.shields.io/github/issues/GitauHarrison/somaSOMA-online-school-using-flask) ![GitHub Closed Issues](https://img.shields.io/github/issues-closed/GitauHarrison/somaSOMA-online-school-using-flask) ![GitHub Pull Request Open](https://img.shields.io/github/issues-pr/GitauHarrison/somaSOMA-online-school-using-flask) ![GitHub Pull Request Closed](https://img.shields.io/github/issues-pr-closed/GitauHarrison/somaSOMA-online-school-using-flask) ![GitHub forks](https://img.shields.io/github/forks/GitauHarrison/somaSOMA-online-school-using-flask) ![GitHub Stars](https://img.shields.io/github/stars/GitauHarrison/somaSOMA-online-school-using-flask)
+
 # somaSOMA Online School
 
 _This is the third and final iteration of the somaSoma elearning app. The original application can be seen on [this repo](https://github.com/GitauHarrison/somasoma-eLearning-app). A project started while at [Moringa School](https://moringaschool.com/) with my friends [Mark Mwaura](https://github.com/Markmwaura) and [Alexona Kinuthia](https://github.com/muirurikin), I finally have a complete demo of the vision we had. This is a demo, though there are a handful other live versions I have built._
@@ -179,3 +181,5 @@ Built with love and from experience, this demo project summarizes the ideas that
 - Use of blueprints and factory function
 
 **NOTE**: The above mentioned features are things I have implemented in other live and in-use applications
+
+[![forthebadge](https://forthebadge.com/images/badges/open-source.svg)](https://forthebadge.com) [![forthebadge](https://forthebadge.com/images/badges/built-with-love.svg)](https://forthebadge.com) [![forthebadge](https://forthebadge.com/images/badges/made-with-python.svg)](https://forthebadge.com) [![forthebadge](https://forthebadge.com/images/badges/uses-css.svg)](https://forthebadge.com) [![forthebadge](https://forthebadge.com/images/badges/uses-js.svg)](https://forthebadge.com)
