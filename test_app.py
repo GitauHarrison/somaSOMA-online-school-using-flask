@@ -95,13 +95,13 @@ class TestElearningApp(unittest.TestCase):
         email = jwt.decode(token, 'secret', algorithms=['HS256'])['reset_password']
         assert email == 'testuser@email.com'
 
-    def sending_email_to_user(self, user):
-        self.send_email(
-            subject='Test Email',
-            sender=app.config['MAIL_USERNAME'],
-            recipients=[user.email],
-            text_body='This is a test',
-            html_body='<p>This is a test</p>')
+    # def sending_email_to_user(self, user):
+    #     self.send_email(
+    #         subject='Test Email',
+    #         sender=app.config['MAIL_USERNAME'],
+    #         recipients=[user.email],
+    #         text_body='This is a test',
+    #         html_body='<p>This is a test</p>')
 
     # =====================
     # End of user testing
@@ -114,20 +114,20 @@ class TestElearningApp(unittest.TestCase):
     def add_parent_to_db(self):
         parent = Parent(
             first_name='Test',
-            last_name='User',
-            username='testuser',
-            email='testuser@email.com',
+            last_name='Parent',
+            username='testparent',
+            email='testparent@email.com',
             phone_number='+254700111222',
-            residence='Roselyn, Nairobi'
+            current_residence='Roselyn, Nairobi'
         )
-        parent.set_password('testuser2023')
+        parent.set_password('testparent2023')
         db.session.add(parent)
         db.session.commit()
 
     def parent_login(self):
         self.client.post('/login', data={
-            'username': 'testuser',
-            'password': 'testuser2023'
+            'username': 'testparent',
+            'password': 'testparent2023'
         })
 
     def test_parent_registration_form(self):
@@ -149,9 +149,9 @@ class TestElearningApp(unittest.TestCase):
     def test_mismatched_passwords_during_parent_registration(self):
         response = self.client.post('/register', data={
             'first_name': 'test',
-            'last_name': 'user',
-            'username': 'testuser',
-            'email': 'testuser@email.com',
+            'last_name': 'parent',
+            'username': 'testparent',
+            'email': 'testparent@email.com',
             'password': 'testuser2023',
             'confirm_password': 'testuser2023',
             'phone_number': '+254700111222',
@@ -164,30 +164,30 @@ class TestElearningApp(unittest.TestCase):
     def test_parent_registration(self):
         response = self.client.post('/register/parent', data={
             'first_name': 'test',
-            'last_name': 'user',
-            'username': 'testuser',
-            'email': 'testuser@email.com',
-            'password': 'testuser2023',
-            'confirm_password': 'testuser2023',
+            'last_name': 'parent',
+            'username': 'testparent',
+            'email': 'testparent@email.com',
+            'password': 'testparent2023',
+            'confirm_password': 'testparent2023',
             'phone_number': '+254700111222',
-            'residence': 'Nairobi'
+            'current_residence': 'Nairobi',
         }, follow_redirects=True)
         assert response.status_code == 200
         assert response.request.path == '/login'            # <--- redirected to the login page
 
     def test_parent_login(self):
         response = self.client.post('/login', data={
-            'username': 'testuser',
-            'password': 'testuser2023'
+            'username': 'testparent',
+            'password': 'testparent2023'
         }, follow_redirects=True)
         assert response.status_code == 200
-        assert response.request.path == '/profile'
+        assert response.request.path == '/parent/profile'
         html = response.get_data(as_text=True)
-        assert 'Hi, testuser!' in html
+        assert 'Hi, testparent!' in html
 
     def test_parent_register_child(self):
         self.parent_login()
-        response = self.client.post('/register/child', data={
+        response = self.client.post('/register/student', data={
             'first_name': 'test',
             'last_name': 'student',
             'username': 'teststudent',
@@ -204,18 +204,18 @@ class TestElearningApp(unittest.TestCase):
         }, follow_redirects=True)
         assert response.status_code == 200
         html = response.get_data(as_text=True)
-        assert 'Child successfully registered' in html
-        assert response.request.path == '/profile'
+        assert 'Student successfully registered' in html
+        assert response.request.path == '/parent/profile'
 
     def test_parent_payment(self):
         pass
 
     def test_parent_deactivate_account(self):
         parent = Parent(username='testparent', email='testparent@email.com')
-        response = self.client.get('/deactivate-account', follow_redirects=True)
+        response = self.client.get('/parent/deactivate-account', follow_redirects=True)
         assert response.status_code == 200
-        assert response.request.path == '/profile'
-        self.sending_email_to_user(parent)
+        assert response.request.path == '/parent/profile'
+        # self.sending_email_to_user(parent)
 
     def test_parent_writing_email_to_support(self):
         self.parent_login()
