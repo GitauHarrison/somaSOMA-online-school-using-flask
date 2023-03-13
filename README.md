@@ -1,4 +1,4 @@
-# Sample E-learning App
+# somaSOMA Online School
 
 _This is the third and final iteration of the somaSoma elearning app. The original application can be seen on [this repo](https://github.com/GitauHarrison/somasoma-eLearning-app). A project started while at [Moringa School](https://moringaschool.com/) with my friends [Mark Mwaura](https://github.com/Markmwaura) and [Alexona Kinuthia](https://github.com/muirurikin), I finally have a complete demo of the vision we had. This is a demo, though there are a handful other live versions I have built._
 
@@ -127,12 +127,12 @@ Built with love and from experience, this demo project summarizes the ideas that
 - Clone this repo:
 
     ```python
-    $ git@github.com:GitauHarrison/sample-elearning-app-flask.git
+    $ git clone git@github.com:GitauHarrison/somaSOMA-online-school-using-flask.git
     ```
 - Change directory into the cloned repo:
 
     ```python
-    $ cd sample-elearning-app-flask
+    $ cd somaSOMA-online-school-using-flask
     ```
 - Create and activate a virtual environment
 
